@@ -1,6 +1,0 @@
-{
- "uuid": "stopwatch@pdcurtis",
- "name": "Simple Stopwatch",
- "description": "Allows one to time activities such as the time online with multiple instances possible",
- "max-instances": "10"
-}

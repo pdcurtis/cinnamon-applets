@@ -1,0 +1,246 @@
+{
+    "head": {
+        "type": "header",
+        "description": "General Settings for the Network Usage Monitor Applet"
+    },
+    "refreshInterval-spinner": {
+        "type": "spinbutton",
+        "default": 2,
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "units": "seconds",
+        "description": "Refresh Interval for Display:",
+        "tooltip": "Increase or decrease this spinner value to change the Refresh Interval"
+    },
+    "decimalsToShow-spinner": {
+        "type": "spinbutton",
+        "default": 2,
+        "min": 0,
+        "max": 2,
+        "step": 1,
+        "units": "decimal places",
+        "description": "Display Resolution:",
+        "tooltip": "Increase or decrease this spinner value to make the change the number of decimal places displayed"
+    },
+    "monitored-interface": {
+        "type": "entry",
+        "default": "ppp0",
+        "description": "Last Interface Monitored - no need to change as set by Applet:",
+        "tooltip": "This is normally set by the Applet and should not be changed here except for experimental or diagnostic use"
+    },
+    "useDefaultInterface": {
+        "type": "checkbox",
+        "default": false,
+        "description": "Use the following Interface as default to monitor when no other Interface is Active at start up :",
+        "tooltip": "Checking this box allows you to set up to use an interface for connections which is not always active at start up such as Wifi or Mobile Broadband - usually wlan0 or ppp0"
+    },
+    "defaultInterface": {
+        "type": "entry",
+        "default": "ppp0",
+        "description": "Default Interface (usually ppp0 or wlan0):",
+        "indent": true,
+        "dependency": "useDefaultInterface",
+        "tooltip": "The Default  interface to use for connections which are not always active at start up such as Wifi or Mobile Broadband - usually set to wlan0 or ppp0"
+    },
+    "compactDisplay": {
+        "type": "checkbox",
+        "default": false,
+        "description": "Use a Compact Display with total traffic only",
+        "tooltip": "This just displays the total of upload and download rate in the applet"
+    },
+    "appletWidthSetting": {
+        "type": "spinbutton",
+        "default": 150,
+        "min": 110,
+        "max": 170,
+        "step": 2,
+        "units": "pixels",
+        "description": "Applet Width Adjustment (Only for fine tuning - normally leave alone at 150:",
+        "tooltip": "Fine tuning of applet width for changes in theme and decimal places displayed - needs to be used in conjuction with changes in stylesheet.css. Value is halved when Compact Dispaly selected"
+    },
+    "head1": {
+        "type": "header",
+        "description": "Settings specific to Data Usage and Alert functions for Current Connection"
+    },
+    "useTotalLimit": {
+        "type": "checkbox",
+        "default": false,
+        "description": "Check this box to use the Alert function",
+        "tooltip": "This is useful for mobile broadband or where you may be paying for data on a Wifi link"
+    },
+    "totalLimit": {
+        "type": "spinbutton",
+        "default": 25,
+        "min": 1,
+        "max": 2000,
+        "step": 1,
+        "units": "MBytes",
+        "indent": true,
+        "description": "Data Limit for total flow of data before a Red Warning background is displayed in the Applet",
+        "dependency": "useTotalLimit",
+        "tooltip": "This is the Total Data which can be uploaded and downloaded before the background of the applet goes red - by default it goes orange at 80% of this - reset by disconnection, reboot and/or suspend depending on system"
+    },
+    "alertPercentage": {
+        "type": "scale",
+        "default": 80,
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "dependency": "useTotalLimit",
+        "description": "Percentage of Data Limit at which Orange Warning Displayed",
+        "tooltip": "Percentage of Data Limit at which Orange Warning Background is displayed - It is also shown and can be adjusted in the Applet left click menu"
+    },
+    "head2": {
+        "type": "header",
+        "description": "Settings specific to Cumulative Data Usage functions"
+    },
+    "cumulativeInterface1": {
+        "type": "entry",
+        "default": "ppp0",
+        "description": "Interface 1 for monitoring Cumulative Data Usage - null will inhibit display",
+        "tooltip": "This is normally set to ppp0 or wlan0 to allow monitoring data usage during a period by mobile internet or Wifi charged by the Mbyte"
+    },
+    "cumulativeComment1": {
+        "type": "entry",
+        "default": "Last reset value and date not set",
+        "description": "Place a comment here to remind one of when the Interface was reset etc",
+        "tooltip": "This is displayed along with the Interface and Data Total - very useful if you have a daily and monthly data total on the same interface"
+    },
+    "cumulativeTotal1": { 
+        "type": "spinbutton",
+        "default": 1,
+        "min": 0,
+        "max": 10000,
+        "step": 1,
+        "units": "MBytes",
+        "description": "Cumulative Data Usage on Interface 1",
+        "tooltip": "This is the cumulative data for the selected interface on this machine which is updated whenever the interface is used. It can be reset or set to any value by the Spinwheel for monthly totals or corrections from a data provider."
+    },
+    "cumulativeInterface2": {
+        "type": "entry",
+        "default": "wlan0",
+        "description": "Interface 2 for monitoring Cumulative Data Usage - null will inhibit display",
+        "tooltip": "This is normally set to ppp0 or wlan0 to allow monitoring data usage during a period by mobile internet or Wifi charged by the Mbyte"
+    },
+    "cumulativeComment2": {
+        "type": "entry",
+        "default": "Last reset value and date not set",
+        "description": "Place a comment here to remind one of when the Interface was reset etc",
+        "tooltip": "This is displayed along with the Interface and Data Total - very useful if you have a daily and monthly data total on the same interface"
+    },
+    "cumulativeTotal2": { 
+        "type": "spinbutton",
+        "default": 1,
+        "min": 0,
+        "max": 10000,
+        "step": 1,
+        "units": "MBytes",
+        "description": "Cumulative Data Usage on Interface 2",
+        "tooltip": "This is the cumulative data for the selected interface on this machine which is updated whenever the interface is used. It can be reset or set to any value by the Spinwheel for monthly totals or corrections from a data provider."
+    },
+    "cumulativeInterface3": {
+        "type": "entry",
+        "default": "eth0",
+        "description": "Interface 3 for monitoring Cumulative Data Usage - null will inhibit display",
+        "tooltip": "This is normally set to ppp0 or wlan0 to allow monitoring data usage during a period by mobile internet or Wifi charged by the Mbyte"
+    },
+    "cumulativeComment3": {
+        "type": "entry",
+        "default": "Last reset value and date not set",
+        "description": "Place a comment here to remind one of when the Interface was reset etc",
+        "tooltip": "This is displayed along with the Interface and Data Total - very useful if you have a daily and monthly data total on the same interface"
+    },
+    "cumulativeTotal3": { 
+        "type": "spinbutton",
+        "default": 1,
+        "min": 0,
+        "max": 10000,
+        "step": 1,
+        "units": "MBytes",
+        "description": "Cumulative Data Usage on Interface 3",
+        "tooltip": "This is the cumulative data for the selected interface on this machine which is updated whenever the interface is used. It can be reset or set to any value by the Spinwheel for monthly totals or corrections from a data provider."
+    },
+    "head3": {
+        "type": "header",
+        "description": "Settings specific to Long Term Traffic Statistics"
+    },
+    "useVnstat": {
+        "type": "checkbox",
+        "default": false,
+        "description": "Display long term traffic statistics (vnstat and vnstati Must be installed). ",
+        "tooltip": "This requires vnstat and vnstati to be installed prior to being enabled."
+    },
+    "head4": {
+        "type": "header",
+        "description": "Development settings for fine tuning display"
+    },
+
+    "appletWidthSetting": {
+        "type": "spinbutton",
+        "default": 150,
+        "min": 110,
+        "max": 170,
+        "step": 2,
+        "units": "pixels",
+        "description": "Applet Width Adjustment (Only for fine tuning - normally leave alone at 150:",
+        "tooltip": "Fine tuning of applet width for changes in theme and decimal places displayed - needs to be used in conjuction with changes in stylesheet.css"
+    },
+    "head4": {
+        "type": "header",
+        "description": "Settings for response to exceeding the current data usage limits"
+    },
+    "useCrisisManagement": {
+        "type": "checkbox",
+        "default": false,
+        "description": "Take action when the current data usage limit is exceed",
+        "tooltip": "This is useful for mobile broadband or where you may be paying for data on a Wifi link as it can, for example, suspend the machine after the limit has been exceeded"
+    },
+ "crisisManagement" : {
+        "type": "combobox",
+        "default" : "alertmodal",
+        "dependency": "useCrisisManagement",
+        "options" : {
+            "Display a notification" : " ",
+            "Display a high priority notification" : "notify",
+            "Put up a full screen 'modal dialog' warning" : "alertmodal",
+            "Run a user configurable Script (alertScript)" : "alertscript",
+			"Disable All Networking managed by NMClient after opportunity to abort" : "disablenetworking",
+            "Suspend Machine after a brief opportunity to abort (via suspendScript)" : "suspendscript"
+         },
+        "description" : "Action to take when Data Usage Limit exceeded:",
+        "tooltip": "These are a mixture of preset options and scripts which can be changed by the user (Note: changes in scripts may not survive an update and should be backed up)"
+   },
+    "disconnectDelay": { 
+        "type": "spinbutton",
+        "default": 15,
+        "min": 5,
+        "max": 60,
+        "step": 1,
+        "units": "Seconds",
+        "description": "Delay before Disabling Networking managed by NMClient",
+        "dependency": "useCrisisManagement",
+        "tooltip": "This is the delay during which you can click the Applet to abort automatic disconnection of the machine when the Data Usage Limit is exceeded."
+    },
+    "useAlertSound": {
+        "type": "checkbox",
+        "default": false,
+        "dependency": "useCrisisManagement",
+        "description": "Sound an audible alert when Data Usage Limit Exceeded",
+        "tooltip": "Only for built in alerts - hard code into scripts. Must have Sox installed"
+    },
+    "alertSound": {
+        "type": "entry",
+        "default": "/usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga",
+        "dependency": "useAlertSound",
+        "description": "Full path and filename of alert sound file",
+        "tooltip": "Only for built in alerts - hard code into scripts. Must have Sox installed. Most sound file types supported"
+    },
+    "displayExtraHousekeeping": {
+        "type": "checkbox",
+        "default": false,
+        "dependency": "useCrisisManagement",
+        "description": "Add development and test functions to Context Menu",
+        "tooltip": "Very useful for development of scripts and testing without actually exceeding a limit"
+    }
+}

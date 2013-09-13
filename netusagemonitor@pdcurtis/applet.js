@@ -100,7 +100,7 @@ MyApplet.prototype = {
                 "cumulativeComment1",
                 this.on_interface_settings_changed,
                 null);
-            this.settings.bindProperty(Settings.BindingDirection.IN,
+            this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL,
                 "cumulativeTotal1",
                 "cumulativeTotal1",
                 this.on_settings_changed,
@@ -130,7 +130,7 @@ MyApplet.prototype = {
                 "cumulativeComment3",
                 this.on_interface_settings_changed,
                 null);
-            this.settings.bindProperty(Settings.BindingDirection.IN,
+            this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL,
                 "cumulativeTotal3",
                 "cumulativeTotal3",
                 this.on_settings_changed,
@@ -777,7 +777,7 @@ function main(metadata, orientation, panel_height, instance_id) {
     return myApplet;
 }
 /* 
-Version v18_2.3.6
+Version v18_2.3.7
 1.0 Applet Settings now used for Update Rate, Resolution and Interface. 
     Built in function used for left click menu. 
 1.1 Right click menu item added to open Settings Screen. 
@@ -833,4 +833,5 @@ Conclusion - change to a drop down selection of options, initially the three cur
 2.3.5 Major change in use of css styles for the background colours which show connection and alert status.
       This allows the user to match colours etc to a particular theme.
 2.3.6 Minor bug fix - Context Menu not always rebuilt after adding or removing advanced functions submenu.
+2.3.7 Bug fix - Cummulative counters 1 and 3 not being saved correctly 
 */

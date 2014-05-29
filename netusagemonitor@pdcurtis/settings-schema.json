@@ -109,10 +109,10 @@
     },
     "cumulativeTotal1": { 
         "type": "spinbutton",
-        "default": 1,
-        "min": 0,
-        "max": 10000,
-        "step": 1,
+        "default": 0.0,
+        "min": 0.0,
+        "max": 10000.0,
+        "step": 1.0,
         "units": "MBytes",
         "description": "Cumulative Data Usage on Interface 1",
         "tooltip": "This is the cumulative data for the selected interface on this machine which is updated whenever the interface is used. It can be reset or set to any value by the Spinwheel for monthly totals or corrections from a data provider."
@@ -131,10 +131,10 @@
     },
     "cumulativeTotal2": { 
         "type": "spinbutton",
-        "default": 1,
-        "min": 0,
-        "max": 10000,
-        "step": 1,
+        "default": 0.0,
+        "min": 0.0,
+        "max": 10000.0,
+        "step": 1.0,
         "units": "MBytes",
         "description": "Cumulative Data Usage on Interface 2",
         "tooltip": "This is the cumulative data for the selected interface on this machine which is updated whenever the interface is used. It can be reset or set to any value by the Spinwheel for monthly totals or corrections from a data provider."
@@ -153,10 +153,10 @@
     },
     "cumulativeTotal3": { 
         "type": "spinbutton",
-        "default": 1,
-        "min": 0,
+        "default": 0.0,
+        "min": 0.0,
         "max": 10000,
-        "step": 1,
+        "step": 1.0,
         "units": "MBytes",
         "description": "Cumulative Data Usage on Interface 3",
         "tooltip": "This is the cumulative data for the selected interface on this machine which is updated whenever the interface is used. It can be reset or set to any value by the Spinwheel for monthly totals or corrections from a data provider."
@@ -170,21 +170,6 @@
         "default": false,
         "description": "Display long term traffic statistics (vnstat and vnstati Must be installed). ",
         "tooltip": "This requires vnstat and vnstati to be installed prior to being enabled."
-    },
-    "head4": {
-        "type": "header",
-        "description": "Development settings for fine tuning display"
-    },
-
-    "appletWidthSetting": {
-        "type": "spinbutton",
-        "default": 150,
-        "min": 110,
-        "max": 170,
-        "step": 2,
-        "units": "pixels",
-        "description": "Applet Width Adjustment (Only for fine tuning - normally leave alone at 150:",
-        "tooltip": "Fine tuning of applet width for changes in theme and decimal places displayed - needs to be used in conjuction with changes in stylesheet.css"
     },
     "head4": {
         "type": "header",

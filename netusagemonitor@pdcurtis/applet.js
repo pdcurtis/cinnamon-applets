@@ -95,7 +95,7 @@ MyApplet.prototype = {
                 "cumulativeInterface1",
                 this.on_interface_settings_changed,
                 null);
-            this.settings.bindProperty(Settings.BindingDirection.IN,
+            this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL,
                 "cumulativeComment1",
                 "cumulativeComment1",
                 this.on_interface_settings_changed,
@@ -188,7 +188,7 @@ MyApplet.prototype = {
             this.appletPath = metadata.path;
             this.UUID = metadata.uuid;
             this.applet_running = true; //** New
-
+ 
             this._client = NMClient.Client.new(); //++
 
 			this.abortFlag = true;
@@ -500,6 +500,18 @@ MyApplet.prototype = {
         }));
         this._applet_context_menu.addMenuItem(menuitem);
 
+// TEST
+
+        let menuitem = new PopupMenu.PopupMenuItem("Reset Cumulative Data Monitor 1");
+        menuitem.connect('activate', Lang.bind(this, function (event) {
+        let d = new Date();
+        this.cumulativeTotal1 = 0;
+        this.cumulativeComment1 = "Reset on " + d.toUTCString();
+        }));
+        this._applet_context_menu.addMenuItem(menuitem);
+
+
+
         let menuitem = new PopupMenu.PopupMenuItem("Settings");
         menuitem.connect('activate', Lang.bind(this, function (event) {
             GLib.spawn_command_line_async('cinnamon-settings applets ' + this.UUID);
@@ -580,6 +592,7 @@ MyApplet.prototype = {
         GTop.glibtop_get_netload(this.gtop, this.monitoredInterfaceName);
         this.upOld = this.gtop.bytes_out;
         this.downOld = this.gtop.bytes_in;
+	    this.cT1 = this.cumulativeTotal1
 /*
         if (this.cumulativeInterface1 != "null" && this.cumulativeInterface1 != "") {
              GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface1);
@@ -690,14 +703,15 @@ MyApplet.prototype = {
 
 	// Collect the three sets of cumulative usage data
 		if (((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface1 == this.monitoredInterfaceName)) {
-			this.cumulativeTotal1 = this.cumulativeTotal1 + (downNow - this.downOld + upNow -this.upOld)/1048576;
-			}
+			this.cT1 = this.cumulativeTotal1 + (downNow - this.downOld + upNow -this.upOld)/1048576;
+            }
 		if (((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface2 == this.monitoredInterfaceName)) {
 			this.cumulativeTotal2 = this.cumulativeTotal2 + (downNow - this.downOld + upNow -this.upOld)/1048576;
 			}
 		if (((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface3 == this.monitoredInterfaceName)) {
 			this.cumulativeTotal3 = this.cumulativeTotal3 + (downNow - this.downOld + upNow -this.upOld)/1048576;
 			}
+            this.cumulativeTotal1 = this.cT1;  // TEST Outside loop to stress test without internet transfers
             // Update Old values
             this.upOld = upNow;
             this.downOld = downNow;
@@ -808,6 +822,7 @@ MyApplet.prototype = {
     	// stop the update timer
         this.applet_running = false;
         this.settings.finalize();
+
     }
 };
 
@@ -884,5 +899,9 @@ Conclusion - change to a drop down selection of options, initially the three cur
        (null) in settings file.
 2.3.12 Revert to the old method of handling cumulative data and only update cumulative totals
        for the monitored interface. Slightly less flexible but intended to reduce the chances
-       of segfaults until the problem is understood and resolved 
+       of segfaults until the problem is understood and resolved.
+2.3.13 Changes to Settings File to explicitely use real numbers for Cumulative Data
+2.3.14 Test of reset function including setting reset date and time 
+       and avoid use of updating a Cinnamon Settings within a single expression
+       NB Interface 1 only 
 */

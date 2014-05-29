@@ -261,6 +261,7 @@ MyApplet.prototype = {
                 this.setMonitoredInterface(lastUsedInterface);
             }
             this.rebuildFlag = true;
+            this.firstTimeFlag  = true;
             this.on_settings_changed();
             this.update();
         } catch (e) {
@@ -742,6 +743,12 @@ MyApplet.prototype = {
             this.rebuildFlag = false;
             this.buildContextMenu();
         }
+        // Fix for Cinnamon 2.0 to remove Context Menu Items by running build again next loop - note delay needed
+        if (this.firstTimeFlag) {
+            this.rebuildFlag = true;
+            this.firstTimeFlag = false;
+        }
+
         // Set background colour - green when data has flowed, orange when alert level reached and red when data limit reached
  //       this.actor.style = "background-color: rgba(0,0,0,0.0); border-radius: 10px" + "; width:" + this.appletWidth + "px"
        this.numa_style = 'numa-not-not-connected';
@@ -771,7 +778,6 @@ MyApplet.prototype = {
         let timer = this.refreshIntervalIn * 1000;
         Mainloop.timeout_add((timer), Lang.bind(this, this.update));
         }
-        this.numa_log('done update');
     },
 
     formatSpeed: function (value) {
@@ -857,4 +863,5 @@ Conclusion - change to a drop down selection of options, initially the three cur
 2.3.8 Anomoly fix - Avoid calling  GTop.glibtop_get_netload() without valid interface -
       latest versions can segfault if interface not valid.
 2.3.9 Add fix for Applet not being fully halted when removed from panel (from dansie)
+2.3.10 Fudge to make NUMA behave the same for Cinnamon 1.8 and 2.0 by removing the automatically added items from the context menu by calling rebuilding menu a second time during startup sequence after a one cycle delay. Long term solution is to use dansie's method of building everything as a submenu. 
 */

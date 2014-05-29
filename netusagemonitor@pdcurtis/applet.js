@@ -713,7 +713,7 @@ MyApplet.prototype = {
             let upNowC2 = this.gtop.bytes_out;
             let downNowC2 = this.gtop.bytes_in;
             if (((downNowC2 > this.downOldC2) || (upNowC2 > this.upOldC2))) {
-                this.cumulativeTotal1 = this.cumulativeTotal2 + (downNowC2 - this.downOldC2 + upNowC2 - this.upOldC2) / 1048576;
+                this.cumulativeTotal2 = this.cumulativeTotal2 + (downNowC2 - this.downOldC2 + upNowC2 - this.upOldC2) / 1048576;
             }
             this.upOldC2 = upNowC2;
             this.downOldC2 = downNowC2;
@@ -724,7 +724,7 @@ MyApplet.prototype = {
             let upNowC3 = this.gtop.bytes_out;
             let downNowC3 = this.gtop.bytes_in;
             if (((downNowC3 > this.downOldC3) || (upNowC3 > this.upOldC3))) {
-                this.cumulativeTotal1 = this.cumulativeTotal3 + (downNowC3 - this.downOldC3 + upNowC3 - this.upOldC3) / 1048576;
+                this.cumulativeTotal3 = this.cumulativeTotal3 + (downNowC3 - this.downOldC3 + upNowC3 - this.upOldC3) / 1048576;
             }
             this.upOldC3 = upNowC3;
             this.downOldC3 = downNowC3;
@@ -803,7 +803,7 @@ function main(metadata, orientation, panel_height, instance_id) {
     return myApplet;
 }
 /* 
-Version v18_2.3.7
+Version v18_2.3.11
 1.0 Applet Settings now used for Update Rate, Resolution and Interface. 
     Built in function used for left click menu. 
 1.1 Right click menu item added to open Settings Screen. 
@@ -863,5 +863,10 @@ Conclusion - change to a drop down selection of options, initially the three cur
 2.3.8 Anomoly fix - Avoid calling  GTop.glibtop_get_netload() without valid interface -
       latest versions can segfault if interface not valid.
 2.3.9 Add fix for Applet not being fully halted when removed from panel (from dansie)
-2.3.10 Fudge to make NUMA behave the same for Cinnamon 1.8 and 2.0 by removing the automatically added items from the context menu by calling rebuilding menu a second time during startup sequence after a one cycle delay. Long term solution is to use dansie's method of building everything as a submenu. 
+2.3.10 Fudge to make NUMA behave the same for Cinnamon 1.8 and 2.0 by removing the
+       automatically added items from the context menu by calling rebuilding menu a second 
+       time during startup sequence after a one cycle delay. Long term solution is to use 
+       dansie's method of building everything as a submenu. 
+2.3.11 Default settings changed to start with cummulative monitoring off for all interfaces (null) in 
+       settings file. 
 */

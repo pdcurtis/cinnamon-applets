@@ -97,7 +97,7 @@
     },
     "cumulativeInterface1": {
         "type": "entry",
-        "default": "ppp0",
+        "default": "null",
         "description": "Interface 1 for monitoring Cumulative Data Usage - null will inhibit display",
         "tooltip": "This is normally set to ppp0 or wlan0 to allow monitoring data usage during a period by mobile internet or Wifi charged by the Mbyte"
     },
@@ -119,7 +119,7 @@
     },
     "cumulativeInterface2": {
         "type": "entry",
-        "default": "wlan0",
+        "default": "null",
         "description": "Interface 2 for monitoring Cumulative Data Usage - null will inhibit display",
         "tooltip": "This is normally set to ppp0 or wlan0 to allow monitoring data usage during a period by mobile internet or Wifi charged by the Mbyte"
     },
@@ -141,7 +141,7 @@
     },
     "cumulativeInterface3": {
         "type": "entry",
-        "default": "eth0",
+        "default": "null",
         "description": "Interface 3 for monitoring Cumulative Data Usage - null will inhibit display",
         "tooltip": "This is normally set to ppp0 or wlan0 to allow monitoring data usage during a period by mobile internet or Wifi charged by the Mbyte"
     },

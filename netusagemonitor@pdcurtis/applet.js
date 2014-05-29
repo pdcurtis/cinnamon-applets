@@ -580,7 +580,7 @@ MyApplet.prototype = {
         GTop.glibtop_get_netload(this.gtop, this.monitoredInterfaceName);
         this.upOld = this.gtop.bytes_out;
         this.downOld = this.gtop.bytes_in;
-
+/*
         if (this.cumulativeInterface1 != "null" && this.cumulativeInterface1 != "") {
              GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface1);
              this.upOldC1 = this.gtop.bytes_out;
@@ -598,7 +598,7 @@ MyApplet.prototype = {
                this.upOldC3 = this.gtop.bytes_out;
                this.downOldC3 = this.gtop.bytes_in;
         }
-
+*/
         this.monitoredIinterfaceBi = name; // save using cinnamon settings
     },
 
@@ -688,6 +688,16 @@ MyApplet.prototype = {
                 this.crisis();
             }
 
+	// Collect the three sets of cumulative usage data
+		if (((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface1 == this.monitoredInterfaceName)) {
+			this.cumulativeTotal1 = this.cumulativeTotal1 + (downNow - this.downOld + upNow -this.upOld)/1048576;
+			}
+		if (((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface2 == this.monitoredInterfaceName)) {
+			this.cumulativeTotal2 = this.cumulativeTotal2 + (downNow - this.downOld + upNow -this.upOld)/1048576;
+			}
+		if (((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface3 == this.monitoredInterfaceName)) {
+			this.cumulativeTotal3 = this.cumulativeTotal3 + (downNow - this.downOld + upNow -this.upOld)/1048576;
+			}
             // Update Old values
             this.upOld = upNow;
             this.downOld = downNow;
@@ -696,7 +706,7 @@ MyApplet.prototype = {
             this.labelDownload.set_text("No Interface Set!");
         }
         // Update the three sets of cumulative usage data - Note this uses feature that gTop... delivers 0 if Interface does not exist or is inactive but checks added to avoid calling if counter not in use.
-
+/*
         if (this.cumulativeInterface1 != "null" && this.cumulativeInterface1 != "") {
             GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface1);
             let upNowC1 = this.gtop.bytes_out;
@@ -730,6 +740,9 @@ MyApplet.prototype = {
             this.downOldC3 = downNowC3;
         }        
         // End of changes 
+
+
+*/
 
         // Now set up tooltip every cycle
         if (this.monitoredInterfaceName != null) {
@@ -803,7 +816,7 @@ function main(metadata, orientation, panel_height, instance_id) {
     return myApplet;
 }
 /* 
-Version v18_2.3.11
+Version v18_2.3.12
 1.0 Applet Settings now used for Update Rate, Resolution and Interface. 
     Built in function used for left click menu. 
 1.1 Right click menu item added to open Settings Screen. 
@@ -867,6 +880,9 @@ Conclusion - change to a drop down selection of options, initially the three cur
        automatically added items from the context menu by calling rebuilding menu a second 
        time during startup sequence after a one cycle delay. Long term solution is to use 
        dansie's method of building everything as a submenu. 
-2.3.11 Default settings changed to start with cummulative monitoring off for all interfaces (null) in 
-       settings file. 
+2.3.11 Default settings changed to start with cummulative monitoring off for all interfaces
+       (null) in settings file.
+2.3.12 Revert to the old method of handling cumulative data and only update cumulative totals
+       for the monitored interface. Slightly less flexible but intended to reduce the chances
+       of segfaults until the problem is understood and resolved 
 */

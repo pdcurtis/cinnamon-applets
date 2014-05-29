@@ -187,6 +187,7 @@ MyApplet.prototype = {
             this.crisisScript = metadata.path + "/crisisScript";
             this.appletPath = metadata.path;
             this.UUID = metadata.uuid;
+            this.applet_running = true; //** New
 
             this._client = NMClient.Client.new(); //++
 
@@ -766,8 +767,11 @@ MyApplet.prototype = {
         this.last_numa_style = this.numa_style;
 
         // Loop update
+        if (this.applet_running) {
         let timer = this.refreshIntervalIn * 1000;
         Mainloop.timeout_add((timer), Lang.bind(this, this.update));
+        }
+        this.numa_log('done update');
     },
 
     formatSpeed: function (value) {
@@ -782,6 +786,8 @@ MyApplet.prototype = {
     },
 
     on_applet_removed_from_panel: function () {
+    	// stop the update timer
+        this.applet_running = false;
         this.settings.finalize();
     }
 };
@@ -848,6 +854,7 @@ Conclusion - change to a drop down selection of options, initially the three cur
       This allows the user to match colours etc to a particular theme.
 2.3.6 Minor bug fix - Context Menu not always rebuilt after adding or removing advanced functions submenu.
 2.3.7 Bug fix - Cummulative counters 1 and 3 not being saved correctly
-2.3.8 Anomoly fix - Avoid calling  GTop.glibtop_get_netload() without interface - latest versions can segfault if interface not valid.
-
+2.3.8 Anomoly fix - Avoid calling  GTop.glibtop_get_netload() without valid interface -
+      latest versions can segfault if interface not valid.
+2.3.9 Add fix for Applet not being fully halted when removed from panel (from dansie)
 */

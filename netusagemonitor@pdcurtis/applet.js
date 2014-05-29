@@ -741,8 +741,8 @@ MyApplet.prototype = {
             this.upOld = upNow;
             this.downOld = downNow;
             this.timeOld = timeNow;
-        } else {
-            this.labelDownload.set_text("No Interface Set!");
+//        } else {
+//            this.labelDownload.set_text("No Interface Set!");
         }
         // Update the three sets of cumulative usage data - Note this uses feature that gTop... delivers 0 if Interface does not exist or is inactive but checks added to avoid calling if counter not in use.
 /*
@@ -827,9 +827,18 @@ MyApplet.prototype = {
 
         // Loop update
         if (this.applet_running) {
-        let timer = this.refreshIntervalIn * 1000;
-        Mainloop.timeout_add((timer), Lang.bind(this, this.update));
+            let timer = this.refreshIntervalIn * 500;
+            Mainloop.timeout_add((timer), Lang.bind(this, this.updateCumulative));
         }
+    },
+    
+    // Try to delay cumulative updates into cinnamon-settings by using two mainloop timers     
+    updateCumulative: function() {
+        this.cumulativeTotal1 = this.cT1;
+        this.cumulativeTotal2 = this.cT2;
+        this.cumulativeTotal3 = this.cT3; 
+        let timer = this.refreshIntervalIn * 500;
+        Mainloop.timeout_add((timer), Lang.bind(this, this.update));         
     },
 
     formatSpeed: function (value) {
@@ -856,7 +865,7 @@ function main(metadata, orientation, panel_height, instance_id) {
     return myApplet;
 }
 /* 
-Version v18_2.3.12
+Version v18_2.3.16
 1.0 Applet Settings now used for Update Rate, Resolution and Interface. 
     Built in function used for left click menu. 
 1.1 Right click menu item added to open Settings Screen. 
@@ -929,11 +938,14 @@ Conclusion - change to a drop down selection of options, initially the three cur
 2.3.14 Test of reset function including setting reset date and time 
        and avoid use of updating a Cinnamon Settings within a single expression
        NB Interface 1 only 
-       TEST at 10x speed - remeber to reset!!!
+       TEST at 10x speed - remember to reset!!!
 2.3.15 Now reset function on all 3 interfaces and also avoids use of updating a Cinnamon Settings
        within a single expression on all interfaces.
        Display simplified in left click menu to format of: interface - reset date and time - Cumulative data
        ie now a single line for each interface.
        Settings file changed to use generic bidirectional where interfaces are set from applet and defaults changed
-       Reset to run at correct speed
+       Reset to run at correct speed 
+       UPLOADED VERSION 10 March 2014.
+2.3.16 Try delaying cumulative updates into cinnamon-settings by using two mainloop timers.
+       Bug fix for when no default interface specified and default unchecked in settings.
 */

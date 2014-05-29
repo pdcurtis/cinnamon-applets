@@ -25,9 +25,9 @@
     },
     "monitored-interface": {
         "type": "entry",
-        "default": "ppp0",
-        "description": "Last Interface Monitored - no need to change as set by Applet:",
-        "tooltip": "This is normally set by the Applet and should not be changed here except for experimental or diagnostic use"
+        "default": "wlan0",
+        "description": "Last Interface Monitored - for information as set by Applet:",
+        "tooltip": "This is set by the Applet and can not be changed from here"
     },
     "useDefaultInterface": {
         "type": "checkbox",
@@ -37,7 +37,7 @@
     },
     "defaultInterface": {
         "type": "entry",
-        "default": "ppp0",
+        "default": "wlan0",
         "description": "Default Interface (usually ppp0 or wlan0):",
         "indent": true,
         "dependency": "useDefaultInterface",
@@ -135,7 +135,7 @@
     },
     "cumulativeTotal3": { 
         "type": "generic",
-        "default": 0.0
+        "default": 0
     },
     "head3": {
         "type": "header",
@@ -200,7 +200,6 @@
     "displayExtraHousekeeping": {
         "type": "checkbox",
         "default": false,
-        "dependency": "useCrisisManagement",
         "description": "Add development and test functions to Context Menu",
         "tooltip": "Very useful for development of scripts and testing without actually exceeding a limit"
     }

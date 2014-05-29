@@ -110,7 +110,7 @@ MyApplet.prototype = {
                 "cumulativeInterface2",
                 this.on_interface_settings_changed,
                 null);
-            this.settings.bindProperty(Settings.BindingDirection.IN,
+            this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL,
                 "cumulativeComment2",
                 "cumulativeComment2",
                 this.on_interface_settings_changed,
@@ -125,7 +125,7 @@ MyApplet.prototype = {
                 "cumulativeInterface3",
                 this.on_interface_settings_changed,
                 null);
-            this.settings.bindProperty(Settings.BindingDirection.IN,
+            this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL,
                 "cumulativeComment3",
                 "cumulativeComment3",
                 this.on_interface_settings_changed,
@@ -365,30 +365,30 @@ MyApplet.prototype = {
                 reactive: false
             });
             this.menu.addMenuItem(this.menuitemInfo1);
-            this.menuitemInfo3 = new PopupMenu.PopupMenuItem("       " + this.cumulativeComment1, {
-                reactive: false
-            });
-            this.menu.addMenuItem(this.menuitemInfo3);
+//           this.menuitemInfo3 = new PopupMenu.PopupMenuItem("       " + this.cumulativeComment1, {
+//                reactive: false
+//            });
+//            this.menu.addMenuItem(this.menuitemInfo3);
         }
         if (this.cumulativeInterface2 != "null" && this.cumulativeInterface2 != "") {
             this.menuitemInfo4 = new PopupMenu.PopupMenuItem("Cumulative data placeholder 2", {
                 reactive: false
             });
             this.menu.addMenuItem(this.menuitemInfo4);
-            this.menuitemInfo5 = new PopupMenu.PopupMenuItem("       " + this.cumulativeComment2, {
-                reactive: false
-            });
-            this.menu.addMenuItem(this.menuitemInfo5);
+//            this.menuitemInfo5 = new PopupMenu.PopupMenuItem("       " + this.cumulativeComment2, {
+//                reactive: false
+//            });
+//            this.menu.addMenuItem(this.menuitemInfo5);
         }
         if (this.cumulativeInterface3 != "null" && this.cumulativeInterface3 != "") {
             this.menuitemInfo6 = new PopupMenu.PopupMenuItem("Cumulative data placeholder 3", {
                 reactive: false
             });
             this.menu.addMenuItem(this.menuitemInfo6);
-            this.menuitemInfo7 = new PopupMenu.PopupMenuItem("       " + this.cumulativeComment3, {
-                reactive: false
-            });
-            this.menu.addMenuItem(this.menuitemInfo7);
+//            this.menuitemInfo7 = new PopupMenu.PopupMenuItem("       " + this.cumulativeComment3, {
+//                reactive: false
+//            });
+//            this.menu.addMenuItem(this.menuitemInfo7);
         }
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem())
@@ -430,13 +430,13 @@ MyApplet.prototype = {
             this.menuitemInfo2.label.text = "    " + "Alert level (Orange): " + Math.round(this.alertPercentage) + " % of Data Limit of " + this.totalLimit + " MBytes.";
         }
         if (this.cumulativeInterface1 != "null" && this.cumulativeInterface1 != "") {
-            this.menuitemInfo1.label.text = "   " + this.cumulativeInterface1 + " - Cumulative Data Usage: " + this.formatSentReceived(this.cT1 * 1024 * 1024);
+            this.menuitemInfo1.label.text = "   " + this.cumulativeInterface1 + " - Cumulative Data Use: " + this.cumulativeComment1 + ": " + this.formatSentReceived(this.cT1 * 1024 * 1024)  ;
         }
         if (this.cumulativeInterface2 != "null" && this.cumulativeInterface2 != "") {
-            this.menuitemInfo4.label.text = "   " + this.cumulativeInterface2 + " - Cumulative Data Usage: " + this.formatSentReceived(this.cumulativeTotal2 * 1024 * 1024);
+            this.menuitemInfo4.label.text = "   " + this.cumulativeInterface2 + " - Cumulative Data Use: " + this.cumulativeComment2  + ": " + this.formatSentReceived(this.cT2 * 1024 * 1024);
         }
         if (this.cumulativeInterface3 != "null" && this.cumulativeInterface3 != "") {
-            this.menuitemInfo6.label.text = "   " + this.cumulativeInterface3 + " - Cumulative Data Use: " + this.formatSentReceived(this.cumulativeTotal3 * 1024 * 1024);
+            this.menuitemInfo6.label.text = "   " + this.cumulativeInterface3 + " - Cumulative Data Use: "  + this.cumulativeComment3  + ": " + this.formatSentReceived(this.cT3 * 1024 * 1024);
         }
     },
 
@@ -500,14 +500,32 @@ MyApplet.prototype = {
         }));
         this._applet_context_menu.addMenuItem(menuitem);
 
-// TEST
+        // New code to reset Cumulative Data Usage and set their comments to the current date and time
 
-        let menuitem = new PopupMenu.PopupMenuItem("Reset Cumulative Data Monitor 1");
+        let menuitem = new PopupMenu.PopupMenuItem("Reset Cumulative Data Usage 1");
         menuitem.connect('activate', Lang.bind(this, function (event) {
         let d = new Date();
         this.cT1 = 0;
-//        this.cumulativeTotal1 = 0;
-        this.cumulativeComment1 = "Reset on " + d.toLocaleString();
+        this.cumulativeTotal1 = 0;
+        this.cumulativeComment1 = "from " + d.toLocaleString();
+        }));
+        this._applet_context_menu.addMenuItem(menuitem);
+
+        let menuitem = new PopupMenu.PopupMenuItem("Reset Cumulative Data Usage 2");
+        menuitem.connect('activate', Lang.bind(this, function (event) {
+        let d = new Date();
+        this.cT2 = 0;
+        this.cumulativeTotal2 = 0;
+        this.cumulativeComment2 = "from " + d.toLocaleString();
+        }));
+        this._applet_context_menu.addMenuItem(menuitem);
+
+        let menuitem = new PopupMenu.PopupMenuItem("Reset Cumulative Data Usage 3");
+        menuitem.connect('activate', Lang.bind(this, function (event) {
+        let d = new Date();
+        this.cT3 = 0;
+        this.cumulativeTotal3 = 0;
+        this.cumulativeComment3 = "from " + d.toLocaleString();
         }));
         this._applet_context_menu.addMenuItem(menuitem);
 
@@ -593,7 +611,10 @@ MyApplet.prototype = {
         GTop.glibtop_get_netload(this.gtop, this.monitoredInterfaceName);
         this.upOld = this.gtop.bytes_out;
         this.downOld = this.gtop.bytes_in;
-	    this.cT1 = this.cumulativeTotal1
+        // Also set up the working values of the Cummulative totals.
+	    this.cT1 = this.cumulativeTotal1;
+	    this.cT2 = this.cumulativeTotal2;
+	    this.cT3 = this.cumulativeTotal3;
 /*
         if (this.cumulativeInterface1 != "null" && this.cumulativeInterface1 != "") {
              GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface1);
@@ -705,14 +726,17 @@ MyApplet.prototype = {
 	// Collect the three sets of cumulative usage data
 		if (((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface1 == this.monitoredInterfaceName)) {
 			this.cT1 = this.cT1 + (downNow - this.downOld + upNow -this.upOld)/1048576;
+                        this.cumulativeTotal1 = this.cT1; 
             }
 		if (((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface2 == this.monitoredInterfaceName)) {
-			this.cumulativeTotal2 = this.cumulativeTotal2 + (downNow - this.downOld + upNow -this.upOld)/1048576;
+			this.cT2 = this.cT2 + (downNow - this.downOld + upNow -this.upOld)/1048576;
+                        this.cumulativeTotal2 = this.cT2; 
 			}
 		if (((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface3 == this.monitoredInterfaceName)) {
-			this.cumulativeTotal3 = this.cumulativeTotal3 + (downNow - this.downOld + upNow -this.upOld)/1048576;
+			this.cT3 = this.cT3 + (downNow - this.downOld + upNow -this.upOld)/1048576;
+                        this.cumulativeTotal3 = this.cT3; 
 			}
-            this.cumulativeTotal1 = this.cT1;  // TEST Outside loop to stress test without internet transfers
+
             // Update Old values
             this.upOld = upNow;
             this.downOld = downNow;
@@ -803,7 +827,7 @@ MyApplet.prototype = {
 
         // Loop update
         if (this.applet_running) {
-        let timer = this.refreshIntervalIn * 100;
+        let timer = this.refreshIntervalIn * 1000;
         Mainloop.timeout_add((timer), Lang.bind(this, this.update));
         }
     },
@@ -905,5 +929,11 @@ Conclusion - change to a drop down selection of options, initially the three cur
 2.3.14 Test of reset function including setting reset date and time 
        and avoid use of updating a Cinnamon Settings within a single expression
        NB Interface 1 only 
-       TEST at 10x speed
+       TEST at 10x speed - remeber to reset!!!
+2.3.15 Now reset function on all 3 interfaces and also avoids use of updating a Cinnamon Settings
+       within a single expression on all interfaces.
+       Display simplified in left click menu to format of: interface - reset date and time - Cumulative data
+       ie now a single line for each interface.
+       Settings file changed to use generic bidirectional where interfaces are set from applet and defaults changed
+       Reset to run at correct speed
 */

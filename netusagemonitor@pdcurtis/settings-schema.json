@@ -102,20 +102,12 @@
         "tooltip": "This is normally set to ppp0 or wlan0 to allow monitoring data usage during a period by mobile internet or Wifi charged by the Mbyte"
     },
     "cumulativeComment1": {
-        "type": "entry",
-        "default": "Last reset value and date not set",
-        "description": "Place a comment here to remind one of when the Interface was reset etc",
-        "tooltip": "This is displayed along with the Interface and Data Total - very useful if you have a daily and monthly data total on the same interface"
+        "type": "generic",
+        "default": "from initiation of applet"
     },
     "cumulativeTotal1": { 
-        "type": "spinbutton",
-        "default": 0.0,
-        "min": 0.0,
-        "max": 10000.0,
-        "step": 1.0,
-        "units": "MBytes",
-        "description": "Cumulative Data Usage on Interface 1",
-        "tooltip": "This is the cumulative data for the selected interface on this machine which is updated whenever the interface is used. It can be reset or set to any value by the Spinwheel for monthly totals or corrections from a data provider."
+        "type": "generic",
+        "default": 0.0
     },
     "cumulativeInterface2": {
         "type": "entry",
@@ -124,20 +116,12 @@
         "tooltip": "This is normally set to ppp0 or wlan0 to allow monitoring data usage during a period by mobile internet or Wifi charged by the Mbyte"
     },
     "cumulativeComment2": {
-        "type": "entry",
-        "default": "Last reset value and date not set",
-        "description": "Place a comment here to remind one of when the Interface was reset etc",
-        "tooltip": "This is displayed along with the Interface and Data Total - very useful if you have a daily and monthly data total on the same interface"
+        "type": "generic",
+        "default": "from initiation of applet"
     },
     "cumulativeTotal2": { 
-        "type": "spinbutton",
-        "default": 0.0,
-        "min": 0.0,
-        "max": 10000.0,
-        "step": 1.0,
-        "units": "MBytes",
-        "description": "Cumulative Data Usage on Interface 2",
-        "tooltip": "This is the cumulative data for the selected interface on this machine which is updated whenever the interface is used. It can be reset or set to any value by the Spinwheel for monthly totals or corrections from a data provider."
+        "type": "generic",
+        "default": 0.0
     },
     "cumulativeInterface3": {
         "type": "entry",
@@ -146,20 +130,12 @@
         "tooltip": "This is normally set to ppp0 or wlan0 to allow monitoring data usage during a period by mobile internet or Wifi charged by the Mbyte"
     },
     "cumulativeComment3": {
-        "type": "entry",
-        "default": "Last reset value and date not set",
-        "description": "Place a comment here to remind one of when the Interface was reset etc",
-        "tooltip": "This is displayed along with the Interface and Data Total - very useful if you have a daily and monthly data total on the same interface"
+        "type": "generic",
+        "default": "from initiation of applet"
     },
     "cumulativeTotal3": { 
-        "type": "spinbutton",
-        "default": 0.0,
-        "min": 0.0,
-        "max": 10000,
-        "step": 1.0,
-        "units": "MBytes",
-        "description": "Cumulative Data Usage on Interface 3",
-        "tooltip": "This is the cumulative data for the selected interface on this machine which is updated whenever the interface is used. It can be reset or set to any value by the Spinwheel for monthly totals or corrections from a data provider."
+        "type": "generic",
+        "default": 0.0
     },
     "head3": {
         "type": "header",

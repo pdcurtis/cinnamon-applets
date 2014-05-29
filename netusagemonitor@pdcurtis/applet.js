@@ -430,7 +430,7 @@ MyApplet.prototype = {
             this.menuitemInfo2.label.text = "    " + "Alert level (Orange): " + Math.round(this.alertPercentage) + " % of Data Limit of " + this.totalLimit + " MBytes.";
         }
         if (this.cumulativeInterface1 != "null" && this.cumulativeInterface1 != "") {
-            this.menuitemInfo1.label.text = "   " + this.cumulativeInterface1 + " - Cumulative Data Usage: " + this.formatSentReceived(this.cumulativeTotal1 * 1024 * 1024);
+            this.menuitemInfo1.label.text = "   " + this.cumulativeInterface1 + " - Cumulative Data Usage: " + this.formatSentReceived(this.cT1 * 1024 * 1024);
         }
         if (this.cumulativeInterface2 != "null" && this.cumulativeInterface2 != "") {
             this.menuitemInfo4.label.text = "   " + this.cumulativeInterface2 + " - Cumulative Data Usage: " + this.formatSentReceived(this.cumulativeTotal2 * 1024 * 1024);
@@ -505,8 +505,9 @@ MyApplet.prototype = {
         let menuitem = new PopupMenu.PopupMenuItem("Reset Cumulative Data Monitor 1");
         menuitem.connect('activate', Lang.bind(this, function (event) {
         let d = new Date();
-        this.cumulativeTotal1 = 0;
-        this.cumulativeComment1 = "Reset on " + d.toUTCString();
+        this.cT1 = 0;
+//        this.cumulativeTotal1 = 0;
+        this.cumulativeComment1 = "Reset on " + d.toLocaleString();
         }));
         this._applet_context_menu.addMenuItem(menuitem);
 
@@ -703,7 +704,7 @@ MyApplet.prototype = {
 
 	// Collect the three sets of cumulative usage data
 		if (((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface1 == this.monitoredInterfaceName)) {
-			this.cT1 = this.cumulativeTotal1 + (downNow - this.downOld + upNow -this.upOld)/1048576;
+			this.cT1 = this.cT1 + (downNow - this.downOld + upNow -this.upOld)/1048576;
             }
 		if (((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface2 == this.monitoredInterfaceName)) {
 			this.cumulativeTotal2 = this.cumulativeTotal2 + (downNow - this.downOld + upNow -this.upOld)/1048576;
@@ -802,7 +803,7 @@ MyApplet.prototype = {
 
         // Loop update
         if (this.applet_running) {
-        let timer = this.refreshIntervalIn * 1000;
+        let timer = this.refreshIntervalIn * 100;
         Mainloop.timeout_add((timer), Lang.bind(this, this.update));
         }
     },
@@ -904,4 +905,5 @@ Conclusion - change to a drop down selection of options, initially the three cur
 2.3.14 Test of reset function including setting reset date and time 
        and avoid use of updating a Cinnamon Settings within a single expression
        NB Interface 1 only 
+       TEST at 10x speed
 */

@@ -25,15 +25,15 @@
     },
     "monitored-interface": {
         "type": "entry",
-        "default": "wlan0",
-        "description": "Last Interface Monitored - for information as set by Applet:",
-        "tooltip": "This is set by the Applet and should not be changed from here except for diagnostic purposes"
+        "default": "etho",
+        "description": "Last Interface Monitored - no need to change as set by Applet:",
+        "tooltip": "This is normally set by the Applet and should not be changed here except for experimental or diagnostic use"
     },
     "useDefaultInterface": {
         "type": "checkbox",
         "default": false,
         "description": "Use the following Interface as default to monitor when no other Interface is Active at start up :",
-        "tooltip": "Checking this box allows you to set up to use an interface for connections which is not always active at start up such as Wifi or Mobile Broadband - usually wlan0 or ppp0"
+        "tooltip": "Checking this box allows you to set up to use an interface for connections which is not always active at start up such as Wifi or Mobile Broadband - usually wlan0 or ppp0. If not checked the first active interface know to the Network Monitor will be used or PPP0 if that was the last connection."
     },
     "defaultInterface": {
         "type": "entry",
@@ -41,7 +41,7 @@
         "description": "Default Interface (usually ppp0 or wlan0):",
         "indent": true,
         "dependency": "useDefaultInterface",
-        "tooltip": "The Default  interface to use for connections which are not always active at start up such as Wifi or Mobile Broadband - usually set to wlan0 or ppp0"
+        "tooltip": "The Default  interface to use for connections which are not always active at start up such as Mobile Broadband or Wifi - usually set to ppp0 or wlan0"
     },
     "compactDisplay": {
         "type": "checkbox",

@@ -1,4 +1,4 @@
-Version v18_2.3.17
+Version v20_2.4.2
 1.0 Applet Settings now used for Update Rate, Resolution and Interface. 
     Built in function used for left click menu. 
 1.1 Right click menu item added to open Settings Screen. 
@@ -85,3 +85,10 @@ Conclusion - change to a drop down selection of options, initially the three cur
 2.3.17 Some changes so cinnamon-settings values of cumulative total are only updated when changed in second part of loop
        Added interface name to reset menu item and rebuildFlag to on_interface_settings_changed()
        Changed 'Settings' to 'Configure' in Context Menu for consistency with Cinnamon 2.0
+2.4.0  Changes to automatically select first active interface at start-up But Only If a default interface was not specified 
+       and the last interface was not PPP0.
+       Added explanatory text to settings-schema.json comment for the useDefaultInterface flag
+2.4.1  Moved Configure to bottom of context menu
+       Tried multiple instances - useful but automatic update fails and hand crafting of .cinnamon/configs/netusagemonitor@pdcurtis required
+       Checked with Cinnamon 2.2 via LiveUSB
+2.4.2  Display of Header inhibited when no Cummulative Data being displayed.

@@ -356,10 +356,14 @@ MyApplet.prototype = {
         }
 
         // Now the Cumulative Usage monitors
-        this.menuitemHead1 = new PopupMenu.PopupMenuItem("Cumulative Data Usage Information", {
+
+        // Inhibit header if no interface monitored. NOTE Separators inhibited automatically by cinnamon 2.0
+        if (this.cumulativeInterface1 != "null" && this.cumulativeInterface1 != "" || this.cumulativeInterface2 != "null" && this.cumulativeInterface2 != ""  || this.cumulativeInterface3 != "null" && this.cumulativeInterface3 != "") {
+            this.menuitemHead1 = new PopupMenu.PopupMenuItem("Cumulative Data Usage Information:", {
             reactive: false
         });
-        this.menu.addMenuItem(this.menuitemHead1);
+            this.menu.addMenuItem(this.menuitemHead1);
+        }
 
         if (this.cumulativeInterface1 != "null" && this.cumulativeInterface1 != "") {
             this.menuitemInfo1 = new PopupMenu.PopupMenuItem("Cumulative data placeholder 1", {
@@ -454,6 +458,9 @@ MyApplet.prototype = {
                 let name = interfaces[i].get_iface();
                 let displayname = "\t" + name;
                 if (this.isInterfaceAvailable(name)) {
+                    if (this.monitoredInterfaceName != name && this.monitoredInterfaceName != "ppp0" && !this.useDefaultInterfaceIn) {
+                          this.setMonitoredInterface(name);
+                    }
                     displayname = displayname + " (Active)";
                 }
                 if (this.monitoredInterfaceName == name) {
@@ -530,14 +537,6 @@ MyApplet.prototype = {
         }));
         this._applet_context_menu.addMenuItem(menuitem);
 
-
-
-        let menuitem = new PopupMenu.PopupMenuItem("Configure");
-        menuitem.connect('activate', Lang.bind(this, function (event) {
-            GLib.spawn_command_line_async('cinnamon-settings applets ' + this.UUID);
-        }));
-        this._applet_context_menu.addMenuItem(menuitem);
-
         this._applet_context_menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         // Set up sub menu for Housekeeping and System Items
@@ -603,6 +602,15 @@ MyApplet.prototype = {
             }));
             this.subMenu1.menu.addMenuItem(this.subMenuItem7);
          }
+
+        this._applet_context_menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        let menuitem = new PopupMenu.PopupMenuItem("Configure");
+        menuitem.connect('activate', Lang.bind(this, function (event) {
+            GLib.spawn_command_line_async('cinnamon-settings applets ' + this.UUID);
+        }));
+        this._applet_context_menu.addMenuItem(menuitem);
+
+
     },
 
     setMonitoredInterface: function (name) {
@@ -885,7 +893,7 @@ function main(metadata, orientation, panel_height, instance_id) {
     return myApplet;
 }
 /* 
-Version v18_2.3.17
+Version v20_2.4.2
 1.0 Applet Settings now used for Update Rate, Resolution and Interface. 
     Built in function used for left click menu. 
 1.1 Right click menu item added to open Settings Screen. 
@@ -972,4 +980,11 @@ Conclusion - change to a drop down selection of options, initially the three cur
 2.3.17 Some changes so cinnamon-settings values of cumulative total are only updated when changed in second part of loop
        Added interface name to reset menu item and rebuildFlag to on_interface_settings_changed()
        Changed 'Settings' to 'Configure' in Context Menu for consistency with Cinnamon 2.0
+2.4.0  Changes to automatically select first active interface at start-up But Only If a default interface was not specified 
+       and the last interface was not PPP0.
+       Added explanatory text to settings-schema.json comment for the useDefaultInterface flag
+2.4.1  Moved Configure to bottom of context menu
+       Tried multiple instances - useful but automatic update fails and hand crafting of .cinnamon/configs/netusagemonitor@pdcurtis required
+       Checked with Cinnamon 2.2 via LiveUSB
+2.4.2  Display of Header inhibited when no Cummulative Data being displayed.
 */

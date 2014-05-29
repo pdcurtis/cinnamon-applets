@@ -12,9 +12,6 @@ v18_2.3.6 Background colours can be configured in the stylesheet and default has
 
 v18_2.3.7 Corrected inconsistency in handling of Cumulative totals
 
------------------------------------------------------------------------------
-
-Versions from here on are candidates for uploading. In particular between 2.3.7 and 2.3.15 the changes were concerned with the search for the segfault problem which may be needed.
 
 v20_2.3.15 Consistent handling of context menu between Cinnamon 1.8 and 2.0. Simplified use of cumulative totals including a new reset function and display of reset date and time. Fixes to avoid anomalies when running under Mint 16. (3 March 2014)
 
@@ -63,4 +60,4 @@ Full log from 2.3.7 -> 2.4.2
 2.4.2  Display of Header inhibited when no Cummulative Data being displayed.
 
 
-Question? Do we have all of these somewhere? How should we do the backfilling?
+All of the intermediate versions have been added to git except 2.4.0 and 2.4.1 which had trivial test changes and should never have had separate version numbers.

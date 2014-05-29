@@ -579,17 +579,23 @@ MyApplet.prototype = {
         this.upOld = this.gtop.bytes_out;
         this.downOld = this.gtop.bytes_in;
 
-        GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface1);
-        this.upOldC1 = this.gtop.bytes_out;
-        this.downOldC1 = this.gtop.bytes_in;
+        if (this.cumulativeInterface1 != "null" && this.cumulativeInterface1 != "") {
+             GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface1);
+             this.upOldC1 = this.gtop.bytes_out;
+             this.downOldC1 = this.gtop.bytes_in;
+        }
 
-        GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface2);
-        this.upOldC2 = this.gtop.bytes_out;
-        this.downOldC2 = this.gtop.bytes_in;
+        if (this.cumulativeInterface2 != "null" && this.cumulativeInterface2 != "") {
+            GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface2);
+            this.upOldC2 = this.gtop.bytes_out;
+            this.downOldC2 = this.gtop.bytes_in;
+        }
 
-        GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface3);
-        this.upOldC3 = this.gtop.bytes_out;
-        this.downOldC3 = this.gtop.bytes_in;
+         if (this.cumulativeInterface3 != "null" && this.cumulativeInterface3 != "") {
+               GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface3);
+               this.upOldC3 = this.gtop.bytes_out;
+               this.downOldC3 = this.gtop.bytes_in;
+        }
 
         this.monitoredIinterfaceBi = name; // save using cinnamon settings
     },
@@ -687,33 +693,41 @@ MyApplet.prototype = {
         } else {
             this.labelDownload.set_text("No Interface Set!");
         }
-        // Update the three sets of cumulative usage data - Note this uses feature that gTop... delivers 0 if Interface does not exist or is inactive
-        GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface1);
-        let upNowC1 = this.gtop.bytes_out;
-        let downNowC1 = this.gtop.bytes_in;
-        if (((downNowC1 > this.downOldC1) || (upNowC1 > this.upOldC1))) {
-            this.cumulativeTotal1 = this.cumulativeTotal1 + (downNowC1 - this.downOldC1 + upNowC1 - this.upOldC1) / 1048576;
-        }
-        this.upOldC1 = upNowC1;
-        this.downOldC1 = downNowC1;
+        // Update the three sets of cumulative usage data - Note this uses feature that gTop... delivers 0 if Interface does not exist or is inactive but checks added to avoid calling if counter not in use.
 
-        GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface2);
-        let upNowC2 = this.gtop.bytes_out;
-        let downNowC2 = this.gtop.bytes_in;
-        if (((downNowC2 > this.downOldC2) || (upNowC2 > this.upOldC2))) {
-            this.cumulativeTotal2 = this.cumulativeTotal2 + (downNowC2 - this.downOldC2 + upNowC2 - this.upOldC2) / 1048576;
+        if (this.cumulativeInterface1 != "null" && this.cumulativeInterface1 != "") {
+            GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface1);
+            let upNowC1 = this.gtop.bytes_out;
+            let downNowC1 = this.gtop.bytes_in;
+            if (((downNowC1 > this.downOldC1) || (upNowC1 > this.upOldC1))) {
+                this.cumulativeTotal1 = this.cumulativeTotal1 + (downNowC1 - this.downOldC1 + upNowC1 - this.upOldC1) / 1048576;
+            }
+            this.upOldC1 = upNowC1;
+            this.downOldC1 = downNowC1;
         }
-        this.upOldC2 = upNowC2;
-        this.downOldC2 = downNowC2;
 
-        GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface3);
-        let upNowC3 = this.gtop.bytes_out;
-        let downNowC3 = this.gtop.bytes_in;
-        if (((downNowC3 > this.downOldC3) || (upNowC3 > this.upOldC3))) {
-            this.cumulativeTotal3 = this.cumulativeTotal3 + (downNowC3 - this.downOldC3 + upNowC3 - this.upOldC3) / 1048576;
-        }
-        this.upOldC3 = upNowC3;
-        this.downOldC3 = downNowC3;
+        if (this.cumulativeInterface2 != "null" && this.cumulativeInterface2 != "") {
+            GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface2);
+            let upNowC2 = this.gtop.bytes_out;
+            let downNowC2 = this.gtop.bytes_in;
+            if (((downNowC2 > this.downOldC2) || (upNowC2 > this.upOldC2))) {
+                this.cumulativeTotal1 = this.cumulativeTotal2 + (downNowC2 - this.downOldC2 + upNowC2 - this.upOldC2) / 1048576;
+            }
+            this.upOldC2 = upNowC2;
+            this.downOldC2 = downNowC2;
+        } 
+
+        if (this.cumulativeInterface3 != "null" && this.cumulativeInterface3 != "") {
+            GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface3);
+            let upNowC3 = this.gtop.bytes_out;
+            let downNowC3 = this.gtop.bytes_in;
+            if (((downNowC3 > this.downOldC3) || (upNowC3 > this.upOldC3))) {
+                this.cumulativeTotal1 = this.cumulativeTotal3 + (downNowC3 - this.downOldC3 + upNowC3 - this.upOldC3) / 1048576;
+            }
+            this.upOldC3 = upNowC3;
+            this.downOldC3 = downNowC3;
+        }        
+        // End of changes 
 
         // Now set up tooltip every cycle
         if (this.monitoredInterfaceName != null) {
@@ -833,5 +847,7 @@ Conclusion - change to a drop down selection of options, initially the three cur
 2.3.5 Major change in use of css styles for the background colours which show connection and alert status.
       This allows the user to match colours etc to a particular theme.
 2.3.6 Minor bug fix - Context Menu not always rebuilt after adding or removing advanced functions submenu.
-2.3.7 Bug fix - Cummulative counters 1 and 3 not being saved correctly 
+2.3.7 Bug fix - Cummulative counters 1 and 3 not being saved correctly
+2.3.8 Anomoly fix - Avoid calling  GTop.glibtop_get_netload() without interface - latest versions can segfault if interface not valid.
+
 */

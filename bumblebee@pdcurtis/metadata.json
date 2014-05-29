@@ -1,0 +1,6 @@
+{
+    "max-instances": "1", 
+    "description": "Displays Status of Bumblebee and nVidia GPU Temperature", 
+    "uuid": "bumblebee@pdcurtis", 
+    "name": "Bumblebee and nVidia Display"
+}

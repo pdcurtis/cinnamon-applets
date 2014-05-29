@@ -98,8 +98,11 @@ MyApplet.prototype = {
             this.changelog = metadata.path + "/changelog.txt";
             this.helpfile = metadata.path + "/help.txt";
             this.tempfile = metadata.path + "/gputemp.out";
+            this.gputempScript= metadata.path + "/gputempscript.sh";
             this.appletPath = metadata.path;
             this.UUID = metadata.uuid;
+
+            this.applet_running = true; //** New to allow applet to be fully stopped when removed from panel
 
             // ++ Set up left click menu
             this.menuManager = new PopupMenu.PopupMenuManager(this);
@@ -110,11 +113,15 @@ MyApplet.prototype = {
             this.buildContextMenu();
             this.makeMenu();
 
-            // Finally start the update loop for the applet display running
+            // Make sure the temp file is created
+ //           GLib.spawn_command_line_async('sh ' + this.gputempScript );
+             GLib.spawn_command_line_async('touch /tmp/.gpuTemperature');
 
+            // Finally setup to start the update loop for the applet display running
             this.set_applet_label(" " ); // show nothing until system stable
             this.set_applet_tooltip("Waiting for Bumblebee");
             Mainloop.timeout_add_seconds(20, Lang.bind(this, this.updateLoop)); // Timer to allow bumbleebee to initiate
+
         } catch (e) {
             global.logError(e);
         }
@@ -172,7 +179,6 @@ MyApplet.prototype = {
 
         this.subMenuItem2 = new PopupMenu.PopupMenuItem("Open the Help file");
         this.subMenuItem2.connect('activate', Lang.bind(this, function (event) {
-            GLib.spawn_command_line_async('gedit ' + this.helpfile);
         }));
         this.subMenu1.menu.addMenuItem(this.subMenuItem2);
       } catch (e) {
@@ -272,10 +278,15 @@ MyApplet.prototype = {
        	        // asyncronous use of nvidia-settings because it is very slow.
                 // It saves setting up a script file and running it.
                 // We display the last value to give the delay
-	        this.nvidiagputemp = GLib.file_get_contents(this.tempfile).toString().substr(5,2);
+
+
+	        this.nvidiagputemp1 = GLib.file_get_contents("/tmp/.gpuTemperature").toString();
+                this.nvidiagputemp = this.nvidiagputemp1.substr(5,2); 
+//	        this.nvidiagputemp = GLib.file_get_contents(this.tempfile).toString().substr(5,2);
 	        this.set_applet_label("GPU " + this.nvidiagputemp + "\u1d3cC" );
                 this.set_applet_tooltip("NVidia based GPU is " + this.bbst + " and Core Temperature is " + this.nvidiagputemp + "\u1d3cC" );
-		GLib.spawn_async(null, ['sh', '-c', 'sh -c "optirun -b none nvidia-settings -q GPUCoreTemp -t -c :8" > ' + this.tempfile], null, GLib.SpawnFlags.SEARCH_PATH, null);
+//		GLib.spawn_async(null, ['sh', '-c', 'sh -c "optirun -b none nvidia-settings -q GPUCoreTemp -t -c :8" > ' + this.tempfile], null, GLib.SpawnFlags.SEARCH_PATH, null);
+                GLib.spawn_command_line_async('sh ' + this.gputempScript );
          } 
       } catch (e) {
           global.logError(e);
@@ -285,11 +296,16 @@ MyApplet.prototype = {
     // This is the loop run at refreshInterval rate to call updateUI() to update the display in the applet and tooltip
     updateLoop: function () {
         this.updateUI();
-        Mainloop.timeout_add_seconds(this.refreshInterval, Lang.bind(this, this.updateLoop));
+        // Also inhibit when applet after has been removed from panel
+        if (this.applet_running == true) {
+            Mainloop.timeout_add_seconds(this.refreshInterval, Lang.bind(this, this.updateLoop));
+        }
     },
 
     // ++ This finalises the settings when the applet is removed from the panel
     on_applet_removed_from_panel: function () {
+        // inhibit the update timer when applet removed from panel
+        this.applet_running = false;
         this.settings.finalize();
     }
 };
@@ -299,7 +315,7 @@ function main(metadata, orientation, panelHeight, instance_id) {
     return myApplet;
 }
 /*
-Version v20_0.9.5 
+Version v20_0.9.7
 v20_0.9.0 Beta 12-12-2013
 v20_0.9.1 Added System Monitor and Power Statistics to right click menu
 v20_0.9.2 Added Left Click Menu with 5 Program Launch Items with configuration in Settings - Release Candidate 14-12-2013 
@@ -307,4 +323,8 @@ v20_0.9.3 Slight tidy up
 v20_0.9.4 Changes to trap errors if bbstatus is not loaded and /proc/acpi/bbstat does not exist
 and also to trap errors in makeMenu and buildContextMenu and correction of buildContextMenu
 v20_0.9.5 Tested, Error Message changed and some tidying up and commenting
+v20_0.9.6 Replaced Clever Code from gputemperature@silentage with
+          a call to a script and output written to /tmp/.gpuTempperature. Needed extra 
+          call to initialise at the start. 
+v20_0.9.7 Inhibit counter updates after counter removed from panel
 */

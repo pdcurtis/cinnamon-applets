@@ -191,7 +191,7 @@ MyApplet.prototype = {
  
             this._client = NMClient.Client.new(); //++
 
-			this.abortFlag = true;
+            this.abortFlag = true;
 
             // Set up display in applet
             if (!this.compactDisplay) {
@@ -288,6 +288,7 @@ MyApplet.prototype = {
 
     on_interface_settings_changed: function () {
         this.makeMenu();
+        this.rebuildFlag = true;
         this.on_settings_changed
     },
 
@@ -502,7 +503,7 @@ MyApplet.prototype = {
 
         // New code to reset Cumulative Data Usage and set their comments to the current date and time
 
-        let menuitem = new PopupMenu.PopupMenuItem("Reset Cumulative Data Usage 1");
+        let menuitem = new PopupMenu.PopupMenuItem("Reset Cumulative Data Usage 1 (" + this.cumulativeInterface1 + ")");
         menuitem.connect('activate', Lang.bind(this, function (event) {
         let d = new Date();
         this.cT1 = 0;
@@ -511,7 +512,7 @@ MyApplet.prototype = {
         }));
         this._applet_context_menu.addMenuItem(menuitem);
 
-        let menuitem = new PopupMenu.PopupMenuItem("Reset Cumulative Data Usage 2");
+        let menuitem = new PopupMenu.PopupMenuItem("Reset Cumulative Data Usage 2 (" + this.cumulativeInterface2 + ")");
         menuitem.connect('activate', Lang.bind(this, function (event) {
         let d = new Date();
         this.cT2 = 0;
@@ -520,7 +521,7 @@ MyApplet.prototype = {
         }));
         this._applet_context_menu.addMenuItem(menuitem);
 
-        let menuitem = new PopupMenu.PopupMenuItem("Reset Cumulative Data Usage 3");
+        let menuitem = new PopupMenu.PopupMenuItem("Reset Cumulative Data Usage 3 (" + this.cumulativeInterface3 + ")");
         menuitem.connect('activate', Lang.bind(this, function (event) {
         let d = new Date();
         this.cT3 = 0;
@@ -531,7 +532,7 @@ MyApplet.prototype = {
 
 
 
-        let menuitem = new PopupMenu.PopupMenuItem("Settings");
+        let menuitem = new PopupMenu.PopupMenuItem("Configure");
         menuitem.connect('activate', Lang.bind(this, function (event) {
             GLib.spawn_command_line_async('cinnamon-settings applets ' + this.UUID);
         }));
@@ -723,12 +724,25 @@ MyApplet.prototype = {
                 this.crisis();
             }
 
-	// Collect the three sets of cumulative usage data
-		if (((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface1 == this.monitoredInterfaceName)) {
-			this.cT1 = this.cT1 + (downNow - this.downOld + upNow -this.upOld)/1048576;
-                        this.cumulativeTotal1 = this.cT1; 
+	    // Collect the three sets of cumulative usage data
+            // and set a flag to update cinnamon-settings with new value at a latter time
+            this.update_ct1 = ((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface1 ==   this.monitoredInterfaceName);		
+            if (this.update_ct1) {
+	        this.cT1 = this.cT1 + (downNow - this.downOld + upNow -this.upOld)/1048576;
             }
-		if (((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface2 == this.monitoredInterfaceName)) {
+            this.update_ct2 = ((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface2 ==   this.monitoredInterfaceName);		
+            if (this.update_ct2) {
+	        this.cT2 = this.cT2 + (downNow - this.downOld + upNow -this.upOld)/1048576;
+            }
+            this.update_ct3 = ((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface3 ==   this.monitoredInterfaceName);		
+            if (this.update_ct3) {
+	        this.cT3 = this.cT3 + (downNow - this.downOld + upNow -this.upOld)/1048576;
+            }
+
+
+
+
+/*		if (((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface2 == this.monitoredInterfaceName)) {
 			this.cT2 = this.cT2 + (downNow - this.downOld + upNow -this.upOld)/1048576;
                         this.cumulativeTotal2 = this.cT2; 
 			}
@@ -736,7 +750,7 @@ MyApplet.prototype = {
 			this.cT3 = this.cT3 + (downNow - this.downOld + upNow -this.upOld)/1048576;
                         this.cumulativeTotal3 = this.cT3; 
 			}
-
+*/
             // Update Old values
             this.upOld = upNow;
             this.downOld = downNow;
@@ -834,9 +848,15 @@ MyApplet.prototype = {
     
     // Try to delay cumulative updates into cinnamon-settings by using two mainloop timers     
     updateCumulative: function() {
-        this.cumulativeTotal1 = this.cT1;
-        this.cumulativeTotal2 = this.cT2;
-        this.cumulativeTotal3 = this.cT3; 
+        if (this.update_ct1) {
+            this.cumulativeTotal1 = this.cT1;
+        }
+        if (this.update_ct2) {
+            this.cumulativeTotal2 = this.cT2;
+        }
+        if (this.update_ct3) {
+            this.cumulativeTotal3 = this.cT3;
+        }
         let timer = this.refreshIntervalIn * 500;
         Mainloop.timeout_add((timer), Lang.bind(this, this.update));         
     },
@@ -865,7 +885,7 @@ function main(metadata, orientation, panel_height, instance_id) {
     return myApplet;
 }
 /* 
-Version v18_2.3.16
+Version v18_2.3.17
 1.0 Applet Settings now used for Update Rate, Resolution and Interface. 
     Built in function used for left click menu. 
 1.1 Right click menu item added to open Settings Screen. 
@@ -922,9 +942,9 @@ Conclusion - change to a drop down selection of options, initially the three cur
       This allows the user to match colours etc to a particular theme.
 2.3.6 Minor bug fix - Context Menu not always rebuilt after adding or removing advanced functions submenu.
 2.3.7 Bug fix - Cummulative counters 1 and 3 not being saved correctly
-2.3.8 Anomoly fix - Avoid calling  GTop.glibtop_get_netload() without valid interface -
-      latest versions can segfault if interface not valid.
-2.3.9 Add fix for Applet not being fully halted when removed from panel (from dansie)
+2.3.8  Anomoly fix - Avoid calling  GTop.glibtop_get_netload() without valid interface -
+       possible latest versions can segfault if interface not valid.
+2.3.9  Add fix for Applet not being fully halted when removed from panel (from dansie)
 2.3.10 Fudge to make NUMA behave the same for Cinnamon 1.8 and 2.0 by removing the
        automatically added items from the context menu by calling rebuilding menu a second 
        time during startup sequence after a one cycle delay. Long term solution is to use 
@@ -939,7 +959,7 @@ Conclusion - change to a drop down selection of options, initially the three cur
        and avoid use of updating a Cinnamon Settings within a single expression
        NB Interface 1 only 
        TEST at 10x speed - remember to reset!!!
-2.3.15 Now reset function on all 3 interfaces and also avoids use of updating a Cinnamon Settings
+2.3.15 Now reset function on all 3 interfaces which also avoids use of updating a Cinnamon Settings
        within a single expression on all interfaces.
        Display simplified in left click menu to format of: interface - reset date and time - Cumulative data
        ie now a single line for each interface.
@@ -948,4 +968,8 @@ Conclusion - change to a drop down selection of options, initially the three cur
        UPLOADED VERSION 10 March 2014.
 2.3.16 Try delaying cumulative updates into cinnamon-settings by using two mainloop timers.
        Bug fix for when no default interface specified and default unchecked in settings.
+       Some default settings changed in settings-schema
+2.3.17 Some changes so cinnamon-settings values of cumulative total are only updated when changed in second part of loop
+       Added interface name to reset menu item and rebuildFlag to on_interface_settings_changed()
+       Changed 'Settings' to 'Configure' in Context Menu for consistency with Cinnamon 2.0
 */

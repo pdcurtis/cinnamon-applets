@@ -27,7 +27,7 @@
         "type": "entry",
         "default": "wlan0",
         "description": "Last Interface Monitored - for information as set by Applet:",
-        "tooltip": "This is set by the Applet and can not be changed from here"
+        "tooltip": "This is set by the Applet and should not be changed from here except for diagnostic purposes"
     },
     "useDefaultInterface": {
         "type": "checkbox",

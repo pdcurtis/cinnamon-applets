@@ -1,6 +1,7 @@
 {
- "uuid": "stopwatch@pdcurtis",
- "name": "Stopwatch",
- "description": "Allows one to time activities such as the time online with multiple instances possible",
- "max-instances": "10"
+    "max-instances": "10", 
+    "last-edited": "1378710499", 
+    "description": "Allows one to time activities such as the time online with multiple instances possible", 
+    "uuid": "stopwatch@pdcurtis", 
+    "name": "Stopwatch for Cinnamon 1.8+"
 }

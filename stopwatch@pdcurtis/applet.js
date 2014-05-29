@@ -68,12 +68,20 @@ MyApplet.prototype = {
                 this.on_generic_changed,
                 null);
 
+            this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL, 
+                "cinnamonVersion", 
+                "cinnamonVersion", 
+                this.on_generic_changed, 
+                null);
+
+
             // ++ Make metadata values available within applet for context menu.
             this.cssfile = metadata.path + "/stylesheet.css"; // No longer required
             this.changelog = metadata.path + "/changelog.txt";
             this.helpfile = metadata.path + "/help.txt";
             this.appletPath = metadata.path;
             this.UUID = metadata.uuid;
+            this.applet_running = true; //** New
 
             // ++ Build Context (Right Click) Menu
             this.buildContextMenu();
@@ -146,14 +154,7 @@ MyApplet.prototype = {
                 this.updateLoop();
             }
         }));
-        this._applet_context_menu.addMenuItem(menuitem);
-        this._applet_context_menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-
-        let menuitem = new PopupMenu.PopupMenuItem("Settings");
-        menuitem.connect('activate', Lang.bind(this, function (event) {
-            GLib.spawn_command_line_async('cinnamon-settings applets ' + this.UUID);
-        }));
-        this._applet_context_menu.addMenuItem(menuitem);
+        this._applet_context_menu.addMenuItem(menuitem); 
 
         this._applet_context_menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
@@ -186,6 +187,15 @@ MyApplet.prototype = {
         }));
         this.subMenu1.menu.addMenuItem(this.subMenuItem3);
 
+        if (this.cinnamonVersion < 2.0 ) {
+            this._applet_context_menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+
+            let menuitem = new PopupMenu.PopupMenuItem("Configure..");
+            menuitem.connect('activate', Lang.bind(this, function (event) {
+                GLib.spawn_command_line_async('cinnamon-settings applets ' + this.UUID);
+            }));
+            this._applet_context_menu.addMenuItem(menuitem);
+        }
 
 
     },
@@ -302,13 +312,19 @@ MyApplet.prototype = {
     updateLoop: function () {
         this.updateUI();
         // Only run updateLoop if counter running to save processsor load
-        if (this.counterStatus == "running") {
+        // Also inhibit when applet after has been removed from panel
+        if (this.counterStatus == "running"  && this.applet_running == true) {
             Mainloop.timeout_add_seconds(this.refreshInterval, Lang.bind(this, this.updateLoop));
         }
     },
 
+
+
+
     // ++ This finalises the settings when the applet is removed from the panel
     on_applet_removed_from_panel: function () {
+        // inhibit the update timer when applet removed from panel
+        this.applet_running = false;
         this.settings.finalize();
     }
 };
@@ -318,7 +334,7 @@ function main(metadata, orientation, panelHeight, instance_id) {
     return myApplet;
 }
 /*
-Version v18_1.1.2
+Version v20_1.2.1
 0.9.0 Release Candidate 30-07-2013
 0.9.1 Help file facility added and link to gnome-system-monitor
 0.9.2 Change Hold to Pause in Tooltip
@@ -344,5 +360,9 @@ Version v18_1.1.2
 1.1.1 Added radiused border to background colours and made them configurable via a stylesheet 
       (stylesheet.css in the applet folder). Extra menu item added to open stylesheet.css 04-09-2013
 1.1.2 Took opportunity to change from red background when days greater than 1 to a red border
-      so one still knows if it is paused or counting  
+      so one still knows if it is paused or counting 
+1.2.0 Inhibit counter updates after counter removed from panel
+1.2.1 Modifications for Cinnamon 2 by adding cinnamonVersion to settings
+      to allow Cinnamon Version to be specified and thus inhibit extra settings menu entry
+1.2.2 Change 'Settings' to 'Configure..' and place after housekeping for consistency  
 */

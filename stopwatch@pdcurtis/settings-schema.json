@@ -25,6 +25,16 @@
         "description": "Check box to continue counting on clicking applet when paused",
         "tooltip": "Normal sequence on clicking is 'start -> pause -> reset' this changes to 'start -> pause -> continue -> pause -> continue etc'. In this mode one has to use the Right Click (Context) Menu to reset the counter"
     },
+    "cinnamonVersion": {
+        "type": "spinbutton",
+        "default": 2.0,
+        "min": 0,
+        "max": 60,
+        "step": .1,
+        "units": " ",
+        "description": "Cinnamon Version Number (1.8, 2.0 etc.)",
+        "tooltip": "Tells Applet the version number you are using - needs cinnamon or system restart"
+     },
     "counterStatus": {
         "type": "generic",
         "default": "ready",

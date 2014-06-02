@@ -68,11 +68,11 @@ MyApplet.prototype = {
                 this.on_generic_changed,
                 null);
 
-            this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL, 
-                "cinnamonVersion", 
-                "cinnamonVersion", 
-                this.on_generic_changed, 
-                null);
+//            this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL, 
+//                "cinnamonVersion", 
+//                "cinnamonVersion", 
+//                this.on_generic_changed, 
+//                null);
 
 
             // ++ Make metadata values available within applet for context menu.
@@ -187,7 +187,7 @@ MyApplet.prototype = {
         }));
         this.subMenu1.menu.addMenuItem(this.subMenuItem3);
 
-        if (this.cinnamonVersion < 2.0 ) {
+        if (this.versionCompare( GLib.getenv('CINNAMON_VERSION') ,"2.0" ) <= 0 ){
             this._applet_context_menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
             let menuitem = new PopupMenu.PopupMenuItem("Configure..");
@@ -196,8 +196,25 @@ MyApplet.prototype = {
             }));
             this._applet_context_menu.addMenuItem(menuitem);
         }
+    },
 
 
+
+    // Compare two version numbers (strings) based on code by Alexey Bass (albass)
+    versionCompare: function (left, right) {
+       if (typeof left + typeof right != 'stringstring')
+            return false;
+       var a = left.split('.'),
+         b = right.split('.'),
+         i = 0, len = Math.max(a.length, b.length);
+        for (; i < len; i++) {
+            if ((a[i] && !b[i] && parseInt(a[i]) > 0) || (parseInt(a[i]) > parseInt(b[i]))) {
+                return 1;
+            } else if ((b[i] && !a[i] && parseInt(b[i]) > 0) || (parseInt(a[i]) < parseInt(b[i]))) {
+                return -1;
+            }
+        } 
+       return 0;
     },
 
     // Gets the current time in milliseconds from 1970
@@ -291,16 +308,13 @@ MyApplet.prototype = {
             } else {
                 this.set_applet_tooltip(this.counterTitle + ": Paused at " + this.verboseCount + " - Click to Reset");
             }
-//              this.actor.style_class = 'stopwatch-paused';
               if (this.days > 0) {              
                    this.actor.style_class = 'stopwatch-paused-day-exceeded';
               } else {
                    this.actor.style_class = 'stopwatch-paused';
               }
         }
-//        if (this.days > 0) {
-//              this.actor.style_class = 'stopwatch-day-exceeded';
-//        }
+
         if (this.counterStatus == "ready") {
             this.set_applet_tooltip(this.counterTitle + ": Ready - Click to Start");
             this.set_applet_label("00:00");
@@ -334,7 +348,7 @@ function main(metadata, orientation, panelHeight, instance_id) {
     return myApplet;
 }
 /*
-Version v20_1.2.1
+Version v20_1.2.3
 0.9.0 Release Candidate 30-07-2013
 0.9.1 Help file facility added and link to gnome-system-monitor
 0.9.2 Change Hold to Pause in Tooltip
@@ -364,5 +378,6 @@ Version v20_1.2.1
 1.2.0 Inhibit counter updates after counter removed from panel
 1.2.1 Modifications for Cinnamon 2 by adding cinnamonVersion to settings
       to allow Cinnamon Version to be specified and thus inhibit extra settings menu entry
-1.2.2 Change 'Settings' to 'Configure..' and place after housekeping for consistency  
+1.2.2 Change 'Settings' to 'Configure..' and place after housekeping for consistency
+1.2.3 Pick up Cinnamon Version from environment variable CINNAMON_VERSION rather than settings window 
 */

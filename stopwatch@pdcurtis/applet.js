@@ -198,9 +198,8 @@ MyApplet.prototype = {
         }
     },
 
-
-
     // Compare two version numbers (strings) based on code by Alexey Bass (albass)
+    // Takes account of many variations of version numers including cinnamon.
     versionCompare: function (left, right) {
        if (typeof left + typeof right != 'stringstring')
             return false;

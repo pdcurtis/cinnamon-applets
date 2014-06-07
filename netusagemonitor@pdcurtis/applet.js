@@ -105,6 +105,11 @@ MyApplet.prototype = {
                 "cumulativeTotal1",
                 this.on_settings_changed,
                 null);
+            this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL,
+                "cumulativeOffset1",
+                "cumulativeOffset1",
+                this.on_settings_changed,
+                null);
             this.settings.bindProperty(Settings.BindingDirection.IN,
                 "cumulativeInterface2",
                 "cumulativeInterface2",
@@ -120,6 +125,11 @@ MyApplet.prototype = {
                 "cumulativeTotal2",
                 this.on_settings_changed,
                 null);
+            this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL,
+                "cumulativeOffset2",
+                "cumulativeOffset2",
+                this.on_settings_changed,
+                null);
             this.settings.bindProperty(Settings.BindingDirection.IN,
                 "cumulativeInterface3",
                 "cumulativeInterface3",
@@ -133,6 +143,11 @@ MyApplet.prototype = {
             this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL,
                 "cumulativeTotal3",
                 "cumulativeTotal3",
+                this.on_settings_changed,
+                null);
+            this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL,
+                "cumulativeOffset3",
+                "cumulativeOffset3",
                 this.on_settings_changed,
                 null);
             this.settings.bindProperty(Settings.BindingDirection.IN,
@@ -210,6 +225,8 @@ MyApplet.prototype = {
                 track_hover: true,
                 style_class: "numa-right"
             });
+
+
             this.actor.add(this.labelOne, {
                 y_align: St.Align.MIDDLE,
                 y_fill: false
@@ -370,30 +387,19 @@ MyApplet.prototype = {
                 reactive: false
             });
             this.menu.addMenuItem(this.menuitemInfo1);
-//           this.menuitemInfo3 = new PopupMenu.PopupMenuItem("       " + this.cumulativeComment1, {
-//                reactive: false
-//            });
-//            this.menu.addMenuItem(this.menuitemInfo3);
+
         }
         if (this.cumulativeInterface2 != "null" && this.cumulativeInterface2 != "") {
             this.menuitemInfo4 = new PopupMenu.PopupMenuItem("Cumulative data placeholder 2", {
                 reactive: false
             });
             this.menu.addMenuItem(this.menuitemInfo4);
-//            this.menuitemInfo5 = new PopupMenu.PopupMenuItem("       " + this.cumulativeComment2, {
-//                reactive: false
-//            });
-//            this.menu.addMenuItem(this.menuitemInfo5);
         }
         if (this.cumulativeInterface3 != "null" && this.cumulativeInterface3 != "") {
             this.menuitemInfo6 = new PopupMenu.PopupMenuItem("Cumulative data placeholder 3", {
                 reactive: false
             });
             this.menu.addMenuItem(this.menuitemInfo6);
-//            this.menuitemInfo7 = new PopupMenu.PopupMenuItem("       " + this.cumulativeComment3, {
-//                reactive: false
-//            });
-//            this.menu.addMenuItem(this.menuitemInfo7);
         }
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem())
@@ -434,15 +440,40 @@ MyApplet.prototype = {
         if (this.useTotalLimit) {
             this.menuitemInfo2.label.text = "    " + "Alert level (Orange): " + Math.round(this.alertPercentage) + " % of Data Limit of " + this.totalLimit + " MBytes.";
         }
+
         if (this.cumulativeInterface1 != "null" && this.cumulativeInterface1 != "") {
-            this.menuitemInfo1.label.text = "   " + this.cumulativeInterface1 + " - Cumulative Data Use: " + this.cumulativeComment1 + ": " + this.formatSentReceived(this.cT1 * 1024 * 1024)  ;
-        }
+            if (this.cumulativeOffset1 != 0) {
+                this.menuitemInfo1.label.text = "   " + this.cumulativeInterface1 + " - Cumulative Data Use " + this.cumulativeComment1 + " with offset of " + this.cumulativeOffset1.toString() + " MB: " + this.formatSentReceived((this.cumulativeTotal1  - this.cumulativeOffset1) * 1024 * 1024);
+            } else {
+                this.menuitemInfo1.label.text = "   " + this.cumulativeInterface1 + " - Cumulative Data Use " + this.cumulativeComment1  + " MB: " + this.formatSentReceived(this.cT1 * 1024 * 1024);
+            }
+        } 
+
+        if (this.cumulativeInterface2 != "null" && this.cumulativeInterface2 != "") {
+            if (this.cumulativeOffset2 != 0) {
+                this.menuitemInfo4.label.text = "   " + this.cumulativeInterface2 + " - Cumulative Data Use " + this.cumulativeComment2 + " with offset of " + this.cumulativeOffset2.toString() + " MB: " + this.formatSentReceived((this.cumulativeTotal2  - this.cumulativeOffset2) * 1024 * 1024);
+            } else {
+                this.menuitemInfo4.label.text = "   " + this.cumulativeInterface2 + " - Cumulative Data Use " + this.cumulativeComment2  + " MB: " + this.formatSentReceived(this.cT2 * 1024 * 1024);
+            }
+        } 
+
+        if (this.cumulativeInterface3 != "null" && this.cumulativeInterface3 != "") {
+            if (this.cumulativeOffset3 != 0) {
+                this.menuitemInfo6.label.text = "   " + this.cumulativeInterface3 + " - Cumulative Data Use " + this.cumulativeComment3 + " with offset of " + this.cumulativeOffset3.toString() + " MB: " + this.formatSentReceived((this.cumulativeTotal3  - this.cumulativeOffset3) * 1024 * 1024);
+            } else {
+                this.menuitemInfo6.label.text = "   " + this.cumulativeInterface3 + " - Cumulative Data Use " + this.cumulativeComment3  + " MB: " + this.formatSentReceived(this.cT3 * 1024 * 1024);
+            }
+        } 
+
+/*
         if (this.cumulativeInterface2 != "null" && this.cumulativeInterface2 != "") {
             this.menuitemInfo4.label.text = "   " + this.cumulativeInterface2 + " - Cumulative Data Use: " + this.cumulativeComment2  + ": " + this.formatSentReceived(this.cT2 * 1024 * 1024);
         }
+
         if (this.cumulativeInterface3 != "null" && this.cumulativeInterface3 != "") {
             this.menuitemInfo6.label.text = "   " + this.cumulativeInterface3 + " - Cumulative Data Use: "  + this.cumulativeComment3  + ": " + this.formatSentReceived(this.cT3 * 1024 * 1024);
         }
+*/
     },
 
     // Build right click context menu
@@ -516,6 +547,7 @@ MyApplet.prototype = {
         this.cT1 = 0;
         this.cumulativeTotal1 = 0;
         this.cumulativeComment1 = "from " + d.toLocaleString();
+        this.cumulativeOffset1 = 0;
         }));
         this._applet_context_menu.addMenuItem(menuitem);
 
@@ -525,6 +557,7 @@ MyApplet.prototype = {
         this.cT2 = 0;
         this.cumulativeTotal2 = 0;
         this.cumulativeComment2 = "from " + d.toLocaleString();
+        this.cumulativeOffset2 = 0;
         }));
         this._applet_context_menu.addMenuItem(menuitem);
 
@@ -534,6 +567,7 @@ MyApplet.prototype = {
         this.cT3 = 0;
         this.cumulativeTotal3 = 0;
         this.cumulativeComment3 = "from " + d.toLocaleString();
+        this.cumulativeOffset3 = 0;
         }));
         this._applet_context_menu.addMenuItem(menuitem);
 
@@ -609,8 +643,6 @@ MyApplet.prototype = {
             GLib.spawn_command_line_async('cinnamon-settings applets ' + this.UUID);
         }));
         this._applet_context_menu.addMenuItem(menuitem);
-
-
     },
 
     setMonitoredInterface: function (name) {
@@ -621,9 +653,9 @@ MyApplet.prototype = {
         this.upOld = this.gtop.bytes_out;
         this.downOld = this.gtop.bytes_in;
         // Also set up the working values of the Cummulative totals.
-	    this.cT1 = this.cumulativeTotal1;
-	    this.cT2 = this.cumulativeTotal2;
-	    this.cT3 = this.cumulativeTotal3;
+	this.cT1 = this.cumulativeTotal1;
+	this.cT2 = this.cumulativeTotal2;
+	this.cT3 = this.cumulativeTotal3;
 /*
         if (this.cumulativeInterface1 != "null" && this.cumulativeInterface1 != "") {
              GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface1);
@@ -650,6 +682,7 @@ MyApplet.prototype = {
         if (!this.abortFlag) {
             this.abortFlag = true;   // Set flag to abort any delayed activities and do not pop up menu
         } else {
+            this.buildContextMenu();
                if (!this.menu.isOpen) {
                      this.makeMenu();
                 }
@@ -710,6 +743,7 @@ MyApplet.prototype = {
     },
 
     // This is the main update run in a loop with a timer 
+    // The displays are made fixed width of 15 characters using padstring()
     update: function () {
         if (this.monitoredInterfaceName != null) {
             let timeNow = GLib.get_monotonic_time();
@@ -719,11 +753,17 @@ MyApplet.prototype = {
             let downNow = this.gtop.bytes_in;
             if (deltaTime != 0) {
                 if (!this.compactDisplay) {
-                    this.labelOne.set_text("\u2193 " + this.formatSpeed((downNow - this.downOld) / deltaTime));
-                    this.labelTwo.set_text("\u2191 " + this.formatSpeed((upNow - this.upOld) / deltaTime));
+                   this.labelOne.set_text(this.padString ( "\u2193 " + this.formatSpeed((downNow - this.downOld) / deltaTime), 12 + this.decimalsToShowIn));
+                    this.labelTwo.set_text(this.padString ("\u2191 " + this.formatSpeed((upNow - this.upOld) / deltaTime), 12 + this.decimalsToShowIn));
                 } else {
-                    this.labelOne.set_text("\u21f5 " + this.formatSpeed((upNow - this.upOld + downNow - this.downOld) / deltaTime));
+                    this.labelOne.set_text(this.padString("\u21f5 " + this.formatSpeed((upNow - this.upOld + downNow - this.downOld) / deltaTime), 12 + this.decimalsToShowIn));
                     this.labelTwo.set_text("");
+                }
+                //Code for ultra compact display when not connected and a compact display
+                //Better integration posible??
+                if (this.numa_style == 'numa-not-not-connected' &&  this.compactDisplay) {
+                     this.labelOne.set_text(" \u21f5");
+                     this.labelTwo.set_text("");
                 }
             }
 
@@ -734,21 +774,18 @@ MyApplet.prototype = {
 
 	    // Collect the three sets of cumulative usage data
             // and set a flag to update cinnamon-settings with new value at a latter time
-            this.update_ct1 = ((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface1 ==   this.monitoredInterfaceName);		
+            this.update_ct1 = ((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface1 == this.monitoredInterfaceName);		
             if (this.update_ct1) {
 	        this.cT1 = this.cT1 + (downNow - this.downOld + upNow -this.upOld)/1048576;
             }
-            this.update_ct2 = ((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface2 ==   this.monitoredInterfaceName);		
+            this.update_ct2 = ((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface2 == this.monitoredInterfaceName);		
             if (this.update_ct2) {
 	        this.cT2 = this.cT2 + (downNow - this.downOld + upNow -this.upOld)/1048576;
             }
-            this.update_ct3 = ((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface3 ==   this.monitoredInterfaceName);		
+            this.update_ct3 = ((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface3 == this.monitoredInterfaceName);		
             if (this.update_ct3) {
 	        this.cT3 = this.cT3 + (downNow - this.downOld + upNow -this.upOld)/1048576;
             }
-
-
-
 
 /*		if (((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface2 == this.monitoredInterfaceName)) {
 			this.cT2 = this.cT2 + (downNow - this.downOld + upNow -this.upOld)/1048576;
@@ -763,11 +800,10 @@ MyApplet.prototype = {
             this.upOld = upNow;
             this.downOld = downNow;
             this.timeOld = timeNow;
-//        } else {
-//            this.labelDownload.set_text("No Interface Set!");
         }
-        // Update the three sets of cumulative usage data - Note this uses feature that gTop... delivers 0 if Interface does not exist or is inactive but checks added to avoid calling if counter not in use.
-/*
+ 
+/*       // Update the three sets of cumulative usage data - Note this uses feature that gTop... delivers 0 if Interface does not exist or is inactive but checks added to avoid calling if counter not in use.
+
         if (this.cumulativeInterface1 != "null" && this.cumulativeInterface1 != "") {
             GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface1);
             let upNowC1 = this.gtop.bytes_out;
@@ -800,9 +836,7 @@ MyApplet.prototype = {
             this.upOldC3 = upNowC3;
             this.downOldC3 = downNowC3;
         }        
-        // End of changes 
-
-
+ 
 */
 
         // Now set up tooltip every cycle
@@ -817,26 +851,23 @@ MyApplet.prototype = {
             this.rebuildFlag = false;
             this.buildContextMenu();
         }
-        // Fix for Cinnamon 2.0 to remove Context Menu Items by running build again next loop - note delay needed
+        // Fix for Cinnamon 2.0 to remove Context Menu Items by running build context menu again next loop - note delay needed
         if (this.firstTimeFlag) {
             this.rebuildFlag = true;
             this.firstTimeFlag = false;
         }
 
         // Set background colour - green when data has flowed, orange when alert level reached and red when data limit reached
- //       this.actor.style = "background-color: rgba(0,0,0,0.0); border-radius: 10px" + "; width:" + this.appletWidth + "px"
+
        this.numa_style = 'numa-not-not-connected';
         if ((this.downOld + this.upOld) > 0) {
-//           this.actor.style = "background-color: rgba(0,255,0,0.3); border-radius: 10px" + "; width:" + this.appletWidth + "px";
            this.numa_style = 'numa-connected';
         }
         if (this.useTotalLimit) {
             if ((this.downOld + this.upOld) / 1048576 > this.totalLimit * this.alertPercentage / 100) {
- //               this.actor.style = "background-color: orange; border-radius: 10px" + "; width:" + this.appletWidth + "px";
                 this.numa_style = 'numa-alert';
             }
             if ((this.downOld + this.upOld) / 1048576 > this.totalLimit) {
-//                this.actor.style = "background-color: red; border-radius: 10px" + "; width:" + this.appletWidth + "px";
                 this.numa_style = 'numa-limit-exceeded'
             }
         }
@@ -844,10 +875,16 @@ MyApplet.prototype = {
         // Now set the style for the Applet using styles from a stylesheet.csswidth and width from Settings
         this.actor.remove_style_class_name(this.last_numa_style); // We need to clear previous style
         this.actor.add_style_class_name(this.numa_style); // Now add the new style
-        this.actor.set_style('width:' + this.appletWidth + 'px')
+        this.actor.set_style('width:' + this.appletWidth + 'px');
+
+         // New Code for ultra compact display when not connected
+         if (this.numa_style == 'numa-not-not-connected' &&  this.compactDisplay) {
+             this.actor.set_style('width:' + 20 + 'px');
+         }
+
         this.last_numa_style = this.numa_style;
 
-        // Loop update
+        // Loop update timer - inibit when applet not running
         if (this.applet_running) {
             let timer = this.refreshIntervalIn * 500;
             Mainloop.timeout_add((timer), Lang.bind(this, this.updateCumulative));
@@ -871,14 +908,29 @@ MyApplet.prototype = {
 
     formatSpeed: function (value) {
         let decimalAdjust = Math.pow(10, (this.decimalsToShowIn));
-        if (value < 1048576) return (Math.floor(value / 1024 * decimalAdjust) / decimalAdjust) + " KB/s";
+        if (value < 1024000) return (Math.floor(value / 1024 * decimalAdjust) / decimalAdjust) + " KB/s";
         else return (Math.floor(value / 1048576 * decimalAdjust) / decimalAdjust) + " MB/s";
     },
+
 
     formatSentReceived: function (value) {
         if (value < 1048576) return Math.floor(value / 1024) + " KB";
         else return Math.floor((value / 1048576) * 10) / 10 + " MB";
     },
+
+    // Pad string to length padto symetrically starting from left using unicode figure
+    // space which is equivalent to the digit width of fonts with fixed-width digits
+    padString: function (string1 , padto ) {
+       while (string1.length < padto) { 
+              string1 =  '\u2007' + string1;
+              if (string1.length  <  padto) {
+                 string1  = string1 + '\u2007' ;
+              }
+       }              
+        return string1;
+
+    },
+
 
     on_applet_removed_from_panel: function () {
     	// stop the update timer
@@ -893,7 +945,7 @@ function main(metadata, orientation, panel_height, instance_id) {
     return myApplet;
 }
 /* 
-Version v20_2.4.2
+Version v20_2.4.3.
 1.0 Applet Settings now used for Update Rate, Resolution and Interface. 
     Built in function used for left click menu. 
 1.1 Right click menu item added to open Settings Screen. 
@@ -987,4 +1039,18 @@ Conclusion - change to a drop down selection of options, initially the three cur
        Tried multiple instances - useful but automatic update fails and hand crafting of .cinnamon/configs/netusagemonitor@pdcurtis required
        Checked with Cinnamon 2.2 via LiveUSB
 2.4.2  Display of Header inhibited when no Cummulative Data being displayed.
+2.4.3.0   Multiple instances in metadata.json
+          Changes to minimise width of applet when not connected to go with multiple instances.     
+          Change to width in stylesheet.css to match
+          New function to pad and center output to remove jitter rather use styles.
+2.4.3.1   General tidy up of commented out code 
+2.4.3.2   Add an offset which is set in settings but is also cleared by reset of usage
+          Display includes offset when in use.
+          Currently only available on Cumulative Data Usage 1
+          Continue tidy up
+2.4.3.3   Width padding corrected for display resolution
+          Offsets on all available Cumulative Data Usage channels
+2.4.3.4   Changed space character to \u2007 which has an equivalent width to a number
+2.4.3.5   Added a call to buildContextMenu on left click to set up after a connection has changed.
+2.4.3  Above all compressed into a single commit from a branch and changelog updated    
 */

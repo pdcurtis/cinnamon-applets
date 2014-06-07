@@ -1,4 +1,4 @@
-Version v20_2.4.2
+Version v20_2.4.3.
 1.0 Applet Settings now used for Update Rate, Resolution and Interface. 
     Built in function used for left click menu. 
 1.1 Right click menu item added to open Settings Screen. 
@@ -92,3 +92,17 @@ Conclusion - change to a drop down selection of options, initially the three cur
        Tried multiple instances - useful but automatic update fails and hand crafting of .cinnamon/configs/netusagemonitor@pdcurtis required
        Checked with Cinnamon 2.2 via LiveUSB
 2.4.2  Display of Header inhibited when no Cummulative Data being displayed.
+2.4.3.0   Multiple instances in metadata.json
+          Changes to minimise width of applet when not connected to go with multiple instances.     
+          Change to width in stylesheet.css to match
+          New function to pad and center output to remove jitter rather use styles.
+2.4.3.1   General tidy up of commented out code 
+2.4.3.2   Add an offset which is set in settings but is also cleared by reset of usage
+          Display includes offset when in use.
+          Currently only available on Cumulative Data Usage 1
+          Continue tidy up
+2.4.3.3   Width padding corrected for display resolution
+          Offsets on all available Cumulative Data Usage channels
+2.4.3.4   Changed space character to \u2007 which has an equivalent width to a number
+2.4.3.5   Added a call to buildContextMenu on left click to set up after a connection has changed.
+2.4.3  Above all compressed into a single commit from a branch and changelog updated

@@ -51,12 +51,12 @@
     },
     "appletWidthSetting": {
         "type": "spinbutton",
-        "default": 150,
-        "min": 110,
-        "max": 170,
+        "default": 180,
+        "min": 140,
+        "max": 250,
         "step": 2,
         "units": "pixels",
-        "description": "Applet Width Adjustment (Only for fine tuning - normally leave alone at 150:",
+        "description": "Applet Width Adjustment (Only for fine tuning - normally leave alone at 180:",
         "tooltip": "Fine tuning of applet width for changes in theme and decimal places displayed - needs to be used in conjuction with changes in stylesheet.css. Value is halved when Compact Dispaly selected"
     },
     "head1": {
@@ -109,6 +109,19 @@
         "type": "generic",
         "default": 0.0
     },
+
+    "cumulativeOffset1": { 
+        "type": "spinbutton",
+        "default": 0,
+        "min": 0,
+        "max": 5000,
+        "step": 1,
+        "units": "MBytes",
+        "indent": true,
+        "description": "Offset applied to Cumulative Data Usage 1",
+        "tooltip": "This can be used to offset the data usage to take into account usage on other machines or correct for other causes"
+    },
+
     "cumulativeInterface2": {
         "type": "entry",
         "default": "null",
@@ -123,6 +136,17 @@
         "type": "generic",
         "default": 0.0
     },
+    "cumulativeOffset2": { 
+        "type": "spinbutton",
+        "default": 0,
+        "min": 0,
+        "max": 5000,
+        "step": 1,
+        "units": "MBytes",
+        "indent": true,
+        "description": "Offset applied to Cumulative Data Usage 2",
+        "tooltip": "This can be used to offset the data usage to take into account usage on other machines or correct for other causes"
+    },
     "cumulativeInterface3": {
         "type": "entry",
         "default": "null",
@@ -136,6 +160,17 @@
     "cumulativeTotal3": { 
         "type": "generic",
         "default": 0
+    },
+    "cumulativeOffset3": { 
+        "type": "spinbutton",
+        "default": 0,
+        "min": 0,
+        "max": 5000,
+        "step": 1,
+        "units": "MBytes",
+        "indent": true,
+        "description": "Offset applied to Cumulative Data Usage 3",
+        "tooltip": "This can be used to offset the data usage to take into account usage on other machines or correct for other causes"
     },
     "head3": {
         "type": "header",

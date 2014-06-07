@@ -1,4 +1,5 @@
 {
+    "max-instances": "3", 
     "uuid": "netusagemonitor@pdcurtis", 
     "icon": "network-workgroup", 
     "last-edited": "1395244573", 

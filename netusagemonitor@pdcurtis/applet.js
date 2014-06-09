@@ -464,16 +464,6 @@ MyApplet.prototype = {
                 this.menuitemInfo6.label.text = "   " + this.cumulativeInterface3 + " - Cumulative Data Use " + this.cumulativeComment3  + " MB: " + this.formatSentReceived(this.cT3 * 1024 * 1024);
             }
         } 
-
-/*
-        if (this.cumulativeInterface2 != "null" && this.cumulativeInterface2 != "") {
-            this.menuitemInfo4.label.text = "   " + this.cumulativeInterface2 + " - Cumulative Data Use: " + this.cumulativeComment2  + ": " + this.formatSentReceived(this.cT2 * 1024 * 1024);
-        }
-
-        if (this.cumulativeInterface3 != "null" && this.cumulativeInterface3 != "") {
-            this.menuitemInfo6.label.text = "   " + this.cumulativeInterface3 + " - Cumulative Data Use: "  + this.cumulativeComment3  + ": " + this.formatSentReceived(this.cT3 * 1024 * 1024);
-        }
-*/
     },
 
     // Build right click context menu
@@ -539,7 +529,7 @@ MyApplet.prototype = {
         }));
         this._applet_context_menu.addMenuItem(menuitem);
 
-        // New code to reset Cumulative Data Usage and set their comments to the current date and time
+        // Code to reset Cumulative Data Usage and set their comments to the current date and time
 
         let menuitem = new PopupMenu.PopupMenuItem("Reset Cumulative Data Usage 1 (" + this.cumulativeInterface1 + ")");
         menuitem.connect('activate', Lang.bind(this, function (event) {
@@ -787,22 +777,15 @@ MyApplet.prototype = {
 	        this.cT3 = this.cT3 + (downNow - this.downOld + upNow -this.upOld)/1048576;
             }
 
-/*		if (((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface2 == this.monitoredInterfaceName)) {
-			this.cT2 = this.cT2 + (downNow - this.downOld + upNow -this.upOld)/1048576;
-                        this.cumulativeTotal2 = this.cT2; 
-			}
-		if (((downNow > this.downOld) || (downNow > this.downOld)) && (this.cumulativeInterface3 == this.monitoredInterfaceName)) {
-			this.cT3 = this.cT3 + (downNow - this.downOld + upNow -this.upOld)/1048576;
-                        this.cumulativeTotal3 = this.cT3; 
-			}
-*/
+
             // Update Old values
             this.upOld = upNow;
             this.downOld = downNow;
             this.timeOld = timeNow;
         }
  
-/*       // Update the three sets of cumulative usage data - Note this uses feature that gTop... delivers 0 if Interface does not exist or is inactive but checks added to avoid calling if counter not in use.
+/*       // Update the three sets of cumulative usage data - Note this uses feature that gTop... delivers 0 if Interface does not exist or is inactive but checks added to avoid calling if counter not in use. 
+         // This is old way which allowed all the cumulative totals to be collected in parallel rather than just for active interface - would need modifications to delay writing.
 
         if (this.cumulativeInterface1 != "null" && this.cumulativeInterface1 != "") {
             GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface1);
@@ -891,7 +874,7 @@ MyApplet.prototype = {
         }
     },
     
-    // Try to delay cumulative updates into cinnamon-settings by using two mainloop timers     
+    // Delays cumulative updates into cinnamon-settings by using two mainloop timers of half the refresh interval     
     updateCumulative: function() {
         if (this.update_ct1) {
             this.cumulativeTotal1 = this.cT1;
@@ -933,7 +916,7 @@ MyApplet.prototype = {
 
 
     on_applet_removed_from_panel: function () {
-    	// stop the update timer
+    	// Prepare to stop the update timer
         this.applet_running = false;
         this.settings.finalize();
 
@@ -945,7 +928,6 @@ function main(metadata, orientation, panel_height, instance_id) {
     return myApplet;
 }
 /* 
-Version v20_2.4.3.
 1.0 Applet Settings now used for Update Rate, Resolution and Interface. 
     Built in function used for left click menu. 
 1.1 Right click menu item added to open Settings Screen. 
@@ -1052,5 +1034,6 @@ Conclusion - change to a drop down selection of options, initially the three cur
           Offsets on all available Cumulative Data Usage channels
 2.4.3.4   Changed space character to \u2007 which has an equivalent width to a number
 2.4.3.5   Added a call to buildContextMenu on left click to set up after a connection has changed.
-2.4.3  Above all compressed into a single commit from a branch and changelog updated    
+2.4.3  Above all compressed into a single commit from above branch created in development branch
+2,4.4  Removal of some commented out text and change log updated  
 */

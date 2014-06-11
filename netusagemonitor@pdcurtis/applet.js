@@ -212,7 +212,7 @@ MyApplet.prototype = {
             if (!this.compactDisplay) {
                 this.appletWidth = this.appletWidthSetting;
             } else {
-                this.appletWidth = (this.appletWidthSetting / 2) + 1;
+                this.appletWidth = (this.appletWidthSetting / 2) + 11;
             }
 
             this.labelOne = new St.Label({
@@ -293,7 +293,7 @@ MyApplet.prototype = {
         if (!this.compactDisplay) {
             this.appletWidth = this.appletWidthSetting;
         } else {
-            this.appletWidth = (this.appletWidthSetting / 2) + 1;
+            this.appletWidth = (this.appletWidthSetting / 2) + 11;
         }
         this.updateLeftMenu();
     },
@@ -524,7 +524,7 @@ MyApplet.prototype = {
                 this.appletWidth = this.appletWidthSetting;
             } else {
                 this.compactDisplay = true;
-                this.appletWidth = (this.appletWidthSetting / 2) + 1;
+                this.appletWidth = (this.appletWidthSetting / 2) + 11;
             }
         }));
         this._applet_context_menu.addMenuItem(menuitem);
@@ -743,10 +743,10 @@ MyApplet.prototype = {
             let downNow = this.gtop.bytes_in;
             if (deltaTime != 0) {
                 if (!this.compactDisplay) {
-                   this.labelOne.set_text(this.padString ( "\u2193 " + this.formatSpeed((downNow - this.downOld) / deltaTime), 12 + this.decimalsToShowIn));
-                    this.labelTwo.set_text(this.padString ("\u2191 " + this.formatSpeed((upNow - this.upOld) / deltaTime), 12 + this.decimalsToShowIn));
+                   this.labelOne.set_text("\u2193" + this.padString (this.formatSpeed((downNow - this.downOld) / deltaTime), 10 + this.decimalsToShowIn));
+                    this.labelTwo.set_text("\u2191" + this.padString (this.formatSpeed((upNow - this.upOld) / deltaTime), 10 + this.decimalsToShowIn));
                 } else {
-                    this.labelOne.set_text(this.padString("\u21f5 " + this.formatSpeed((upNow - this.upOld + downNow - this.downOld) / deltaTime), 12 + this.decimalsToShowIn));
+                    this.labelOne.set_text("\u21f5" + this.padString(this.formatSpeed((upNow - this.upOld + downNow - this.downOld) / deltaTime), 10 + this.decimalsToShowIn));
                     this.labelTwo.set_text("");
                 }
                 //Code for ultra compact display when not connected and a compact display
@@ -905,9 +905,9 @@ MyApplet.prototype = {
     // space which is equivalent to the digit width of fonts with fixed-width digits
     padString: function (string1 , padto ) {
        while (string1.length < padto) { 
-              string1 =  '\u2007' + string1;
+              string1 =  ' ' + string1;
               if (string1.length  <  padto) {
-                 string1  = string1 + '\u2007' ;
+                 string1  = string1 + ' ' ;
               }
        }              
         return string1;

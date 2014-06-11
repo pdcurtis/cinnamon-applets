@@ -51,8 +51,8 @@
     },
     "appletWidthSetting": {
         "type": "spinbutton",
-        "default": 180,
-        "min": 140,
+        "default": 150,
+        "min": 100,
         "max": 250,
         "step": 2,
         "units": "pixels",

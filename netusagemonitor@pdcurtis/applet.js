@@ -889,7 +889,7 @@ MyApplet.prototype = {
         Mainloop.timeout_add((timer), Lang.bind(this, this.update));         
     },
 
-    formatSpeed: function (value) {
+/*    formatSpeed: function (value) {
         let decimalAdjust = Math.pow(10, (this.decimalsToShowIn));
         if (value < 1024000) return (Math.floor(value / 1024 * decimalAdjust) / decimalAdjust) + " KB/s";
         else return (Math.floor(value / 1048576 * decimalAdjust) / decimalAdjust) + " MB/s";
@@ -900,9 +900,39 @@ MyApplet.prototype = {
         if (value < 1048576) return Math.floor(value / 1024) + " KB";
         else return Math.floor((value / 1048576) * 10) / 10 + " MB";
     },
+*/
 
-    // Pad string to length padto symetrically starting from left using unicode figure
-    // space which is equivalent to the digit width of fonts with fixed-width digits
+formatSpeed: function (value) {
+        return this.formatSentReceived(value) + "/s";
+    },
+
+    formatSentReceived: function (value) {
+        // Note changes at 1000 rather than1024 are deliberate to avoid 'jitter' in display
+
+    	let suffix = " B";
+    	if (value >= 0) {           // fudge to always inhibit Byte display
+    	        value = value / 1024;
+    		suffix = " KB";
+    	}
+    	if (value >= 1000) {
+    		value = value / 1024;
+    		suffix = " MB";
+    	}
+    	if (value >= 1000) {
+    		value = value / 1024;
+    		suffix = " GB";
+    	}
+    	if (value >= 1000) {
+    		value = value / 1024;
+    		suffix = " TB";
+    	}
+    	let decimalAdjust = Math.pow(10, (this.decimalsToShowIn));
+    	return (Math.floor(value * decimalAdjust) / decimalAdjust) + suffix;
+    },
+
+
+    // Pad string to length padto symetrically starting from left - can also use unicode 
+    // figure space which is equivalent to the digit width of fonts with fixed-width digits
     padString: function (string1 , padto ) {
        while (string1.length < padto) { 
               string1 =  ' ' + string1;
@@ -911,7 +941,6 @@ MyApplet.prototype = {
               }
        }              
         return string1;
-
     },
 
 
@@ -919,7 +948,6 @@ MyApplet.prototype = {
     	// Prepare to stop the update timer
         this.applet_running = false;
         this.settings.finalize();
-
     }
 };
 
@@ -927,7 +955,9 @@ function main(metadata, orientation, panel_height, instance_id) {
     let myApplet = new MyApplet(metadata, orientation, panel_height, instance_id);
     return myApplet;
 }
-/* 
+
+/*
+Version v20_2.4.4.2
 1.0 Applet Settings now used for Update Rate, Resolution and Interface. 
     Built in function used for left click menu. 
 1.1 Right click menu item added to open Settings Screen. 
@@ -1035,5 +1065,7 @@ Conclusion - change to a drop down selection of options, initially the three cur
 2.4.3.4   Changed space character to \u2007 which has an equivalent width to a number
 2.4.3.5   Added a call to buildContextMenu on left click to set up after a connection has changed.
 2.4.3  Above all compressed into a single commit from above branch created in development branch
-2,4.4  Removal of some commented out text and change log updated  
+2,4.4  Removal of some commented out text and change log updated
+2.4.4.1   Changes in padding and in width calculation for compact display
+2.4.4.2   Modified functions for formatSpeed and formatSentReceived to extend to [B,] GB and TB and make consistent
 */

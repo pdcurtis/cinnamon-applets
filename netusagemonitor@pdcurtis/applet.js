@@ -274,7 +274,7 @@ MyApplet.prototype = {
             if (this.useDefaultInterfaceIn) {
                 this.setMonitoredInterface(this.defaultInterfaceIn);
             }
-            if (this.isInterfaceAvailable(lastUsedInterface) || lastUsedInterface == "ppp0") {
+            if (this.isInterfaceAvailable(lastUsedInterface) || lastUsedInterface == "ppp0" || lastUsedInterface == "bnep0") {
                 this.setMonitoredInterface(lastUsedInterface);
             }
             this.rebuildFlag = true;
@@ -479,7 +479,7 @@ MyApplet.prototype = {
                 let name = interfaces[i].get_iface();
                 let displayname = "\t" + name;
                 if (this.isInterfaceAvailable(name)) {
-                    if (this.monitoredInterfaceName != name && this.monitoredInterfaceName != "ppp0" && !this.useDefaultInterfaceIn) {
+                    if (this.monitoredInterfaceName != name && this.monitoredInterfaceName != "ppp0"  && this.monitoredInterfaceName != "bnep0" && !this.useDefaultInterfaceIn) {
                           this.setMonitoredInterface(name);
                     }
                     displayname = displayname + " (Active)";
@@ -499,13 +499,25 @@ MyApplet.prototype = {
             reactive: false
         }));
 
-        let displayname2 = "\t" + "ppp0     (for most USB Mobile Internet Modems)";
+        let displayname2 = "\t" + "ppp0   (for most USB Mobile Internet Modems)";
         if (this.monitoredInterfaceName == "ppp0") {
             displayname2 = "\u2714" + displayname2;
         }
         let menuitem = new PopupMenu.PopupMenuItem(displayname2);
         menuitem.connect('activate', Lang.bind(this, function () {
             this.setMonitoredInterface("ppp0");
+        }));
+        this._applet_context_menu.addMenuItem(menuitem)
+
+        // New Code to handle Android Bluetooth conections which use bnep0
+
+        let displayname3 = "\t" + "bnep0  (Android Bluetooth PAN Connections)";
+        if (this.monitoredInterfaceName == "bnep0") {
+            displayname3 = "\u2714" + displayname3;
+        }
+        let menuitem = new PopupMenu.PopupMenuItem(displayname3);
+        menuitem.connect('activate', Lang.bind(this, function () {
+            this.setMonitoredInterface("bnep0");
         }));
         this._applet_context_menu.addMenuItem(menuitem)
 
@@ -908,21 +920,22 @@ formatSpeed: function (value) {
 
     formatSentReceived: function (value) {
         // Note changes at 1000 rather than1024 are deliberate to avoid 'jitter' in display
+        // Absolute value used because of potential for negative numbers now offset is included
 
     	let suffix = " B";
-    	if (value >= 0) {           // fudge to always inhibit Byte display
+    	if (Math.abs(value) >= 0) {           // fudge to always inhibit Byte display
     	        value = value / 1024;
     		suffix = " KB";
     	}
-    	if (value >= 1000) {
+    	if (Math.abs(value) >= 1000) {
     		value = value / 1024;
     		suffix = " MB";
     	}
-    	if (value >= 1000) {
+    	if (Math.abs(value) >= 1000) {
     		value = value / 1024;
     		suffix = " GB";
     	}
-    	if (value >= 1000) {
+    	if (Math.abs(value) >= 1000) {
     		value = value / 1024;
     		suffix = " TB";
     	}
@@ -957,7 +970,7 @@ function main(metadata, orientation, panel_height, instance_id) {
 }
 
 /*
-Version v20_2.5.0
+Version v20_2.6.0
 1.0 Applet Settings now used for Update Rate, Resolution and Interface. 
     Built in function used for left click menu. 
 1.1 Right click menu item added to open Settings Screen. 
@@ -1073,5 +1086,12 @@ Conclusion - change to a drop down selection of options, initially the three cur
           .cinnamon/configs/netusagemonitor@pdcurtis  
           Changes to totalLimit and alertPercentage in settings-schema.json. 
           Tested with Cinnamon 2.4.0
-          Updates to changelog. 
+          Updates to changelog.
+2.6.0  Added support for Android Bluetooth tethered connections which use device bnep1 under Mint 17
+          Duplicated code for ppp0 using bnep0 in three places
+          Required because selecting the active bluetooth connection which looks like 12:34:56:78:90:12
+          in the network manager does not work
+          It ought to be possible to use bnep0 whenever the active interface contains semicolons
+          but if it aint broke dont fix it!
+          Corrected formatSentReceiver to handle negative numbers resulting from offsets  
 */

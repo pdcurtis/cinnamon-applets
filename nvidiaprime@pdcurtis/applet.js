@@ -1,4 +1,4 @@
-/* This is a basic Bumblebee and nVidia Display (BAND) Applet
+/* This is a basic display Applet for use with NVidia Prime
 It is not only useful in its own right
 but is also provides a 'tutorial' framework for other more
 complex applets - for example it provides a settings screen 
@@ -127,7 +127,7 @@ MyApplet.prototype = {
 
             // Finally setup to start the update loop for the applet display running
             this.set_applet_label(" " ); // show nothing until system stable
-            this.set_applet_tooltip("Waiting for Bumblebee");
+            this.set_applet_tooltip("Waiting for nvidia");
             Mainloop.timeout_add_seconds(20, Lang.bind(this, this.updateLoop)); // Timer to allow bumbleebee to initiate
 
         } catch (e) {
@@ -174,7 +174,7 @@ MyApplet.prototype = {
         
         let menuitem1 = new PopupMenu.PopupMenuItem("Open nVidia Settings Program");
         menuitem1.connect('activate', Lang.bind(this, function (event) {
-            GLib.spawn_command_line_async('optirun -b none nvidia-settings -c :8 ');
+            GLib.spawn_command_line_async('nvidia-settings');
         }));
         this._applet_context_menu.addMenuItem(menuitem1);
 
@@ -289,12 +289,12 @@ MyApplet.prototype = {
          else {
               this.bbst = "OFF";
          }
-      // This catches error if bbswitch and hence bumblebee is not loaded                     
+      // This catches error if bbswitch  is not loaded                     
       } catch (e) {
 //          global.logError(e);  // Comment out to avoid filling error log
           this.bbst = "ERROR"
 	  this.set_applet_label("ERROR" ); 
-          this.set_applet_tooltip("Bumblebee is not installed so applet willl not work");          
+          this.set_applet_tooltip("Nvidia Prime is not installed so applet willl not work");          
       } 
    try {
          if(this.bbst == "OFF") {
@@ -348,12 +348,15 @@ v20_0.9.4 Changes to trap errors if bbstatus is not loaded and /proc/acpi/bbstat
           and also to trap errors in makeMenu and buildContextMenu and correction of buildContextMenu
 v20_0.9.5 Tested, Error Message changed and some tidying up and commenting
 v20_0.9.6 Replaced Clever Code from gputemperature@silentage with
-          a call to a script and output written to /tmp/.gpuTempperature. 
+          a call to a script and output written to /tmp/.gpuTemperature. 
           Needed extra call to initialise at the start. 
 v20_0.9.7 Inhibit counter updates after counter removed from panel
 v20_0.9.8 Check we have a valid temperature returned in case of the occasional slow response from nvidia
           which gave an empty display for one update period. 
-          Checked with Cinnamon 2.4.0 ready for Mint 17.1 - 11-11-2014
-v30_3.0.0 Changes to work with Mint 18 and Cinnamon 3.0 -gedit -> xed
-          corrected missing call to display help file
+          Checked with Cinnamon 2.4.0 and 2.6.0
+v30_3.0.0 Based on Bumblbee but modified to use nVidia Prime.
+          Changes to work with Mint 18 and Cinnamon 3.0 -gedit -> xed
+          Corrected missing call to display help file
+          Tested with Cinnamon 2.8.8 in Mint 17.3 and Cinnamon 3.0 in Mint 18 (nVidia drivers 352.63 and 361 respectively)
+          Changed various calls to nvidia-settings to be direct (not using optirun).
 */

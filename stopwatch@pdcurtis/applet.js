@@ -83,6 +83,13 @@ MyApplet.prototype = {
             this.UUID = metadata.uuid;
             this.applet_running = true; //** New
 
+            // Choose Text Editor depending on whether Mint 18 with Cinnamon 3.0 and latter
+            if (this.versionCompare( GLib.getenv('CINNAMON_VERSION') ,"3.0" ) <= 0 ){
+               this.textEd = "gedit";
+            } else { 
+               this.textEd = "xed";
+            }
+
             // ++ Build Context (Right Click) Menu
             this.buildContextMenu();
 
@@ -164,20 +171,20 @@ MyApplet.prototype = {
 
         this.subMenuItem1 = new PopupMenu.PopupMenuItem("View the Changelog");
         this.subMenuItem1.connect('activate', Lang.bind(this, function (event) {
-            GLib.spawn_command_line_async('gedit ' + this.changelog);
+            GLib.spawn_command_line_async(this.textEd + ' ' + this.changelog);
         }));
         this.subMenu1.menu.addMenuItem(this.subMenuItem1); // Note this has subMenu1.menu not subMenu1._applet_context_menu as one might expect
 
         this.subMenuItem2 = new PopupMenu.PopupMenuItem("Open the Help file");
         this.subMenuItem2.connect('activate', Lang.bind(this, function (event) {
-            GLib.spawn_command_line_async('gedit ' + this.helpfile);
+            GLib.spawn_command_line_async(this.textEd + ' ' + this.helpfile);
         }));
         this.subMenu1.menu.addMenuItem(this.subMenuItem2);
 
 
         this.subMenuItem4 = new PopupMenu.PopupMenuItem("Open stylesheet.css  (Advanced Function)");
         this.subMenuItem4.connect('activate', Lang.bind(this, function (event) {
-            GLib.spawn_command_line_async('gedit ' + this.cssfile);
+            GLib.spawn_command_line_async(this.textEd + ' ' + this.cssfile);
         }));
         this.subMenu1.menu.addMenuItem(this.subMenuItem4);
 
@@ -347,7 +354,7 @@ function main(metadata, orientation, panelHeight, instance_id) {
     return myApplet;
 }
 /*
-Version v20_1.2.3
+Version v30_3.0.0
 0.9.0 Release Candidate 30-07-2013
 0.9.1 Help file facility added and link to gnome-system-monitor
 0.9.2 Change Hold to Pause in Tooltip
@@ -379,4 +386,5 @@ Version v20_1.2.3
       to allow Cinnamon Version to be specified and thus inhibit extra settings menu entry
 1.2.2 Change 'Settings' to 'Configure..' and place after housekeping for consistency
 1.2.3 Pick up Cinnamon Version from environment variable CINNAMON_VERSION rather than settings window 
+3.0.0 Use Cinnamon version to choose text editor to start to look at changelog etc 
 */

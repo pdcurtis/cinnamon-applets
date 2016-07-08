@@ -122,3 +122,7 @@ Conclusion - change to a drop down selection of options, initially the three cur
           It ought to be possible to use bnep0 whenever the active interface contains semicolons
           but if it aint broke dont fix it!
           Corrected formatSentReceiver to handle negative numbers resulting from offsets 
+3.0.0  Modifications for Mint 18 and higher with Cinnamon 3.0 and higher
+         Changes to Suspend Script to work with SystemD as well as Dbus for suspend and changes to allow immediate suspend option in box.
+         Addition of version test to chose between xed for Mint 18 with Cinnamon 3.0 and gedit for earlier versions.
+

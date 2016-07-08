@@ -19,6 +19,7 @@ const NMClient = imports.gi.NMClient; // Needed for modifications to NM calls
 function AlertDialog(value) {
     this._init(value);
 }
+
 AlertDialog.prototype = {
     __proto__: ModalDialog.ModalDialog.prototype,
     _init: function (value) {
@@ -35,8 +36,11 @@ AlertDialog.prototype = {
                 this.close();
             })
         }]);
-    },
+    }
 }
+
+
+
 
 function MyApplet(metadata, orientation, panel_height, instance_id) {
     this._init(metadata, orientation, panel_height, instance_id);
@@ -206,6 +210,12 @@ MyApplet.prototype = {
  
             this._client = NMClient.Client.new(); //++
 
+            if (this.versionCompare( GLib.getenv('CINNAMON_VERSION') ,"3.0" ) <= 0 ){
+               this.textEd = "gedit";
+            } else { 
+               this.textEd = "xed";
+            }
+
             this.abortFlag = true;
 
             // Set up display in applet
@@ -296,6 +306,24 @@ MyApplet.prototype = {
             this.appletWidth = (this.appletWidthSetting / 2) + 11;
         }
         this.updateLeftMenu();
+    },
+
+    // Compare two version numbers (strings) based on code by Alexey Bass (albass)
+    // Takes account of many variations of version numers including cinnamon.
+    versionCompare: function (left, right) {
+       if (typeof left + typeof right != 'stringstring')
+            return false;
+       var a = left.split('.'),
+         b = right.split('.'),
+         i = 0, len = Math.max(a.length, b.length);
+        for (; i < len; i++) {
+            if ((a[i] && !b[i] && parseInt(a[i]) > 0) || (parseInt(a[i]) > parseInt(b[i]))) {
+                return 1;
+            } else if ((b[i] && !a[i] && parseInt(b[i]) > 0) || (parseInt(a[i]) < parseInt(b[i]))) {
+                return -1;
+            }
+        } 
+       return 0;
     },
 
     on_alert_settings_changed: function () {
@@ -587,7 +615,7 @@ MyApplet.prototype = {
 
         this.subMenuItem2 = new PopupMenu.PopupMenuItem("View the Changelog");
         this.subMenuItem2.connect('activate', Lang.bind(this, function (event) {
-            GLib.spawn_command_line_async('gedit ' + this.changelog);
+           GLib.spawn_command_line_async(this.textEd + ' ' + this.changelog);
         }));
         this.subMenu1.menu.addMenuItem(this.subMenuItem2);
  
@@ -602,19 +630,19 @@ MyApplet.prototype = {
         if (this.displayExtraHousekeeping) {
             this.subMenuItem4 = new PopupMenu.PopupMenuItem("Open stylesheet.css  (Advanced Function)");
             this.subMenuItem4.connect('activate', Lang.bind(this, function (event) {
-                GLib.spawn_command_line_async('gedit ' + this.cssfile);
+                GLib.spawn_command_line_async(this.textEd + ' ' + this.cssfile);
             }));
             this.subMenu1.menu.addMenuItem(this.subMenuItem4);
 
             this.subMenuItem8 = new PopupMenu.PopupMenuItem("Open alertScript  (Advanced Function)");
             this.subMenuItem8.connect('activate', Lang.bind(this, function (event) {
-                GLib.spawn_command_line_async('gedit ' + this.appletPath + '/alertScript');
+                GLib.spawn_command_line_async(this.textEd + ' ' + this.appletPath + '/alertScript');
             }));
             this.subMenu1.menu.addMenuItem(this.subMenuItem8);
 
             this.subMenuItem5 = new PopupMenu.PopupMenuItem("Open suspendScript  (Advanced Function)");
             this.subMenuItem5.connect('activate', Lang.bind(this, function (event) {
-                GLib.spawn_command_line_async('gedit ' + this.appletPath + '/suspendScript');
+                GLib.spawn_command_line_async(this.textEd + ' ' + this.appletPath + '/suspendScript');
             }));
             this.subMenu1.menu.addMenuItem(this.subMenuItem5);
 
@@ -970,7 +998,7 @@ function main(metadata, orientation, panel_height, instance_id) {
 }
 
 /*
-Version v20_2.6.0
+Version v30_3.0.0
 1.0 Applet Settings now used for Update Rate, Resolution and Interface. 
     Built in function used for left click menu. 
 1.1 Right click menu item added to open Settings Screen. 
@@ -1093,5 +1121,8 @@ Conclusion - change to a drop down selection of options, initially the three cur
           in the network manager does not work
           It ought to be possible to use bnep0 whenever the active interface contains semicolons
           but if it aint broke dont fix it!
-          Corrected formatSentReceiver to handle negative numbers resulting from offsets  
+          Corrected formatSentReceiver to handle negative numbers resulting from offsets 
+3.0.0  Modifications for Mint 18 and higher with Cinnamon 3.0 and higher
+         Changes to Suspend Script to work with SystemD as well as Dbus for suspend and changes to allow immediate suspend option in box.
+         Addition of version test to chose between xed for Mint 18 with Cinnamon 3.0 and gedit for earlier versions. 
 */

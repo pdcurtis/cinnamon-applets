@@ -1,0 +1,7 @@
+Version v30_1.1.0
+v30_1.0.0 Developed using code from NUMA, Bumblebee and Timer Applets
+          Includes changes to work with Mint 18 and Cinnamon 3.0 -gedit -> xed
+          Tested with Cinnamon 3.0 in Mint 18 
+          batteryPercentage divided by 4 to allow testing
+          Display only Version without Suspend Script
+          Beautified

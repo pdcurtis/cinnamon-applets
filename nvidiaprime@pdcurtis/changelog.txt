@@ -14,5 +14,7 @@ v20_0.9.8 Check we have a valid temperature returned in case of the occasional s
           which gave an empty display for one update period. 
           Checked with Cinnamon 2.4.0 ready for Mint 17.1 - 11-11-2014
 v30_3.0.0 Changes to work with Mint 18 and Cinnamon 3.0 -gedit -> xed
-          corrected missing call to display help file
+          Corrected missing call to display help file
+          Tested with Cinnamon 2.8.8 in Mint 17.3 and Cinnamon 3.0 in Mint 18 (nVidia drivers 352.63 and 361)
+           Changed calls to nvidia-settings to be direct (not through optirun).
 

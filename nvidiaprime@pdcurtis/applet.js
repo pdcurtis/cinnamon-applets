@@ -97,7 +97,7 @@ MyApplet.prototype = {
             this.cssfile = metadata.path + "/stylesheet.css"; // No longer required
             this.changelog = metadata.path + "/changelog.txt";
             this.helpfile = metadata.path + "/help.txt";
-            this.tempfile = metadata.path + "/gputemp.out";
+//            this.tempfile = metadata.path + "/gputemp.out";
             this.gputempScript= metadata.path + "/gputempscript.sh";
             this.appletPath = metadata.path;
             this.UUID = metadata.uuid;
@@ -122,13 +122,13 @@ MyApplet.prototype = {
             this.makeMenu();
 
             // Make sure the temp file is created
- //           GLib.spawn_command_line_async('sh ' + this.gputempScript );
+
              GLib.spawn_command_line_async('touch /tmp/.gpuTemperature');
 
             // Finally setup to start the update loop for the applet display running
             this.set_applet_label(" " ); // show nothing until system stable
             this.set_applet_tooltip("Waiting for nvidia");
-            Mainloop.timeout_add_seconds(20, Lang.bind(this, this.updateLoop)); // Timer to allow bumbleebee to initiate
+            Mainloop.timeout_add_seconds(2, Lang.bind(this, this.updateLoop)); // Timer to allow prime to initiate
 
         } catch (e) {
             global.logError(e);
@@ -220,7 +220,7 @@ MyApplet.prototype = {
   try { 
         this.menu.removeAll();
 
-        this.menuitemHead1 = new PopupMenu.PopupMenuItem("Launch programs using the nVidia Graphics Processor", {
+        this.menuitemHead1 = new PopupMenu.PopupMenuItem("Launch", {
             reactive: false
         });
         this.menu.addMenuItem(this.menuitemHead1);
@@ -359,4 +359,6 @@ v30_3.0.0 Based on Bumblbee but modified to use nVidia Prime.
           Corrected missing call to display help file
           Tested with Cinnamon 2.8.8 in Mint 17.3 and Cinnamon 3.0 in Mint 18 (nVidia drivers 352.63 and 361 respectively)
           Changed various calls to nvidia-settings to be direct (not using optirun).
+v30_3.0.1 Code tidy up
+          Reduce 'settling' time from 20 to 2 seconds
 */

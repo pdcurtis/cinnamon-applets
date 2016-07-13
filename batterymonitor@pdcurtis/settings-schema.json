@@ -17,7 +17,7 @@
         "type": "scale",
         "default": 24,
         "min": 10,
-        "max": 50,
+        "max": 40,
         "step": 2,
         "description": "Percentage Battery Charge at which Orange Warning Displayed",
         "tooltip": "Percentage of Battery Charge at which Orange Warning Background is displayed - It is also shown and can be adjusted in the Applet left click menu"

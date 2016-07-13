@@ -1,4 +1,4 @@
-Version v30_1.1.1
+Version v30_1.1.2
 v30_1.0.0 Developed using code from NUMA, Bumblebee and Timer Applets
           Includes changes to work with Mint 18 and Cinnamon 3.0 -gedit -> xed
           Tested with Cinnamon 3.0 in Mint 18 
@@ -11,3 +11,9 @@ v30_1.0.1 Code added to ensure valid readings of batteryPercentage
              ie it will be called every 1% fall so it is re-enabled after returning from suspend
           Suspendscript active
           TEST CODE STILL IN PLACE so levels incorrect
+v30_1.0.2 Some changes in how test appplied to make it easier to take them out
+          Extra flag added for flashing
+          Tests look good and suspendscript works.
+          TEST CODE STILL IN PLACE
+          Should I add a forced shutdown if level drops to say 5% because taken out of suspend with 
+          level dropped too far or suspend cancelled too many times?

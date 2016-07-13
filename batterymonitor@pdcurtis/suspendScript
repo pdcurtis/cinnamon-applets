@@ -21,12 +21,12 @@
 # Play a sound file as a separate process
 play "/usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga" &
 # Put up a warning with timer using Zenity
-zenity --question --text="The data usage limit has been exceeded - the machine will be suspended shortly" --timeout=20 --ok-label="Suspend Immediately" --cancel-label="Abort Suspension" --title=WARNING_SUSPENDING_SHORTLY --window-icon=error --height=400 --width=750
+zenity --question --text="The Battery Level is dagerously low - the machine will be suspended shortly" --timeout=20 --ok-label="Suspend Immediately" --cancel-label="Abort Suspension" --title=WARNING_SUSPENDING_SHORTLY --window-icon=error --height=400 --width=750
 rc=$?
 
 if [ $rc = "0" ] || [ $rc = "5"    ]; then
 # Put up another warning which will be there when machine is restarted, 
-zenity --warning --text="Machine was Suspended as the data usage limit set has been exceeded" &
+zenity --warning --text="Machine was Suspended as the battery level was dagerously low" &
 # wait a few seconds to stabilise then suspend.
 # sleep 2
 # Suspend via dbus in Mint 17.x 
@@ -35,7 +35,7 @@ dbus-send --print-reply --system --dest=org.freedesktop.UPower /org/freedesktop/
 systemctl suspend
 exit 1
 else
-zenity --warning --text="Suspension aborted despite data limit being exceeded" &
+zenity --warning --text="Suspension aborted battery level being dagerously low" &
 fi
 exit 0
 # Last modified 07-07-2016 for Mint 18 using systemclt calls for suspend and added option of Suspend Immediately

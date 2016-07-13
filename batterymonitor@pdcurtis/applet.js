@@ -54,7 +54,8 @@ MyApplet.prototype = {
             this.UUID = metadata.uuid;
             this.nvidiagputemp = 0;
             this.flashFlag = true; // flag for flashing background 
-            this.lastBatteryPercentage = 60;
+            this.flashFlag2 = true; // flag for second flashing background 
+            this.lastBatteryPercentage = 40;
 
             this.applet_running = true; //** New to allow applet to be fully stopped when removed from panel
 
@@ -126,7 +127,7 @@ MyApplet.prototype = {
 
     // ++ Function called when settings are changed
     on_settings_changed: function() {
-        this.slider_demo.setValue((this.alertPercentage - 10) / 50);
+        this.slider_demo.setValue((this.alertPercentage - 10) / 30);
 
         this.updateLoop();
     },
@@ -135,7 +136,7 @@ MyApplet.prototype = {
     on_generic_changed: function() {},
 
     on_slider_changed: function(slider, value) {
-        this.alertPercentage = (value * 50) + 10; // This is our BIDIRECTIONAL setting - by updating this.scale_val,
+        this.alertPercentage = (value * 30) + 10; // This is our BIDIRECTIONAL setting - by updating this.scale_val,
         // Our configuration file will also be updated
 
     },
@@ -218,22 +219,25 @@ MyApplet.prototype = {
         try {
             this.batteryPercentage = GLib.file_get_contents("/tmp/.batteryPercentage").toString();
             this.batteryPercentage = this.batteryPercentage.trim().substr(5);
-            this.batteryPercentage = Math.floor(this.batteryPercentage) // We now know we have a number!
-            if ( this.batteryPercentage >= 0 && this.batteryPercentage <= 100) { // which is valid
+            this.batteryPercentage = Math.floor(this.batteryPercentage); // We now know we have a number!
+            if ( ! ( this.batteryPercentage >= 0 && this.batteryPercentage <= 100 )) { 
 
-            } else {
-                this.batteryPercentage = this.lastBatteryPercentage
+          
+                this.batteryPercentage = this.lastBatteryPercentage;
             }
-
+// Comment out following line when tests are complete
+   this.batteryPercentage = this.batteryPercentage / 5 ;   
             this.batteryState = GLib.file_get_contents("/tmp/.batteryState").toString();
             this.batteryState = this.batteryState.trim().substr(5);
 
  
             this.actor.style_class = 'bam-normal';
             this.batteryMessage = " "
-            
-            if (Math.floor(this.batteryPercentage) / 4 < Math.floor(this.alertPercentage)) {
+   
 
+
+        
+               if (Math.floor(this.batteryPercentage)  < Math.floor(this.alertPercentage)) {
                 if (this.flashFlag) {
                     this.actor.style_class = 'bam-alert';
                     this.flashFlag = false;
@@ -250,14 +254,15 @@ MyApplet.prototype = {
                 }
             }
 
-            if (Math.floor(this.batteryPercentage) / 4 < Math.floor(this.alertPercentage) / 2) {
 
+  
+             if (Math.floor(this.batteryPercentage) < Math.floor(this.alertPercentage)  / 2 ) {
                 if (this.flashFlag) {
                     this.actor.style_class = 'bam-limit-exceeded2';
-                    this.flashFlag = true;
+                    this.flashFlag2 = false;
                 } else {
                     this.actor.style_class = 'bam-limit-exceeded';
-                    this.flashFlag = false;
+                    this.flashFlag2 = true;
                 }
                  
                 if (this.batteryState.indexOf("discharg") > -1) {
@@ -267,8 +272,10 @@ MyApplet.prototype = {
 //                GLib.spawn_command_line_async('notify-send "Battery Critical will Suspend unless connected to mains " --urgency=critical');
                     }
                 }
-                this.lastBatteryPercentage = this.batteryPercentage    
+
+    
             }
+                this.lastBatteryPercentage = this.batteryPercentage
 /*  
  
 if less than 4% then shutdown completely immediately
@@ -322,4 +329,11 @@ v30_1.0.1 Code added to ensure valid readings of batteryPercentage
              ie it will be called every 1% fall so it is re-enabled after returning from suspend
           Suspendscript active
           TEST CODE STILL IN PLACE so levels incorrect
+v30_1.0.2 Some changes in how test appplied to make it easier to take them out
+          Extra flag added for flashing
+          Range changed to 10 - 40 for alert. Should it be 15 - 40??
+          Tests look good and suspendscript works.
+          TEST CODE STILL IN PLACE
+          Should I add a forced shutdown if level drops to say 5% because taken out of suspend with 
+          level dropped too far or suspend cancelled too many times?
 */

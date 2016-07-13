@@ -1,7 +1,13 @@
-Version v30_1.1.0
+Version v30_1.1.1
 v30_1.0.0 Developed using code from NUMA, Bumblebee and Timer Applets
           Includes changes to work with Mint 18 and Cinnamon 3.0 -gedit -> xed
           Tested with Cinnamon 3.0 in Mint 18 
           batteryPercentage divided by 4 to allow testing
-          Display only Version without Suspend Script
+          Display only Version without call to SuspendScript
           Beautified
+v30_1.0.1 Code added to ensure valid readings of batteryPercentage
+          Code added to 'flash' messages  and extend width with messages but only when discharging.
+          Code added to call Suspend script but only when percentage has fallen 
+             ie it will be called every 1% fall so it is re-enabled after returning from suspend
+          Suspendscript active
+          TEST CODE STILL IN PLACE so levels incorrect

@@ -53,6 +53,8 @@ MyApplet.prototype = {
             this.appletPath = metadata.path;
             this.UUID = metadata.uuid;
             this.nvidiagputemp = 0;
+            this.flashFlag = true; // flag for flashing background 
+            this.lastBatteryPercentage = 60;
 
             this.applet_running = true; //** New to allow applet to be fully stopped when removed from panel
 
@@ -216,29 +218,63 @@ MyApplet.prototype = {
         try {
             this.batteryPercentage = GLib.file_get_contents("/tmp/.batteryPercentage").toString();
             this.batteryPercentage = this.batteryPercentage.trim().substr(5);
+            this.batteryPercentage = Math.floor(this.batteryPercentage) // We now know we have a number!
+            if ( this.batteryPercentage >= 0 && this.batteryPercentage <= 100) { // which is valid
+
+            } else {
+                this.batteryPercentage = this.lastBatteryPercentage
+            }
+
             this.batteryState = GLib.file_get_contents("/tmp/.batteryState").toString();
             this.batteryState = this.batteryState.trim().substr(5);
 
-            this.actor.set_style('width:35px');
+ 
             this.actor.style_class = 'bam-normal';
+            this.batteryMessage = " "
             
             if (Math.floor(this.batteryPercentage) / 4 < Math.floor(this.alertPercentage)) {
-                this.actor.style_class = 'bam-alert';
+
+                if (this.flashFlag) {
+                    this.actor.style_class = 'bam-alert';
+                    this.flashFlag = false;
+                } else {
+                    this.actor.style_class = 'bam-alert';
+                    if (this.batteryState.indexOf("discharg") > -1) {
+                        this.actor.style_class = 'bam-alert2';
+                     }
+                    this.flashFlag = true;
+                }
+                 
                 if (this.batteryState.indexOf("discharg") > -1) {
-                    this.actor.set_style('width:200px');
+                    this.batteryMessage = "Battery Low - turn off or connect to mains "
                 }
             }
 
             if (Math.floor(this.batteryPercentage) / 4 < Math.floor(this.alertPercentage) / 2) {
-                this.actor.style_class = 'bam-limit-exceeded';
 
-                if (this.batteryState.indexOf("discharg") > -1) {
-                    this.actor.set_style('width:250px');
-                    // Add call to suspend script here
+                if (this.flashFlag) {
+                    this.actor.style_class = 'bam-limit-exceeded2';
+                    this.flashFlag = true;
+                } else {
+                    this.actor.style_class = 'bam-limit-exceeded';
+                    this.flashFlag = false;
                 }
+                 
+                if (this.batteryState.indexOf("discharg") > -1) {
+                    this.batteryMessage = "Battery Critical will Suspend unless connected to mains "
+                    if ( this.batteryPercentage < this.lastBatteryPercentage ) {
+                  GLib.spawn_command_line_async('sh ' + this.appletPath + '/suspendScript');// Add call to suspend script here
+//                GLib.spawn_command_line_async('notify-send "Battery Critical will Suspend unless connected to mains " --urgency=critical');
+                    }
+                }
+                this.lastBatteryPercentage = this.batteryPercentage    
             }
+/*  
+ 
+if less than 4% then shutdown completely immediately
 
-            this.appletLabel.set_text(this.batteryPercentage + "%");
+*/
+            this.appletLabel.set_text(this.batteryMessage + this.batteryPercentage + "%");
 
             this.set_applet_tooltip("Percentage Charge is " + this.batteryPercentage + "% " + "(" + this.batteryState + ")" + " Warning set at: " + Math.floor(this.alertPercentage) + "%");
             this.menuitemInfo2.label.text = "Percentage Charge: " + this.batteryPercentage + "% " + this.batteryState + " Warning set at: " + Math.floor(this.alertPercentage) + "%";
@@ -274,11 +310,16 @@ function main(metadata, orientation, panelHeight, instance_id) {
     return myApplet;
 }
 /*
-Version v30_1.1.0
 v30_1.0.0 Developed using code from NUMA, Bumblebee and Timer Applets
           Includes changes to work with Mint 18 and Cinnamon 3.0 -gedit -> xed
           Tested with Cinnamon 3.0 in Mint 18 
           batteryPercentage divided by 4 to allow testing
-          Display only Version without Suspend Script
+          Display only Version without call to SuspendScript
           Beautified
+v30_1.0.1 Code added to ensure valid readings of batteryPercentage
+          Code added to 'flash' messages  and extend width with messages but only when discharging.
+          Code added to call Suspend script but only when percentage has fallen 
+             ie it will be called every 1% fall so it is re-enabled after returning from suspend
+          Suspendscript active
+          TEST CODE STILL IN PLACE so levels incorrect
 */

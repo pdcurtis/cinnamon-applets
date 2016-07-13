@@ -8,7 +8,6 @@ or to allow a reduced size width to save panel space.
 .bam-normal {
 background-color: rgba(0,255,0,0.3);
  border-radius: 10px;
-
 }
 
 .bam-alert {
@@ -16,10 +15,21 @@ background-color: orange;
  border-radius: 10px;
 }
 
+.bam-alert2 {
+background-color: white;
+ border-radius: 10px;
+}
+
 .bam-limit-exceeded {
 background-color: red;
  border-radius: 10px;
 }
+
+.bam-limit-exceeded2 {
+background-color: white;
+ border-radius: 10px;
+}
+
 /*
 
 */

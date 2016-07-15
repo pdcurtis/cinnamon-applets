@@ -17,6 +17,37 @@ const PopupMenu = imports.ui.popupMenu; // ++ Needed for menus
 const Lang = imports.lang; //  ++ Needed for menus
 const GLib = imports.gi.GLib; // ++ Needed for starting programs
 const Mainloop = imports.mainloop; // Needed for timer update loop
+const ModalDialog = imports.ui.modalDialog; // Needed for Modal Dialog used in Alert
+
+/* 
+Function to provide a Modal Dialog. This approach is thanks to Mark Bolin
+It works, even if I do not fully understand it, and has done for years in NUMA! 
+*/
+
+function AlertDialog(value) {
+    this._init(value);
+};
+
+AlertDialog.prototype = {
+    __proto__: ModalDialog.ModalDialog.prototype,
+    _init: function (value) {
+        ModalDialog.ModalDialog.prototype._init.call(this);
+        let label = new St.Label({
+            text: value ,
+            style_class: "centered"
+        });
+        this.contentLayout.add(label);
+        this.setButtons([{
+            style_class: "centered",
+            label: "Ok",
+            action: Lang.bind(this, function () {
+                this.close();
+            })
+        }]);
+    }
+};
+
+
 
 // ++ Always needed
 function MyApplet(metadata, orientation, panelHeight, instance_id) {
@@ -55,7 +86,8 @@ MyApplet.prototype = {
             this.nvidiagputemp = 0;
             this.flashFlag = true; // flag for flashing background 
             this.flashFlag2 = true; // flag for second flashing background 
-            this.lastBatteryPercentage = 40;
+            this.lastBatteryPercentage = 50; // Initialise lastBatteryPercentage
+            this.alertFlag = false; // Flag says alert has been tripped to avoid repeat notifications
 
             this.applet_running = true; //** New to allow applet to be fully stopped when removed from panel
 
@@ -65,6 +97,9 @@ MyApplet.prototype = {
             } else {
                 this.textEd = "xed";
             }
+
+            // Set up Modal Alert Box
+ //          alertModalDataWarning = new AlertDialog("The Battery Level has fallen to your alert level\n\n either reconnect to a power source\n\or close down your work and suspend or shutdown the machine");
 
             // ++ Set up left click menu
             this.menuManager = new PopupMenu.PopupMenuManager(this);
@@ -98,13 +133,13 @@ MyApplet.prototype = {
             // Finally setup to start the update loop for the applet display running
             //           this.set_applet_label(" " ); // show nothing until system stable
             this.set_applet_tooltip("Waiting");
-            this.on_settings_changed()
-            Mainloop.timeout_add_seconds(2, Lang.bind(this, this.updateLoop)); // Timer to allow bumbleebee to initiate
+            this.on_settings_changed()   // This starts the MainLoop timer loop
 
         } catch (e) {
             global.logError(e);
         }
     },
+
 
     // Compare two version numbers (strings) based on code by Alexey Bass (albass)
     // Takes account of many variations of version numers including cinnamon.
@@ -219,45 +254,49 @@ MyApplet.prototype = {
         try {
             this.batteryPercentage = GLib.file_get_contents("/tmp/.batteryPercentage").toString();
             this.batteryPercentage = this.batteryPercentage.trim().substr(5);
-            this.batteryPercentage = Math.floor(this.batteryPercentage); // We now know we have a number!
-            if ( ! ( this.batteryPercentage >= 0 && this.batteryPercentage <= 100 )) { 
-
-          
+            this.batteryPercentage = Math.floor(this.batteryPercentage); 
+             // now check we have a genuine number otherwise use last value
+            if ( ! ( this.batteryPercentage > 0 && this.batteryPercentage <= 100 )) {             
                 this.batteryPercentage = this.lastBatteryPercentage;
             }
 // Comment out following line when tests are complete
-   this.batteryPercentage = this.batteryPercentage / 5 ;   
+//   this.batteryPercentage = this.batteryPercentage / 5 ;   
             this.batteryState = GLib.file_get_contents("/tmp/.batteryState").toString();
             this.batteryState = this.batteryState.trim().substr(5);
 
  
-            this.actor.style_class = 'bam-normal';
             this.batteryMessage = " "
-   
-
-
-        
+            if (Math.floor(this.batteryPercentage)  >= Math.floor(this.alertPercentage)) {
+                this.actor.style_class = 'bam-normal';
+                this.alertFlag = false;
+            }
+       
                if (Math.floor(this.batteryPercentage)  < Math.floor(this.alertPercentage)) {
                 if (this.flashFlag) {
                     this.actor.style_class = 'bam-alert';
                     this.flashFlag = false;
                 } else {
-                    this.actor.style_class = 'bam-alert';
-                    if (this.batteryState.indexOf("discharg") > -1) {
-                        this.actor.style_class = 'bam-alert2';
-                     }
+                 if (this.batteryState.indexOf("discharg") > -1) {
+                     this.actor.style_class = 'bam-alert2';
+                    }
                     this.flashFlag = true;
                 }
-                 
+
+                  
                 if (this.batteryState.indexOf("discharg") > -1) {
-                    this.batteryMessage = "Battery Low - turn off or connect to mains "
-                }
+                    this.batteryMessage = "Battery Low - turn off or connect to mains ";
+                    if ( !this.alertFlag) {
+                       this.alertFlag = true;  // Reset above when out of warning range
+                       alertModalDataWarning = new AlertDialog("The Battery Level has fallen to your alert level\n\n either reconnect to a power source\n\or close down your work and suspend or shutdown the machine");
+                       alertModalDataWarning.open();
+                    } 
+                }           
             }
 
 
   
-             if (Math.floor(this.batteryPercentage) < Math.floor(this.alertPercentage)  / 2 ) {
-                if (this.flashFlag) {
+             if (Math.floor(this.batteryPercentage) < Math.floor(this.alertPercentage)  / 1.5 ) {
+                if (this.flashFlag2) {
                     this.actor.style_class = 'bam-limit-exceeded2';
                     this.flashFlag2 = false;
                 } else {
@@ -268,13 +307,17 @@ MyApplet.prototype = {
                 if (this.batteryState.indexOf("discharg") > -1) {
                     this.batteryMessage = "Battery Critical will Suspend unless connected to mains "
                     if ( this.batteryPercentage < this.lastBatteryPercentage ) {
-                  GLib.spawn_command_line_async('sh ' + this.appletPath + '/suspendScript');// Add call to suspend script here
-//                GLib.spawn_command_line_async('notify-send "Battery Critical will Suspend unless connected to mains " --urgency=critical');
+                GLib.spawn_command_line_async('sh ' + this.appletPath + '/suspendScript');// Add call to suspend script here
+
+ //                       alertModalDataWarning.open();
                     }
+                }    
+            }
+  
+                if ( !this.batteryState.indexOf("discharg") > -1) {
+ //                      this.alertFlag = false;
                 }
 
-    
-            }
                 this.lastBatteryPercentage = this.batteryPercentage
 /*  
  
@@ -283,8 +326,8 @@ if less than 4% then shutdown completely immediately
 */
             this.appletLabel.set_text(this.batteryMessage + this.batteryPercentage + "%");
 
-            this.set_applet_tooltip("Percentage Charge is " + this.batteryPercentage + "% " + "(" + this.batteryState + ")" + " Warning set at: " + Math.floor(this.alertPercentage) + "%");
-            this.menuitemInfo2.label.text = "Percentage Charge: " + this.batteryPercentage + "% " + this.batteryState + " Warning set at: " + Math.floor(this.alertPercentage) + "%";
+            this.set_applet_tooltip("Charge: " + this.batteryPercentage + "% " + "(" + this.batteryState + ")" + " Alert: " + Math.floor(this.alertPercentage) + "% "  + "Suspend: " + Math.floor(this.alertPercentage / 1.5)+ "%"                    );
+            this.menuitemInfo2.label.text = "Percentage Charge: " + this.batteryPercentage + "% " + "(" + this.batteryState + ")" + " Alert at: "    + Math.floor(this.alertPercentage)+ "% " + "Suspend at: " + Math.floor(this.alertPercentage / 1.5)+ "%";
 
             // Get temperatures via asyncronous script ready for next cycle
             GLib.spawn_command_line_async('sh ' + this.batterytempscript);
@@ -320,7 +363,7 @@ function main(metadata, orientation, panelHeight, instance_id) {
 v30_1.0.0 Developed using code from NUMA, Bumblebee and Timer Applets
           Includes changes to work with Mint 18 and Cinnamon 3.0 -gedit -> xed
           Tested with Cinnamon 3.0 in Mint 18 
-          batteryPercentage divided by 4 to allow testing
+          TEST CODE IN PLACE namely batteryPercentage divided by 4 to allow testing
           Display only Version without call to SuspendScript
           Beautified
 v30_1.0.1 Code added to ensure valid readings of batteryPercentage
@@ -329,11 +372,15 @@ v30_1.0.1 Code added to ensure valid readings of batteryPercentage
              ie it will be called every 1% fall so it is re-enabled after returning from suspend
           Suspendscript active
           TEST CODE STILL IN PLACE so levels incorrect
-v30_1.0.2 Some changes in how test appplied to make it easier to take them out
+v30_1.1.2 Some changes in how test appplied to make it easier to take them out
           Extra flag added for flashing
-          Range changed to 10 - 40 for alert. Should it be 15 - 40??
+          Range changed to 10 - 40 for Alert Percentage. Should it be 15 - 40??
           Tests look good and suspendscript works.
           TEST CODE STILL IN PLACE
           Should I add a forced shutdown if level drops to say 5% because taken out of suspend with 
           level dropped too far or suspend cancelled too many times?
+v30_1.1.3 Added Modal Dialog triped once at Alert Level and reset by going back above alert level
+          Shutdown (Suspend) now at 2/3 of Alert Level.
+          Suspend level added to tooltip and left click menu
+          TEST CODE REMOVED
 */

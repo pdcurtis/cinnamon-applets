@@ -1,4 +1,4 @@
-Version v20_2.6.0
+Version v30_3.0.0
 1.0 Applet Settings now used for Update Rate, Resolution and Interface. 
     Built in function used for left click menu. 
 1.1 Right click menu item added to open Settings Screen. 

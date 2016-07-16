@@ -26,16 +26,17 @@ rc=$?
 
 if [ $rc = "0" ] || [ $rc = "5"    ]; then
 # Put up another warning which will be there when machine is restarted, 
-zenity --warning --text="Machine was Suspended as the battery level was dagerously low" &
+zenity --warning --text="Machine was Suspended as the battery level was dangerously low" &
 # wait a few seconds to stabilise then suspend.
 # sleep 2
-# Suspend via dbus in Mint 17.x 
+# Suspend via dbus in Mint 17.x follows
 dbus-send --print-reply --system --dest=org.freedesktop.UPower /org/freedesktop/UPower org.freedesktop.UPower.Suspend
-# Suspend via systemctl in Mint 18
+# Suspend via systemctl in Mint 18 follows
 systemctl suspend
 exit 1
 else
-zenity --warning --text="Suspension aborted battery level being dagerously low" &
+zenity --warning --text="Suspension aborted despite battery level being dangerously low" &
 fi
 exit 0
-# Last modified 07-07-2016 for Mint 18 using systemclt calls for suspend and added option of Suspend Immediately
+# Modified 07-07-2016 for Mint 18 using systemclt calls for suspend and added option of Suspend Immediately
+# Modified 15-07-2016 to correct messages and spelling.

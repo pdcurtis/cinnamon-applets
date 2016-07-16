@@ -87,6 +87,7 @@ MyApplet.prototype = {
             this.flashFlag = true; // flag for flashing background 
             this.flashFlag2 = true; // flag for second flashing background 
             this.lastBatteryPercentage = 50; // Initialise lastBatteryPercentage
+            this.batteryStateOld = "invalid"
             this.alertFlag = false; // Flag says alert has been tripped to avoid repeat notifications
 
             this.applet_running = true; //** New to allow applet to be fully stopped when removed from panel
@@ -223,7 +224,7 @@ MyApplet.prototype = {
         try {
             this.menu.removeAll();
 
-            this.menuitemHead1 = new PopupMenu.PopupMenuItem("Battery Monitor", {
+            this.menuitemHead1 = new PopupMenu.PopupMenuItem("Battery  Applet with Monitoring and Shutdown (BAMS)", {
                 reactive: false
             });
             this.menu.addMenuItem(this.menuitemHead1);
@@ -262,8 +263,12 @@ MyApplet.prototype = {
 // Comment out following line when tests are complete
 //   this.batteryPercentage = this.batteryPercentage / 5 ;   
             this.batteryState = GLib.file_get_contents("/tmp/.batteryState").toString();
-            this.batteryState = this.batteryState.trim().substr(5);
-
+            if ( this.batteryState.trim().length > 6 ) { 
+                 this.batteryState = this.batteryState.trim().substr(5);
+                 this.batteryStateOld = this.batteryState;
+            } else { 
+                 this.batteryState =  this.batteryStateOld;
+            }
  
             this.batteryMessage = " "
             if (Math.floor(this.batteryPercentage)  >= Math.floor(this.alertPercentage)) {
@@ -364,7 +369,7 @@ v30_1.0.0 Developed using code from NUMA, Bumblebee and Timer Applets
           Includes changes to work with Mint 18 and Cinnamon 3.0 -gedit -> xed
           Tested with Cinnamon 3.0 in Mint 18 
           TEST CODE IN PLACE namely batteryPercentage divided by 4 to allow testing
-          Display only Version without call to SuspendScript
+          Test Version without call to suspendScript
           Beautified
 v30_1.0.1 Code added to ensure valid readings of batteryPercentage
           Code added to 'flash' messages  and extend width with messages but only when discharging.
@@ -374,7 +379,7 @@ v30_1.0.1 Code added to ensure valid readings of batteryPercentage
           TEST CODE STILL IN PLACE so levels incorrect
 v30_1.1.2 Some changes in how test appplied to make it easier to take them out
           Extra flag added for flashing
-          Range changed to 10 - 40 for Alert Percentage. Should it be 15 - 40??
+          Range changed to 10 - 40 for Alert Percentage. 
           Tests look good and suspendscript works.
           TEST CODE STILL IN PLACE
           Should I add a forced shutdown if level drops to say 5% because taken out of suspend with 
@@ -383,4 +388,8 @@ v30_1.1.3 Added Modal Dialog triped once at Alert Level and reset by going back 
           Shutdown (Suspend) now at 2/3 of Alert Level.
           Suspend level added to tooltip and left click menu
           TEST CODE REMOVED
+v30_1.1.4 Old call removed from batterytempscript.sh which was filling error log
+          Error checks on status to ensure valid
+          Spelling corrections
+          Help File extended
 */

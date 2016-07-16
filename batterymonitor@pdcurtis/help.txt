@@ -1,3 +1,5 @@
+Battery Applet with Monitoring and Shutdown
+
 Features
 
 This is a simple applet I have written for my laptop because I have recently had a couple of times where I have missed the notifications about low battery. The latest version of Cinnamon also seems to have lost the setting to specify the action when the battery is critical. In any case there is no easy way to set the 'shutdown' level in Mint 18 Sarah/Cinnamon 3.0 . The applet draws on my code for the NUMA (Network Utilisation Monitoring and Alert) Applet so much of the code is well developed and tested.

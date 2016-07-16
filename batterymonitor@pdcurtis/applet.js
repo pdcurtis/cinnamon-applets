@@ -392,4 +392,5 @@ v30_1.1.4 Old call removed from batterytempscript.sh which was filling error log
           Error checks on status to ensure valid
           Spelling corrections
           Help File extended
+v30_1.1.5 Minor text changes to improve consistency
 */

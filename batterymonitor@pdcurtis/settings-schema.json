@@ -1,7 +1,7 @@
 {
     "head": {
         "type": "header",
-        "description": "General Settings for the Battery Alert Monitoring Applet"
+        "description": "General Settings for the Battery Applet with Monitoring and Shutdown"
     },
     "refreshInterval-spinner": {
         "type": "spinbutton",

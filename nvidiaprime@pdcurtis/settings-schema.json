@@ -1,7 +1,7 @@
 {
     "head": {
         "type": "header",
-        "description": "General Settings for the nVidia Monitoring Applet"
+        "description": "General Settings for the nVidia Prime Monitoring Applet"
     },
     "refreshInterval-spinner": {
         "type": "spinbutton",

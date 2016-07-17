@@ -1,1 +1,3 @@
 Each Applet now has its own change log which largely superceeds this status file.
+
+Tags are only added when a version is uploaded to the Cinnamon Spices web site or it has been made available for download as a development version from pcurtis.com/spices.htm

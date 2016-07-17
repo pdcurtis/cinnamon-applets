@@ -340,6 +340,7 @@ function main(metadata, orientation, panelHeight, instance_id) {
 }
 /*
 Version v30_3.0.2
+
 v30_3.0.0 Based on Bumblbee v20_0.9.8 but modified to use nVidia Prime.
           Changes to work with Mint 18 and Cinnamon 3.0 -gedit -> xed
           Corrected missing call to display help file

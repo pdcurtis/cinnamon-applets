@@ -998,7 +998,7 @@ function main(metadata, orientation, panel_height, instance_id) {
 }
 
 /*
-Version v30_3.0.0
+Version v30_3.0.2
 1.0 Applet Settings now used for Update Rate, Resolution and Interface. 
     Built in function used for left click menu. 
 1.1 Right click menu item added to open Settings Screen. 
@@ -1122,7 +1122,8 @@ Conclusion - change to a drop down selection of options, initially the three cur
           It ought to be possible to use bnep0 whenever the active interface contains semicolons
           but if it aint broke dont fix it!
           Corrected formatSentReceiver to handle negative numbers resulting from offsets 
-3.0.0  Modifications for Mint 18 and higher with Cinnamon 3.0 and higher
-         Changes to Suspend Script to work with SystemD as well as Dbus for suspend and changes to allow immediate suspend option in box.
-         Addition of version test to chose between xed for Mint 18 with Cinnamon 3.0 and gedit for earlier versions. 
+3.0.0     Modifications for Mint 18 and higher with Cinnamon 3.0 and higher
+          Changes to Suspend Script to work with SystemD as well as Dbus for suspend and changes to allow immediate suspend option in box.
+          Addition of version test to chose between xed for Mint 18 with Cinnamon 3.0 and gedit for earlier versions. 
+3.0.2     NOTE 3.0.1 was not a separate version - it was a mechanism to overwrite a faulty zip upload of 3.0.0 to the cinnamon-spices web site
 */

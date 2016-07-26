@@ -393,4 +393,5 @@ v30_1.1.4 Old call removed from batterytempscript.sh which was filling error log
           Spelling corrections
           Help File extended
 v30_1.1.5 Minor text changes to improve consistency
+v30_1.1.7 NOTE 1.1.6 was not a separate version - it was a mechanism to overwrite a faulty zip upload of 1.1.5 to the cinnamon-spices web site
 */

@@ -22,6 +22,8 @@ All the applets have now been updated and uploaded to take into account the chan
 
     Change from upstart to systemd initiation meaning some 'system calls' eg suspend are different.
 
+All commits are of 'working' versions, or believed to be at the time!
+
 Tags are only added when a version is uploaded to the Cinnamon Spices web site or it has been made available for download as a development version from http://www.pcurtis.com/spices.htm
 
 The latest applet is nvidiaprime@pcurtis.com. This is a cut down version of Bumblebee which only provides display of the nVidia Graphics Processor Temperature when it is enabled and a few quick links to utilities. It is working but not fully tested and tidied up but has been made available as a beta on http://www.pcurtis.com/spices.htm#nvidiaprime but not on the Linux Mint Cinnamon Spices download page.

@@ -226,7 +226,7 @@ function main(metadata, orientation, panelHeight, instance_id) {
     return myApplet;
 }
 /*
-Version v30_3.1.3
+Version v30_3.1.4
 
 v30_3.0.0 Based on Bumblbee v20_0.9.8 but modified to use nVidia Prime.
           Changes to work with Mint 18 and Cinnamon 3.0 -gedit -> xed
@@ -240,4 +240,5 @@ v30_3.1.0 Removed left click menu and replaced with call to nvidia-settings
 v30_3.1.1 Removed all the bindings to settings for program configuration
 v30_3.1.2 Matching changes in settings-schema.json
 v30_3.1.3 Help file updated
+v30_3.1.4 Help File updated further
 */

@@ -1,10 +1,14 @@
-The Nvivia Prime Display Applet is based on the Bumblebee applet I wrote for my new Chillblast Defiant laptop which has an Core i7 Haswell architecture and Optimus technology to switch between the integrated Intel 4600 graphics and discrete nVidia GTX 765M graphics. The prefered method of switching switching is no longer use of Bumblebee but utilised Nvidia Prime. This Applet allows one to monitor whether the power consuming discrete graphics is on and display the GPU temperature, but only when the nVidia Graphics processor is enabled as monitoring the temperature requires the graphics processor to be turned on - some applets do this all the time and that uses a significant extra amount of power.
+This is a simple applet written originally for my own purposes to enable me to monitor the temperature of the nVidia Discrete Graphics Processor Unit on my laptop. 
 
-Clicking the applet opens nvidia-settings which allows one to change GPU
+The Nvivia Prime Display Applet is a cut down version of the Bumblebee applet I wrote a couple of years ago for my Chillblast Defiant laptop which has an Core i7 Haswell architecture and Optimus technology to switch between the Integrated Intel 4600 graphics and Discrete nVidia GTX 765M graphics. 
 
-The right click context menu gives the ability to easily run the nVidia Settings program without use of the terminal and also the System Monitor and Power Statistics, all useful for monitoring and controlling power consumption which is paramount when using a laptop on batteries.
+The prefered method of switching with the latest kernels and nVidia drivers no longer uses Bumblebee but utilises Nvidia Prime which is simpler to install and use. This Applet allows one to monitor whether the power consuming discrete graphics is on and display the nVidia GPU temperature, but only when it is enabled as monitoring the temperature requires the graphics processor to be turned on. The Bumblebee applet is still available for those who wish to use Bumblebee, which still has some advantages over nVidia Prime, although it is more difficult to install.
 
-The current version has improved error checking to ensure the switching program bbswith is loaded and does not fill the error logs with messages when that is not the the case. It displays a message of ERROR if it is not found.
+Clicking the applet opens nvidia-settings which allows one to change GPU in the same way as the built in NVIDIA Prime applet which it can replace if panel space is at a premium.
 
-The applet requires at least Cinnamon 1.8 to access the configuration from within the applet and has been tested up to Cinnamon 3.0. The nVidia graphics packages obviously need to be installed but no other packages are essential. Installation is standard and the folder nvidiaprime@pdcurtis is extracted from the zip file to ~/.local/share/cinnamon/applets and then added to the panel. 
+The right click context menu also gives the ability to run the nVidia Settings program as well as the System Monitor and Power Statistics, all useful for monitoring and controlling power consumption which is paramount when using a laptop on batteries.
+
+The current version has error checking to ensure the switching program bbswith is loaded and does not fill the error logs with messages when that is not the the case. It displays a message of ERROR if it is not found.
+
+The applet requires at least Cinnamon 1.8 to access the configuration from within the applet and has been tested up to Cinnamon 3.0 where it adapts to use xed to display the help and changelog files. The nVidia graphics packages obviously need to be installed but no other packages are essential. Installation is standard and the folder nvidiaprime@pdcurtis is extracted from the zip file to ~/.local/share/cinnamon/applets and then added to the panel. 
 

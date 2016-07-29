@@ -37,62 +37,7 @@ MyApplet.prototype = {
                 "refreshInterval", // The property to manage (this.refreshInterval)
                 this.on_settings_changed, // Callback when value changes
                 null); // Optional callback data
-/*
-            this.settings.bindProperty(Settings.BindingDirection.IN,
-                "description1",
-                "description1",
-                this.on_settings_changed,
-                null);
-            this.settings.bindProperty(Settings.BindingDirection.IN,
-                "commandString1",
-                "commandString1",
-                this.on_settings_changed,
-                null);
 
-            this.settings.bindProperty(Settings.BindingDirection.IN,
-                "description2",
-                "description2",
-                this.on_settings_changed,
-                null);
-            this.settings.bindProperty(Settings.BindingDirection.IN,
-                "commandString2",
-                "commandString2",
-                this.on_settings_changed,
-                null);
-
-            this.settings.bindProperty(Settings.BindingDirection.IN,
-                "description3",
-                "description3",
-                this.on_settings_changed,
-                null);
-            this.settings.bindProperty(Settings.BindingDirection.IN,
-                "commandString3",
-                "commandString3",
-                this.on_settings_changed,
-                null);
-
-            this.settings.bindProperty(Settings.BindingDirection.IN,
-                "description4",
-                "description4",
-                this.on_settings_changed,
-                null);
-            this.settings.bindProperty(Settings.BindingDirection.IN,
-                "commandString4",
-                "commandString4",
-                this.on_settings_changed,
-                null);
-
-            this.settings.bindProperty(Settings.BindingDirection.IN,
-                "description5",
-                "description5",
-                this.on_settings_changed,
-                null);
-            this.settings.bindProperty(Settings.BindingDirection.IN,
-                "commandString5",
-                "commandString5",
-                this.on_settings_changed,
-                null);
-*/
             // ++ Make metadata values available within applet for context menu.
             this.cssfile = metadata.path + "/stylesheet.css"; // No longer required
             this.changelog = metadata.path + "/changelog.txt";
@@ -282,7 +227,7 @@ function main(metadata, orientation, panelHeight, instance_id) {
     return myApplet;
 }
 /*
-Version v30_3.1.1
+Version v30_3.1.2
 
 v30_3.0.0 Based on Bumblbee v20_0.9.8 but modified to use nVidia Prime.
           Changes to work with Mint 18 and Cinnamon 3.0 -gedit -> xed
@@ -294,4 +239,5 @@ v30_3.0.1 Code tidy up
 v30_3.0.2 Minor cosmetic changes
 v30_3.1.0 Removed left click menu and replaced with call to nvidia-settings
 v30_3.1.1 Removed all the bindings to settings for program configuration
+v30_3.1.2 matching changes in settings-schema.json
 */

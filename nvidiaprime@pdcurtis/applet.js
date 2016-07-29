@@ -274,7 +274,8 @@ MyApplet.prototype = {
     //++ Handler for when the applet is clicked. 
     on_applet_clicked: function (event) {
         this.updateLoop();
-        this.menu.toggle();
+    //    this.menu.toggle();
+          GLib.spawn_command_line_async('nvidia-settings');
     },
 
     // This updates the numerical display in the applet and in the tooltip

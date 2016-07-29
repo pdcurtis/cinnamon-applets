@@ -37,7 +37,7 @@ MyApplet.prototype = {
                 "refreshInterval", // The property to manage (this.refreshInterval)
                 this.on_settings_changed, // Callback when value changes
                 null); // Optional callback data
-
+/*
             this.settings.bindProperty(Settings.BindingDirection.IN,
                 "description1",
                 "description1",
@@ -92,7 +92,7 @@ MyApplet.prototype = {
                 "commandString5",
                 this.on_settings_changed,
                 null);
-
+*/
             // ++ Make metadata values available within applet for context menu.
             this.cssfile = metadata.path + "/stylesheet.css"; // No longer required
             this.changelog = metadata.path + "/changelog.txt";
@@ -119,7 +119,6 @@ MyApplet.prototype = {
 
             // ++ Build Context (Right Click) Menu
             this.buildContextMenu();
-            this.makeMenu();
 
             // Make sure the temp file is created
 
@@ -156,7 +155,6 @@ MyApplet.prototype = {
 
     // ++ Function called when settings are changed
     on_settings_changed: function () {
-        this.makeMenu();
         this.updateLoop();
     },
 
@@ -215,67 +213,11 @@ MyApplet.prototype = {
       }
     },
 
-    //++ Build left click menu 
-    makeMenu: function () {
-  try { 
-        this.menu.removeAll();
-
-        this.menuitemHead1 = new PopupMenu.PopupMenuItem("Launch", {
-            reactive: false
-        });
-        this.menu.addMenuItem(this.menuitemHead1);
-
-
-        if (this.description1 != "null" && this.description1 != "") {
-            this.MenuItem2 = new PopupMenu.PopupMenuItem("    " + this.description1 + " ( " + this.commandString1 + " ) ");
-            this.MenuItem2.connect('activate', Lang.bind(this, function (event) {
-             GLib.spawn_command_line_async(this.commandString1);
-
-            }));
-            this.menu.addMenuItem(this.MenuItem2);
-        }
-
-        if (this.description2 != "null" && this.description2 != "") {
-            this.MenuItem2 = new PopupMenu.PopupMenuItem("    " + this.description2 + " ( " + this.commandString2 + " ) ");
-            this.MenuItem2.connect('activate', Lang.bind(this, function (event) {
-                GLib.spawn_command_line_async(this.commandString2);
-            }));
-            this.menu.addMenuItem(this.MenuItem2);
-        }
-
-        if (this.description3 != "null" && this.description3 != "") {
-            this.MenuItem3 = new PopupMenu.PopupMenuItem("    " + this.description3 + " ( " + this.commandString3 + " ) ");
-            this.MenuItem3.connect('activate', Lang.bind(this, function (event) {
-                GLib.spawn_command_line_async(this.commandString3);
-            }));
-            this.menu.addMenuItem(this.MenuItem3);
-        }
-
-        if (this.description4 != "null" && this.description4 != "") {
-            this.MenuItem4 = new PopupMenu.PopupMenuItem("    " + this.description4 + " ( " + this.commandString4 + " ) ");
-            this.MenuItem4.connect('activate', Lang.bind(this, function (event) {
-                GLib.spawn_command_line_async(this.commandString4);
-            }));
-            this.menu.addMenuItem(this.MenuItem4);
-        }
-
-        if (this.description5 != "null" && this.description5 != "") {
-            this.MenuItem5 = new PopupMenu.PopupMenuItem("    " + this.description5 + " ( " + this.commandString5 + " ) ");
-            this.MenuItem5.connect('activate', Lang.bind(this, function (event) {
-                GLib.spawn_command_line_async(this.commandString5);
-            }));
-            this.menu.addMenuItem(this.MenuItem5);
-        }
-      } catch (e) {
-          global.logError(e);
-      }
-    },
 
     //++ Handler for when the applet is clicked. 
     on_applet_clicked: function (event) {
         this.updateLoop();
-    //    this.menu.toggle();
-          GLib.spawn_command_line_async('nvidia-settings');
+        GLib.spawn_command_line_async('nvidia-settings');
     },
 
     // This updates the numerical display in the applet and in the tooltip
@@ -340,7 +282,7 @@ function main(metadata, orientation, panelHeight, instance_id) {
     return myApplet;
 }
 /*
-Version v30_3.0.2
+Version v30_3.1.1
 
 v30_3.0.0 Based on Bumblbee v20_0.9.8 but modified to use nVidia Prime.
           Changes to work with Mint 18 and Cinnamon 3.0 -gedit -> xed
@@ -350,4 +292,6 @@ v30_3.0.0 Based on Bumblbee v20_0.9.8 but modified to use nVidia Prime.
 v30_3.0.1 Code tidy up
           Reduce 'settling' time from 20 to 2 seconds
 v30_3.0.2 Minor cosmetic changes
+v30_3.1.0 Removed left click menu and replaced with call to nvidia-settings
+v30_3.1.1 Removed all the bindings to settings for program configuration
 */

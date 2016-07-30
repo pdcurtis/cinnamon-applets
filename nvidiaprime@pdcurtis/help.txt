@@ -8,7 +8,9 @@ Clicking the applet opens nvidia-settings which allows one to change GPU in the 
 
 The right click context menu also gives the ability to run the nVidia Settings program as well as the System Monitor and Power Statistics, all useful for monitoring and controlling power consumption which is paramount when using a laptop on batteries.
 
-The current version has error checking to ensure the switching program bbswith is loaded and does not fill the error logs with messages when that is not the the case. It displays a message of ERROR if it is not found.
+There is error checking to ensure the switching program bbswith is loaded and does not fill the error logs with messages when that is not the the case. It displays a message of ERROR if it is not found.
 
 The applet requires at least Cinnamon 1.8 to access the configuration from within the applet and has been tested up to Cinnamon 3.0 where it adapts to use xed to display the help and changelog files. The nVidia graphics packages obviously need to be installed but no other packages are essential. Installation is standard and the folder nvidiaprime@pdcurtis is extracted from the zip file to ~/.local/share/cinnamon/applets and then added to the panel. 
+
+The latest version has a tick box option on the configuration screen to add additional functionality to the Right Click Context Menu. This needs a Cinnamon Restart or log out/in before the change is visible. Currently this adds the glxspheres64 Graphics Processor Test to the menu. glxspheres64 is not installed by default and the VirtualGL package needs to be installed from  http://sourceforge.net/projects/virtualgl/files/VirtualGL/ - download the latest version and install using gdebi (should be the default for a right click on the downloaded file). It should run about five times faster when the nVidia GPU is active.
 

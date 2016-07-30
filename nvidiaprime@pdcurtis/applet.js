@@ -38,6 +38,12 @@ MyApplet.prototype = {
                 this.on_settings_changed, // Callback when value changes
                 null); // Optional callback data
 
+            this.settings.bindProperty(Settings.BindingDirection.IN,
+                "displayExtra",
+                "displayExtra",
+                this.on_settings_changed,
+                null);
+
             // ++ Make metadata values available within applet for context menu.
             this.cssfile = metadata.path + "/stylesheet.css"; // No longer required
             this.changelog = metadata.path + "/changelog.txt";
@@ -113,12 +119,13 @@ MyApplet.prototype = {
 
         this._applet_context_menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-        
+/*        
         let menuitem1 = new PopupMenu.PopupMenuItem("Open nVidia Settings Program");
         menuitem1.connect('activate', Lang.bind(this, function (event) {
             GLib.spawn_command_line_async('nvidia-settings');
         }));
         this._applet_context_menu.addMenuItem(menuitem1);
+*/
 
         let menuitem2 = new PopupMenu.PopupMenuItem("Open Power Statistics");
         menuitem2.connect('activate', Lang.bind(this, function (event) {
@@ -126,18 +133,26 @@ MyApplet.prototype = {
         }));
         this._applet_context_menu.addMenuItem(menuitem2);
 
-
-
         this.menuitem3 = new PopupMenu.PopupMenuItem("Open System Monitor");
         this.menuitem3.connect('activate', Lang.bind(this, function (event) {
             GLib.spawn_command_line_async('gnome-system-monitor');
         }));
         this._applet_context_menu.addMenuItem(this.menuitem3);
 
+
+        if (this.displayExtra) {
+            this.menuitem2 = new PopupMenu.PopupMenuItem("Run glxspheres64 GPU Test Program");
+            this.menuitem2.connect('activate', Lang.bind(this, function (event) {
+            GLib.spawn_command_line_async('/opt/VirtualGL/bin/glxspheres64');
+            }));
+            this._applet_context_menu.addMenuItem(this.menuitem2);
+        }
+
         this._applet_context_menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-        // ++ Set up sub menu for Housekeeping and System Items
-        this.subMenu1 = new PopupMenu.PopupSubMenuMenuItem("Housekeeping and System Sub Menu");
+
+        // ++ Set up sub menu for Housekeeping Items
+        this.subMenu1 = new PopupMenu.PopupSubMenuMenuItem("Housekeeping Menu");
         this._applet_context_menu.addMenuItem(this.subMenu1);
 
         this.subMenuItem1 = new PopupMenu.PopupMenuItem("View the Changelog");
@@ -226,7 +241,7 @@ function main(metadata, orientation, panelHeight, instance_id) {
     return myApplet;
 }
 /*
-Version v30_3.1.4
+Version v30_3.1.5
 
 v30_3.0.0 Based on Bumblbee v20_0.9.8 but modified to use nVidia Prime.
           Changes to work with Mint 18 and Cinnamon 3.0 -gedit -> xed
@@ -241,4 +256,10 @@ v30_3.1.1 Removed all the bindings to settings for program configuration
 v30_3.1.2 Matching changes in settings-schema.json
 v30_3.1.3 Help file updated
 v30_3.1.4 Help File updated further
+          Uploaded as Release Candidate on 29th July 2016
+v30_3.1.5 New tick box on configuration screen to add additional functionality to Context Menu. 
+          This needs a Cinnamon Restart or log out/in before the change is visible.
+          Currently this adds the glxspheres64 Graphics Processor Test to the Context menu.
+          glxsheres needs the VirtualGL package needs to be installed from
+          http://sourceforge.net/projects/virtualgl/files/VirtualGL/
 */

@@ -20,8 +20,8 @@
     "displayExtra": {
         "type": "checkbox",
         "default": false,
-        "description": "Add additional functionality to Context Menu - needs Cinnamon Restart",
-        "tooltip": "Currently just adds glxspheres64 Graphics Processor Test - VirtualGL needs to be installed"
+        "description": "Access enhanced functionality through Context Menu - needs Cinnamon Restart",
+        "tooltip": "Currently  adds glxspheres64 Graphics Processor Test - VirtualGL needs to be installed"
     }
 }
  

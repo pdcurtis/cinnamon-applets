@@ -339,7 +339,7 @@ function main(metadata, orientation, panelHeight, instance_id) {
     return myApplet;
 }
 /*
-Version v30_3.0.2
+Version v30_3.0.3
 v20_0.9.0 Beta 12-12-2013
 v20_0.9.1 Added System Monitor and Power Statistics to right click menu
 v20_0.9.2 Added Left Click Menu with 5 Program Launch Items with configuration in Settings - Release Candidate 14-12-2013 
@@ -357,4 +357,5 @@ v20_0.9.8 Check we have a valid temperature returned in case of the occasional s
 v30_3.0.0 Changes to work with Mint 18 and Cinnamon 3.0 -gedit -> xed
           corrected missing call to display help file
 v30_3.0.2  NOTE 3.0.1 was not a separate version - it was a mechanism to overwrite a faulty zip upload of 3.0.0 to the cinnamon-spices web site
+v30_3.0.3  Corrected icon.png in applet folder which is used by Add Applets
 */

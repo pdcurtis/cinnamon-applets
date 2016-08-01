@@ -365,6 +365,7 @@ function main(metadata, orientation, panelHeight, instance_id) {
     return myApplet;
 }
 /*
+Version v30_1.1.8
 v30_1.0.0 Developed using code from NUMA, Bumblebee and Timer Applets
           Includes changes to work with Mint 18 and Cinnamon 3.0 -gedit -> xed
           Tested with Cinnamon 3.0 in Mint 18 
@@ -394,4 +395,5 @@ v30_1.1.4 Old call removed from batterytempscript.sh which was filling error log
           Help File extended
 v30_1.1.5 Minor text changes to improve consistency
 v30_1.1.7 NOTE 1.1.6 was not a separate version - it was a mechanism to overwrite a faulty zip upload of 1.1.5 to the cinnamon-spices web site
+v30_1.1.8 Corrected icon.png in applet folder which is used by Add Applets
 */

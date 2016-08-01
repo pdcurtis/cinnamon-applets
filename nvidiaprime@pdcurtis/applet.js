@@ -241,7 +241,7 @@ function main(metadata, orientation, panelHeight, instance_id) {
     return myApplet;
 }
 /*
-Version v30_3.1.5
+Version v30_3.1.6
 
 v30_3.0.0 Based on Bumblbee v20_0.9.8 but modified to use nVidia Prime.
           Changes to work with Mint 18 and Cinnamon 3.0 -gedit -> xed
@@ -257,9 +257,11 @@ v30_3.1.2 Matching changes in settings-schema.json
 v30_3.1.3 Help file updated
 v30_3.1.4 Help File updated further
           Uploaded as Release Candidate on 29th July 2016
-v30_3.1.5 New tick box on configuration screen to add additional functionality to Context Menu. 
+v30_3.1.5 New tick box on configuration screen to access enhanced functionality through the Context Menu. 
           This needs a Cinnamon Restart or log out/in before the change is visible.
           Currently this adds the glxspheres64 Graphics Processor Test to the Context menu.
           glxsheres needs the VirtualGL package needs to be installed from
           http://sourceforge.net/projects/virtualgl/files/VirtualGL/
+
+v30_3.1.6 Corrected icon.png in applet folder which is used by Add Applets
 */

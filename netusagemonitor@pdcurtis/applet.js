@@ -998,7 +998,7 @@ function main(metadata, orientation, panel_height, instance_id) {
 }
 
 /*
-Version v30_3.0.3
+Version v30_3.0.4
 1.0 Applet Settings now used for Update Rate, Resolution and Interface. 
     Built in function used for left click menu. 
 1.1 Right click menu item added to open Settings Screen. 
@@ -1127,4 +1127,5 @@ Conclusion - change to a drop down selection of options, initially the three cur
           Addition of version test to chose between xed for Mint 18 with Cinnamon 3.0 and gedit for earlier versions. 
 3.0.2     NOTE 3.0.1 was not a separate version - it was a mechanism to overwrite a faulty zip upload of 3.0.0 to the cinnamon-spices web site
 3.0.3     Corrected icon.png in applet folder which is used by Add Applets and removed incorrect icon from metadata.json
+3.0.4     Increased limits from 5000 mbytes to 100000 mbytes for totalLimit and cummulative offsets
 */

@@ -466,30 +466,30 @@ MyApplet.prototype = {
     updateLeftMenu: function () {
 
         if (this.useTotalLimit) {
-            this.menuitemInfo2.label.text = "    " + "Alert level (Orange): " + Math.round(this.alertPercentage) + " % of Data Limit of " + this.totalLimit + " MBytes.";
+            this.menuitemInfo2.label.text = "    " + "Alert level (Orange): " + Math.round(this.alertPercentage) + " % of Data Limit of " + this.formatSentReceived((this.totalLimit* 1024 * 1024 )) ;
         }
 
         if (this.cumulativeInterface1 != "null" && this.cumulativeInterface1 != "") {
             if (this.cumulativeOffset1 != 0) {
-                this.menuitemInfo1.label.text = "   " + this.cumulativeInterface1 + " - Cumulative Data Use " + this.cumulativeComment1 + " with offset of " + this.cumulativeOffset1.toString() + " MB: " + this.formatSentReceived((this.cumulativeTotal1  - this.cumulativeOffset1) * 1024 * 1024);
+                this.menuitemInfo1.label.text = "   " + this.cumulativeInterface1 + " - Cumulative Data Use " + this.cumulativeComment1 + " with offset of " + this.formatSentReceived((this.cumulativeOffset1) * 1024 * 1024) + " = " + this.formatSentReceived((this.cumulativeTotal1  - this.cumulativeOffset1) * 1024 * 1024);
             } else {
-                this.menuitemInfo1.label.text = "   " + this.cumulativeInterface1 + " - Cumulative Data Use " + this.cumulativeComment1  + " MB: " + this.formatSentReceived(this.cT1 * 1024 * 1024);
+                this.menuitemInfo1.label.text = "   " + this.cumulativeInterface1 + " - Cumulative Data Use " + this.cumulativeComment1 + " = " + this.formatSentReceived(this.cumulativeOffset1 * 1024 * 1024);
             }
         } 
 
         if (this.cumulativeInterface2 != "null" && this.cumulativeInterface2 != "") {
             if (this.cumulativeOffset2 != 0) {
-                this.menuitemInfo4.label.text = "   " + this.cumulativeInterface2 + " - Cumulative Data Use " + this.cumulativeComment2 + " with offset of " + this.cumulativeOffset2.toString() + " MB: " + this.formatSentReceived((this.cumulativeTotal2  - this.cumulativeOffset2) * 1024 * 1024);
+                this.menuitemInfo4.label.text = "   " + this.cumulativeInterface2 + " - Cumulative Data Use " + this.cumulativeComment2+ " with offset of " + this.formatSentReceived((this.cumulativeOffset2) * 1024 * 1024 ) + " = " + this.formatSentReceived((this.cumulativeTotal2  - this.cumulativeOffset2) * 1024 * 1024);
             } else {
-                this.menuitemInfo4.label.text = "   " + this.cumulativeInterface2 + " - Cumulative Data Use " + this.cumulativeComment2  + " MB: " + this.formatSentReceived(this.cT2 * 1024 * 1024);
+                this.menuitemInfo4.label.text = "   " + this.cumulativeInterface2 + " - Cumulative Data Use " + this.cumulativeComment2 + " = " + this.formatSentReceived(this.cumulativeTotal2 * 1024 * 1024);
             }
         } 
 
         if (this.cumulativeInterface3 != "null" && this.cumulativeInterface3 != "") {
             if (this.cumulativeOffset3 != 0) {
-                this.menuitemInfo6.label.text = "   " + this.cumulativeInterface3 + " - Cumulative Data Use " + this.cumulativeComment3 + " with offset of " + this.cumulativeOffset3.toString() + " MB: " + this.formatSentReceived((this.cumulativeTotal3  - this.cumulativeOffset3) * 1024 * 1024);
+               this.menuitemInfo6.label.text = "   " + this.cumulativeInterface3 + " - Cumulative Data Use " + this.cumulativeComment3 + " with offset of " + this.formatSentReceived((this.cumulativeOffset3) * 1024 * 1024 ) + " = " + this.formatSentReceived((this.cumulativeTotal3  - this.cumulativeOffset3) * 1024 * 1024);
             } else {
-                this.menuitemInfo6.label.text = "   " + this.cumulativeInterface3 + " - Cumulative Data Use " + this.cumulativeComment3  + " MB: " + this.formatSentReceived(this.cT3 * 1024 * 1024);
+                this.menuitemInfo6.label.text = "   " + this.cumulativeInterface3 + " - Cumulative Data Use " + this.cumulativeComment3 + " = " + this.formatSentReceived(this.cumulativeTotal3 * 1024 * 1024 );
             }
         } 
     },
@@ -686,25 +686,7 @@ MyApplet.prototype = {
 	this.cT1 = this.cumulativeTotal1;
 	this.cT2 = this.cumulativeTotal2;
 	this.cT3 = this.cumulativeTotal3;
-/*
-        if (this.cumulativeInterface1 != "null" && this.cumulativeInterface1 != "") {
-             GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface1);
-             this.upOldC1 = this.gtop.bytes_out;
-             this.downOldC1 = this.gtop.bytes_in;
-        }
 
-        if (this.cumulativeInterface2 != "null" && this.cumulativeInterface2 != "") {
-            GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface2);
-            this.upOldC2 = this.gtop.bytes_out;
-            this.downOldC2 = this.gtop.bytes_in;
-        }
-
-         if (this.cumulativeInterface3 != "null" && this.cumulativeInterface3 != "") {
-               GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface3);
-               this.upOldC3 = this.gtop.bytes_out;
-               this.downOldC3 = this.gtop.bytes_in;
-        }
-*/
         this.monitoredIinterfaceBi = name; // save using cinnamon settings
     },
 
@@ -824,43 +806,6 @@ MyApplet.prototype = {
             this.timeOld = timeNow;
         }
  
-/*       // Update the three sets of cumulative usage data - Note this uses feature that gTop... delivers 0 if Interface does not exist or is inactive but checks added to avoid calling if counter not in use. 
-         // This is old way which allowed all the cumulative totals to be collected in parallel rather than just for active interface - would need modifications to delay writing.
-
-        if (this.cumulativeInterface1 != "null" && this.cumulativeInterface1 != "") {
-            GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface1);
-            let upNowC1 = this.gtop.bytes_out;
-            let downNowC1 = this.gtop.bytes_in;
-            if (((downNowC1 > this.downOldC1) || (upNowC1 > this.upOldC1))) {
-                this.cumulativeTotal1 = this.cumulativeTotal1 + (downNowC1 - this.downOldC1 + upNowC1 - this.upOldC1) / 1048576;
-            }
-            this.upOldC1 = upNowC1;
-            this.downOldC1 = downNowC1;
-        }
-
-        if (this.cumulativeInterface2 != "null" && this.cumulativeInterface2 != "") {
-            GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface2);
-            let upNowC2 = this.gtop.bytes_out;
-            let downNowC2 = this.gtop.bytes_in;
-            if (((downNowC2 > this.downOldC2) || (upNowC2 > this.upOldC2))) {
-                this.cumulativeTotal2 = this.cumulativeTotal2 + (downNowC2 - this.downOldC2 + upNowC2 - this.upOldC2) / 1048576;
-            }
-            this.upOldC2 = upNowC2;
-            this.downOldC2 = downNowC2;
-        } 
-
-        if (this.cumulativeInterface3 != "null" && this.cumulativeInterface3 != "") {
-            GTop.glibtop_get_netload(this.gtop, this.cumulativeInterface3);
-            let upNowC3 = this.gtop.bytes_out;
-            let downNowC3 = this.gtop.bytes_in;
-            if (((downNowC3 > this.downOldC3) || (upNowC3 > this.upOldC3))) {
-                this.cumulativeTotal3 = this.cumulativeTotal3 + (downNowC3 - this.downOldC3 + upNowC3 - this.upOldC3) / 1048576;
-            }
-            this.upOldC3 = upNowC3;
-            this.downOldC3 = downNowC3;
-        }        
- 
-*/
 
         // Now set up tooltip every cycle
         if (this.monitoredInterfaceName != null) {
@@ -929,19 +874,6 @@ MyApplet.prototype = {
         Mainloop.timeout_add((timer), Lang.bind(this, this.update));         
     },
 
-/*    formatSpeed: function (value) {
-        let decimalAdjust = Math.pow(10, (this.decimalsToShowIn));
-        if (value < 1024000) return (Math.floor(value / 1024 * decimalAdjust) / decimalAdjust) + " KB/s";
-        else return (Math.floor(value / 1048576 * decimalAdjust) / decimalAdjust) + " MB/s";
-    },
-
-
-    formatSentReceived: function (value) {
-        if (value < 1048576) return Math.floor(value / 1024) + " KB";
-        else return Math.floor((value / 1048576) * 10) / 10 + " MB";
-    },
-*/
-
 formatSpeed: function (value) {
         return this.formatSentReceived(value) + "/s";
     },
@@ -950,8 +882,8 @@ formatSpeed: function (value) {
         // Note changes at 1000 rather than1024 are deliberate to avoid 'jitter' in display
         // Absolute value used because of potential for negative numbers now offset is included
 
-    	let suffix = " B";
-    	if (Math.abs(value) >= 0) {           // fudge to always inhibit Byte display
+    	let suffix = " KB";
+    	if (Math.abs(value) >= 0) {   
     	        value = value / 1024;
     		suffix = " KB";
     	}
@@ -959,12 +891,12 @@ formatSpeed: function (value) {
     		value = value / 1024;
     		suffix = " MB";
     	}
-    	if (Math.abs(value) >= 1000) {
-    		value = value / 1024;
+    	if (Math.abs(value) >= 1000) {  // fudge to get Gbyte displays correct when limits set in Mbytes
+    		value = value / 1000;  
     		suffix = " GB";
     	}
-    	if (Math.abs(value) >= 1000) {
-    		value = value / 1024;
+    	if (Math.abs(value) >= 1000) {   // fudge to get Tbyte displays correct when limits set in Mbytes
+    		value = value / 1000;
     		suffix = " TB";
     	}
     	let decimalAdjust = Math.pow(10, (this.decimalsToShowIn));
@@ -998,7 +930,7 @@ function main(metadata, orientation, panel_height, instance_id) {
 }
 
 /*
-Version v30_3.0.4
+Version v30_3.0.5
 1.0 Applet Settings now used for Update Rate, Resolution and Interface. 
     Built in function used for left click menu. 
 1.1 Right click menu item added to open Settings Screen. 
@@ -1128,4 +1060,6 @@ Conclusion - change to a drop down selection of options, initially the three cur
 3.0.2     NOTE 3.0.1 was not a separate version - it was a mechanism to overwrite a faulty zip upload of 3.0.0 to the cinnamon-spices web site
 3.0.3     Corrected icon.png in applet folder which is used by Add Applets and removed incorrect icon from metadata.json
 3.0.4     Increased limits from 5000 mbytes to 100000 mbytes for totalLimit and cummulative offsets
+3.0.5     Made much more use of formatSentReceived() because of increase in limits
+          Removed a number of commented out blocks to do with cumulative totals and formatting.
 */

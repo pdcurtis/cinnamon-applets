@@ -57,8 +57,18 @@
         "step": 2,
         "units": "pixels",
         "description": "Applet Width Adjustment (Only for fine tuning - normally leave alone at 180:",
-        "tooltip": "Fine tuning of applet width for changes in theme and decimal places displayed - needs to be used in conjuction with changes in stylesheet.css. Value is halved when Compact Dispaly selected"
+        "tooltip": "Fine tuning of applet width for changes in theme and decimal places displayed - needs to be used in conjuction with changes in stylesheet.css. Value is halved when Compact Display selected"
     },
+ "dataUnit" : {
+        "type": "combobox",
+        "default" : "mbytes",
+        "options" : {
+            "Mbytes" : "mbytes",
+            "Gbytes" : "gbytes"
+         },
+        "description" : "Data Unit used to set Alert Levels and Cumulative Offsets",
+        "tooltip": "These are the units which will be used for setting the alert limit and cumulative offsets."
+   },
     "head1": {
         "type": "header",
         "description": "Settings specific to Data Usage and Alert functions for Current Connection"
@@ -75,12 +85,14 @@
         "min": 1,
         "max": 200000,
         "step": 1,
-        "units": "MBytes",
+        "units": "MBytes or Gbytes as set above",
         "indent": true,
-        "description": "Data Limit for total flow of data before a Red Warning background is displayed in the Applet",
+        "description": "Data Limit before a Red Warning background is displayed in the Applet",
         "dependency": "useTotalLimit",
         "tooltip": "This is the Total Data which can be uploaded and downloaded before the background of the applet goes red - by default it goes orange at 80% of this - reset by disconnection, reboot and/or suspend depending on system"
     },
+
+
     "alertPercentage": {
         "type": "scale",
         "default": 50,
@@ -116,7 +128,7 @@
         "min": 0,
         "max": 200000,
         "step": 1,
-        "units": "MBytes",
+        "units": "MBytes or Gbytes as set above",
         "indent": true,
         "description": "Offset applied to Cumulative Data Usage 1",
         "tooltip": "This can be used to offset the data usage to take into account usage on other machines or correct for other causes"
@@ -142,7 +154,7 @@
         "min": 0,
         "max": 200000,
         "step": 1,
-        "units": "MBytes",
+        "units": "MBytes or Gbytes as set above",
         "indent": true,
         "description": "Offset applied to Cumulative Data Usage 2",
         "tooltip": "This can be used to offset the data usage to take into account usage on other machines or correct for other causes"
@@ -167,7 +179,7 @@
         "min": 0,
         "max": 200000,
         "step": 1,
-        "units": "MBytes",
+        "units": "MBytes or Gbytes as set above",
         "indent": true,
         "description": "Offset applied to Cumulative Data Usage 3",
         "tooltip": "This can be used to offset the data usage to take into account usage on other machines or correct for other causes"

@@ -80,6 +80,11 @@ MyApplet.prototype = {
                 this.on_settings_changed,
                 null);
             this.settings.bindProperty(Settings.BindingDirection.IN,
+                "dataUnit",
+                "dataUnit",
+                this.on_settings_changed,
+                null);
+            this.settings.bindProperty(Settings.BindingDirection.IN,
                 "useTotalLimit",
                 "useTotalLimit",
                 this.on_settings_changed,

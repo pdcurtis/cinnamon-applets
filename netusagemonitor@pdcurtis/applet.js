@@ -91,7 +91,7 @@ MyApplet.prototype = {
                 null);
             this.settings.bindProperty(Settings.BindingDirection.IN,
                 "totalLimit",
-                "totalLimit",
+                "totalLimit1",
                 this.on_alert_settings_changed,
                 null);
             this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL,
@@ -116,7 +116,7 @@ MyApplet.prototype = {
                 null);
             this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL,
                 "cumulativeOffset1",
-                "cumulativeOffset1",
+                "cumulativeOffsetA",
                 this.on_settings_changed,
                 null);
             this.settings.bindProperty(Settings.BindingDirection.IN,
@@ -136,7 +136,7 @@ MyApplet.prototype = {
                 null);
             this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL,
                 "cumulativeOffset2",
-                "cumulativeOffset2",
+                "cumulativeOffsetB",
                 this.on_settings_changed,
                 null);
             this.settings.bindProperty(Settings.BindingDirection.IN,
@@ -156,7 +156,7 @@ MyApplet.prototype = {
                 null);
             this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL,
                 "cumulativeOffset3",
-                "cumulativeOffset3",
+                "cumulativeOffsetC",
                 this.on_settings_changed,
                 null);
             this.settings.bindProperty(Settings.BindingDirection.IN,
@@ -310,6 +310,20 @@ MyApplet.prototype = {
         } else {
             this.appletWidth = (this.appletWidthSetting / 2) + 11;
         }
+
+    // Code to change from Mbytes to Gbytes added here 
+        if (this.dataUnit == 'gbytes') { 
+            this.totalLimit = this.totalLimit1 * 1024;
+            this.cumulativeOffset1 = this.cumulativeOffsetA * 1024;
+            this.cumulativeOffset2 = this.cumulativeOffsetB * 1024;
+            this.cumulativeOffset3 = this.cumulativeOffsetC * 1024;
+        } else {
+            this.totalLimit = this.totalLimit1;
+            this.cumulativeOffset1 = this.cumulativeOffsetA;
+            this.cumulativeOffset2 = this.cumulativeOffsetB;
+            this.cumulativeOffset3 = this.cumulativeOffsetC;
+        }
+
         this.updateLeftMenu();
     },
 
@@ -478,7 +492,7 @@ MyApplet.prototype = {
             if (this.cumulativeOffset1 != 0) {
                 this.menuitemInfo1.label.text = "   " + this.cumulativeInterface1 + " - Cumulative Data Use " + this.cumulativeComment1 + " with offset of " + this.formatSentReceived((this.cumulativeOffset1) * 1024 * 1024) + " = " + this.formatSentReceived((this.cumulativeTotal1  - this.cumulativeOffset1) * 1024 * 1024);
             } else {
-                this.menuitemInfo1.label.text = "   " + this.cumulativeInterface1 + " - Cumulative Data Use " + this.cumulativeComment1 + " = " + this.formatSentReceived(this.cumulativeOffset1 * 1024 * 1024);
+                this.menuitemInfo1.label.text = "   " + this.cumulativeInterface1 + " - Cumulative Data Use " + this.cumulativeComment1 + " = " + this.formatSentReceived(this.cumulativeTotal1 * 1024 * 1024);
             }
         } 
 
@@ -896,12 +910,12 @@ formatSpeed: function (value) {
     		value = value / 1024;
     		suffix = " MB";
     	}
-    	if (Math.abs(value) >= 1000) {  // fudge to get Gbyte displays correct when limits set in Mbytes
-    		value = value / 1000;  
+    	if (Math.abs(value) >= 1000) {  
+    		value = value / 1024;  
     		suffix = " GB";
     	}
-    	if (Math.abs(value) >= 1000) {   // fudge to get Tbyte displays correct when limits set in Mbytes
-    		value = value / 1000;
+    	if (Math.abs(value) >= 1000) {  
+    		value = value / 1024;
     		suffix = " TB";
     	}
     	let decimalAdjust = Math.pow(10, (this.decimalsToShowIn));
@@ -935,7 +949,7 @@ function main(metadata, orientation, panel_height, instance_id) {
 }
 
 /*
-Version v30_3.0.5
+Version v30_3.0.6
 1.0 Applet Settings now used for Update Rate, Resolution and Interface. 
     Built in function used for left click menu. 
 1.1 Right click menu item added to open Settings Screen. 
@@ -1064,7 +1078,9 @@ Conclusion - change to a drop down selection of options, initially the three cur
           Addition of version test to chose between xed for Mint 18 with Cinnamon 3.0 and gedit for earlier versions. 
 3.0.2     NOTE 3.0.1 was not a separate version - it was a mechanism to overwrite a faulty zip upload of 3.0.0 to the cinnamon-spices web site
 3.0.3     Corrected icon.png in applet folder which is used by Add Applets and removed incorrect icon from metadata.json
-3.0.4     Increased limits from 5000 mbytes to 100000 mbytes for totalLimit and cummulative offsets
+3.0.4     Increased maximum from 5000 mbytes to 100000 mbytes for totalLimit and cummulative offsets
 3.0.5     Made much more use of formatSentReceived() because of increase in limits
           Removed a number of commented out blocks to do with cumulative totals and formatting.
+3.0.6     Choice of units for limits and offsets to be Mbytes or Gbytes by drop down widget in settings (configuration) window
+          Maximum Limits and Offsets set to 200000 Mbytes/Gbytes as appropriate 
 */

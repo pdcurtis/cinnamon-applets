@@ -85,7 +85,7 @@
         "min": 1,
         "max": 200000,
         "step": 1,
-        "units": "MBytes or Gbytes as set above",
+        "units": "Mbytes or Gbytes as set above",
         "indent": true,
         "description": "Data Limit before a Red Warning background is displayed in the Applet",
         "dependency": "useTotalLimit",
@@ -128,7 +128,7 @@
         "min": 0,
         "max": 200000,
         "step": 1,
-        "units": "MBytes or Gbytes as set above",
+        "units": "Mbytes or Gbytes as set above",
         "indent": true,
         "description": "Offset applied to Cumulative Data Usage 1",
         "tooltip": "This can be used to offset the data usage to take into account usage on other machines or correct for other causes"
@@ -154,7 +154,7 @@
         "min": 0,
         "max": 200000,
         "step": 1,
-        "units": "MBytes or Gbytes as set above",
+        "units": "Mbytes or Gbytes as set above",
         "indent": true,
         "description": "Offset applied to Cumulative Data Usage 2",
         "tooltip": "This can be used to offset the data usage to take into account usage on other machines or correct for other causes"
@@ -179,7 +179,7 @@
         "min": 0,
         "max": 200000,
         "step": 1,
-        "units": "MBytes or Gbytes as set above",
+        "units": "Mbytes or Gbytes as set above",
         "indent": true,
         "description": "Offset applied to Cumulative Data Usage 3",
         "tooltip": "This can be used to offset the data usage to take into account usage on other machines or correct for other causes"

@@ -2,28 +2,31 @@ A general description of these applets is at http:// www.pcurtis.com/spices.htm
 
 Each Applet now has its own change log in the applet folder and accessible from the context menu. This largely superceeds the original purpose of this status file.
 
-Each Applet now has its own help file in the applet folder and accessible from the context menu. 
-
-These applets are only designed dor the versions of Mint/Cinnamon which are supported. The  currently supported versions of Mint in July 2016 are:
+These applets are only designed for the versions of Mint/Cinnamon which are supported by Mint. The  currently supported versions of in September 2016 are:
 
     Mint 13 Maya LTS based on Ubuntu Precise - supported until April 2017 (issued with Cinnamon 1.4 but almost certainly updated by backports (romeo) to at least Cinnamon 1.8 and probably 2.0) ie Cinnamon versions under 2.0 are very unlikely.
 
-    Mint 17 Qiana, 17.1 ,17.2 and 17.3 LTS based on Ubuntu Trusty - supported until April 2019 (Cinnamon 2.2 - 2.8)
+    Mint 17 Qiana, 17.1, 17.2 and 17.3 Rosa LTS versions based on Ubuntu Trusty - supported until April 2019 (Cinnamon 2.2 - 2.8)
 
     Mint 18 Sarah LTS based on Ubuntu Xenial - supported until April 2021 (Cinnamon 3.0)
 
-The lowest Cinnamon version the applets will work with is Cinnamon 1.8 but some may lack a configure context menu item which would have to be accessed from the applets loader. This is an unlikely situation reached from updates using backports to Mint 13 Maya the 2012 LTS version.
+The lowest Cinnamon version these applets will work with is Cinnamon 1.8 but some may lack a configure context menu item which would have to be accessed from the applets loader. This is an unlikely situation now only reached from updates using backports to Mint 13 Maya, the 2012 LTS version.
 
 All the applets work with Cinnamon 2.0 -> Cinnamon 2.8 (ie Mint 17 Qiana -> Mint 17.3 Rosa)
 
-All the applets have now been updated and uploaded to take into account the changes in Mint 18 Sarah with Cinnamon 3.0. The major changes affecting applets are:
+All the applets have now been updated and uploaded to take into account the changes in Mint 18 Sarah and now work with Cinnamon 3.0. The major changes affecting applets in Mint 18 are:
 
-    Change of Text Editor from gedit to xed
+   - Change of Text Editor from gedit to xed
+   - Change from upstart to systemd initiation meaning some 'system calls' eg suspend are different.
 
-    Change from upstart to systemd initiation meaning some 'system calls' eg suspend are different.
-
-All commits are of 'working' versions, or believed to be at the time!
+All commits in Git are of 'working' versions, or believed to be at the time!
 
 Tags are only added when a version is uploaded to the Cinnamon Spices web site or it has been made available for download as a development version from http://www.pcurtis.com/spices.htm
 
-The latest applet is nvidiaprime@pcurtis.com. This is a cut down version of Bumblebee which only provides display of the nVidia Graphics Processor Temperature when it is enabled and a few quick links to utilities. It is working but not fully tested and tidied up but has been made available as a beta on http://www.pcurtis.com/spices.htm#nvidiaprime but not on the Linux Mint Cinnamon Spices download page.
+Although development is carried out locally using mutiple branches the GitHub repository normally only carries the master branch. There may be an exception if a particular issue (bug or requested enhancement) is being worked on which I want to share for testing or comment. Any modifications or patches should however be based on the most recent version tagged on the master as other branches are are transient and will be deleted - Be Warned.
+
+There is a new web page describing how to access my cinnamon-applets repository with an introduction to Git at http://www.pcurtis.com/git.htm. 
+
+Please discuss any enhancements you may think worthy of writing for inclusion in advance - my prefered mechanisms are a Git patch file or a Pull Request from a fork.
+
+Last Updated 17th September 2016

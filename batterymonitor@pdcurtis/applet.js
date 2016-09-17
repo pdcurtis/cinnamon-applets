@@ -76,7 +76,7 @@ MyApplet.prototype = {
                 null);
 
             // ++ Make metadata values available within applet for context menu.
-            this.cssfile = metadata.path + "/stylesheet.css"; // No longer required
+            this.cssfile = metadata.path + "/stylesheet.css"; 
             this.changelog = metadata.path + "/changelog.txt";
             this.helpfile = metadata.path + "/help.txt";
 
@@ -213,6 +213,12 @@ MyApplet.prototype = {
                 GLib.spawn_command_line_async(this.textEd + ' ' + this.helpfile);
             }));
             this.subMenu1.menu.addMenuItem(this.subMenuItem2);
+
+            this.subMenuItem4 = new PopupMenu.PopupMenuItem("Open stylesheet.css  (Advanced Function)");
+            this.subMenuItem4.connect('activate', Lang.bind(this, function (event) {
+                GLib.spawn_command_line_async(this.textEd + ' ' + this.cssfile);
+            }));
+            this.subMenu1.menu.addMenuItem(this.subMenuItem4);
 
         } catch (e) {
             global.logError(e);

@@ -1,6 +1,6 @@
 A general description of these applets is at http:// www.pcurtis.com/spices.htm
 
-Each Applet now has its own change log in the applet folder and accessible from the context menu. This largely superceeds the original purpose of this status file.
+Each Applet now has its own change log in the applet folder and accessible from the context menu. This largely supersedes the original purpose of this status file.
 
 These applets are only designed for the versions of Mint/Cinnamon which are supported by Mint. The  currently supported versions of in September 2016 are:
 
@@ -21,12 +21,20 @@ All the applets have now been updated and uploaded to take into account the chan
 
 All commits in Git are of 'working' versions, or believed to be at the time!
 
+Versions used in the changelogs for each applet are mostly of the form 3.0.6.  
+
+Versions used for upload to the cinnamon spices web site are currently of the form v30_3.0.6 where the v30 was intended to show the cinnamon version current when it was uploaded and hence what it had been mostly tested against. I no longer think that was a good idea and may simplify them in the future.
+
 Tags are only added when a version is uploaded to the Cinnamon Spices web site or it has been made available for download as a development version from http://www.pcurtis.com/spices.htm
 
-Although development is carried out locally using mutiple branches the GitHub repository normally only carries the master branch. There may be an exception if a particular issue (bug or requested enhancement) is being worked on which I want to share for testing or comment. Any modifications or patches should however be based on the most recent version tagged on the master as other branches are are transient and will be deleted - Be Warned.
+Tags combine an abbreviation of the applet title and version number ie NUMA-3.0.6 and Bumblebee-0.9.8.
+
+NOTE: Two early tags have been renamed to correctly follow this format so apologies if you have cloned and they change in your local copy when you next pull.
+
+Although development is carried out locally using multiple branches the GitHub repository normally only carries the master branch. There may be an exception if a particular issue (bug or requested enhancement) is being worked on which I want to share for testing or comment. Any modifications or patches should however be based on the most recent version tagged on the master as other branches are are transient and will be deleted - Be Warned.
 
 There is a new web page describing how to access my cinnamon-applets repository with an introduction to Git at http://www.pcurtis.com/git.htm. 
 
-Please discuss any enhancements you may think worthy of writing for inclusion in advance - my prefered mechanisms are a Git patch file or a Pull Request from a fork.
+Please discuss any enhancements you may think worthy of writing for inclusion in advance - my preferred mechanisms are a Git patch file or a Pull Request from a fork.
 
-Last Updated 17th September 2016
+Last Updated 18th September 2016
